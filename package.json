@@ -1,0 +1,35 @@
+{
+  "name": "html.style",
+  "version": "0.1.0",
+  "description": "A modern web standards-based HTML and CSS framework, template starter, design system, and methodology",
+  "main": "dist/index.html",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "echo \"Build script to be implemented\"",
+    "dev": "echo \"Dev server to be implemented\"",
+    "start": "npm run dev"
+  },
+  "keywords": [
+    "html",
+    "css",
+    "framework",
+    "template",
+    "boilerplate",
+    "design-system",
+    "modern-web-standards"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bstoppel/html.style.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bstoppel/html.style/issues"
+  },
+  "homepage": "https://github.com/bstoppel/html.style#readme",
+  "devDependencies": {},
+  "dependencies": {}
+}
