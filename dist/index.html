@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A modern web project using html.style">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#6b46c1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#8b5cf6" media="(prefers-color-scheme: dark)">
+
+  <!-- Favicons -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+
+  <!-- Prevent Flash of Wrong Theme -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme) {
+        document.documentElement.style.colorScheme = theme;
+      } else if (prefersDark) {
+        document.documentElement.style.colorScheme = 'dark';
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/html.style.css">
+
+  <title>html.style starter</title>
+</head>
+<body class="page-layout">
+
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="center">
+      <div class="cluster" style="justify-content: space-between;">
+        <h1 style="margin: 0; font-size: var(--text-heading-lg);">Your Site</h1>
+        <nav class="site-nav">
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="center" style="padding-block: var(--p-space-3xl);">
+      <div class="stack">
+        <h2>Welcome to html.style</h2>
+        <p>
+          A modern web standards-based CSS framework. Start building by editing this file.
+        </p>
+        <p>
+          Visit <a href="https://github.com/yourusername/html.style">the documentation</a> for component examples and patterns.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background: var(--color-surface-elevated); border-block-start: 1px solid var(--color-border-default); padding-block: var(--space-gutter);">
+    <div class="center">
+      <p style="text-align: center; margin: 0; color: var(--color-text-secondary);">
+        Built with <a href="https://github.com/yourusername/html.style">html.style</a>
+      </p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/html.style.js"></script>
+</body>
+</html>

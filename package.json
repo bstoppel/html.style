@@ -1,26 +1,35 @@
 {
   "name": "html.style",
-  "version": "0.1.0",
-  "description": "A modern web standards-based HTML and CSS framework, template starter, design system, and methodology",
-  "main": "dist/index.html",
+  "version": "2026.1.0",
+  "description": "Modern web standards CSS framework with OKLCH colors, container queries, and semantic HTML",
+  "main": "dist/css/html.style.css",
+  "style": "dist/css/html.style.css",
   "files": [
-    "dist"
+    "dist/**/*",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
-    "build": "echo \"Build script to be implemented\"",
-    "dev": "echo \"Dev server to be implemented\"",
-    "start": "npm run dev"
+    "test": "echo \"No build process required - html.style uses modern web standards\"",
+    "start": "echo \"Open dist/index.html in your browser to get started\""
   },
   "keywords": [
-    "html",
     "css",
     "framework",
-    "template",
-    "boilerplate",
+    "html",
+    "oklch",
+    "container-queries",
+    "cascade-layers",
     "design-system",
-    "modern-web-standards"
+    "web-standards",
+    "boilerplate",
+    "starter-template",
+    "semantic-html",
+    "dark-mode",
+    "atomic-design",
+    "progressive-enhancement"
   ],
-  "author": "",
+  "author": "html.style contributors",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,6 +39,7 @@
     "url": "https://github.com/bstoppel/html.style/issues"
   },
   "homepage": "https://github.com/bstoppel/html.style#readme",
-  "devDependencies": {},
-  "dependencies": {}
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

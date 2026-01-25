@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="css/html.style.css">
+  <title>Blog Post Template - html.style</title>
+</head>
+<body class="sidebar-layout">
+
+  <aside style="background: var(--color-surface-elevated); padding: var(--space-component); border-radius: var(--p-radius-md);">
+    <nav class="stack">
+      <strong>Categories</strong>
+      <ul style="list-style: none; padding: 0;">
+        <li><a href="#">Web Standards</a></li>
+        <li><a href="#">CSS</a></li>
+        <li><a href="#">Accessibility</a></li>
+        <li><a href="#">Performance</a></li>
+      </ul>
+
+      <strong style="margin-block-start: var(--space-block);">Recent Posts</strong>
+      <ul style="list-style: none; padding: 0; font-size: var(--text-small);">
+        <li><a href="#" style="color: var(--color-text-secondary);">Container Queries Guide</a></li>
+        <li><a href="#" style="color: var(--color-text-secondary);">OKLCH Color Spaces</a></li>
+        <li><a href="#" style="color: var(--color-text-secondary);">Cascade Layers Explained</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <article class="stack">
+      <header class="stack">
+        <h1>Understanding Container Queries in 2026</h1>
+        <p style="color: var(--color-text-secondary);">
+          <time datetime="2026-01-24">January 24, 2026</time> • 5 min read
+        </p>
+      </header>
+
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 600'%3E%3Crect fill='%23e5e5e5' width='1200' height='600'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='48' fill='%23999'%3EArticle Image%3C/text%3E%3C/svg%3E" alt="Article header" style="border-radius: var(--p-radius-md);">
+
+      <div class="stack">
+        <p>Container queries have revolutionized responsive design by allowing components to adapt based on their container size rather than viewport size. This enables truly portable, reusable components.</p>
+
+        <h2>What Are Container Queries?</h2>
+        <p>Container queries allow you to apply styles based on the size of a containing element rather than the viewport. This is a game-changer for component-based design.</p>
+
+        <pre><code>@container (inline-size > 400px) {
+  .card {
+    flex-direction: row;
+  }
+}</code></pre>
+
+        <h2>Browser Support</h2>
+        <p>As of 2026, container queries are supported in all modern browsers. Chrome, Firefox, Safari, and Edge all have excellent support.</p>
+
+        <h3>Best Practices</h3>
+        <ul>
+          <li>Always set <code>container-type</code> on the parent element</li>
+          <li>Use container units (cqi, cqb) for fluid sizing</li>
+          <li>Combine with CSS Grid for powerful layouts</li>
+        </ul>
+
+        <div class="alert alert--info">
+          <strong>Tip:</strong> Container queries work best when combined with logical properties and modern CSS features.
+        </div>
+
+        <h2>Conclusion</h2>
+        <p>Container queries represent the future of responsive design. They enable component portability and make our CSS more maintainable.</p>
+      </div>
+
+      <footer style="border-block-start: 1px solid var(--color-border-default); padding-block-start: var(--space-block); margin-block-start: var(--space-block);">
+        <p style="color: var(--color-text-secondary);">
+          Tagged: <a href="#">CSS</a>, <a href="#">Container Queries</a>, <a href="#">Web Standards</a>
+        </p>
+      </footer>
+    </article>
+
+    <section class="stack" style="margin-block-start: var(--p-space-3xl);">
+      <h2>Related Articles</h2>
+      <div class="card-grid">
+        <article class="card">
+          <div class="stack">
+            <h3><a href="#">OKLCH Colors Explained</a></h3>
+            <p style="color: var(--color-text-secondary);">Learn about perceptually uniform color spaces.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="stack">
+            <h3><a href="#">Cascade Layers Deep Dive</a></h3>
+            <p style="color: var(--color-text-secondary);">Master CSS cascade control.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/html.style.js"></script>
+</body>
+</html>

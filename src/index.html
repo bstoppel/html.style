@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Modern web starter template using html.style framework">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#6b46c1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#8b5cf6" media="(prefers-color-scheme: dark)">
+
+  <!-- SEO -->
+  <meta name="author" content="Your Name">
+  <meta name="keywords" content="html, css, framework, oklch, container queries, web standards">
+  <link rel="canonical" href="https://example.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="html.style - Modern Web Starter">
+  <meta property="og:description" content="Modern web standards-based CSS framework leveraging OKLCH colors, container queries, and semantic HTML">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/">
+  <meta property="og:image" content="https://example.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="html.style - Modern Web Starter">
+  <meta name="twitter:description" content="Modern web standards-based CSS framework leveraging OKLCH colors, container queries, and semantic HTML">
+  <meta name="twitter:image" content="https://example.com/og-image.png">
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Prevent Flash of Wrong Theme -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (theme) {
+        document.documentElement.style.colorScheme = theme;
+      } else if (prefersDark) {
+        document.documentElement.style.colorScheme = 'dark';
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/html.style.css">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "html.style",
+    "url": "https://example.com",
+    "description": "Modern web standards-based CSS framework"
+  }
+  </script>
+
+  <title>html.style - Modern Web Starter</title>
+</head>
+<body class="page-layout">
+
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="center">
+      <div class="cluster" style="justify-content: space-between;">
+        <div>
+          <h1 style="margin: 0; font-size: var(--text-heading-lg);">html.style</h1>
+          <p style="margin: 0; font-size: var(--text-small); color: var(--color-text-secondary);">
+            Modern Web Standards Framework
+          </p>
+        </div>
+
+        <nav class="site-nav" aria-label="Main navigation">
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#components">Components</a></li>
+            <li><a href="#docs">Docs</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero" style="background: var(--color-surface-elevated);">
+      <div class="stack" style="align-items: center;">
+        <h2 style="font-size: var(--text-heading-3xl); margin: 0;">
+          Build Modern Websites Faster
+        </h2>
+        <p style="font-size: var(--text-heading-lg); color: var(--color-text-secondary); max-inline-size: 60ch;">
+          A standards-based CSS framework leveraging OKLCH colors, container queries, and semantic HTML for 2026 and beyond.
+        </p>
+        <div class="cluster">
+          <button>Get Started</button>
+          <button class="button--outline">View on GitHub</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="center" style="padding-block: var(--p-space-3xl);" id="features">
+      <h2 style="text-align: center;">Modern Web Standards</h2>
+      <div class="card-grid" style="margin-block-start: var(--space-gutter);">
+
+        <article class="card">
+          <div class="stack">
+            <h3 style="margin: 0;">OKLCH Colors</h3>
+            <p style="margin: 0; color: var(--color-text-secondary);">
+              Perceptually uniform colors with Display P3 wide gamut support and accessibility by design.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="stack">
+            <h3 style="margin: 0;">Container Queries</h3>
+            <p style="margin: 0; color: var(--color-text-secondary);">
+              Components adapt to their container, not the viewport. True portability and reusability.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="stack">
+            <h3 style="margin: 0;">Semantic HTML</h3>
+            <p style="margin: 0; color: var(--color-text-secondary);">
+              Atoms layer styles semantic HTML directly. No class soup, maximum accessibility.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="stack">
+            <h3 style="margin: 0;">AI-Friendly</h3>
+            <p style="margin: 0; color: var(--color-text-secondary);">
+              Predictable, machine-readable patterns. Built for the AI-native web of 2026.
+            </p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Component Examples -->
+    <section class="center" style="padding-block: var(--p-space-3xl); background: var(--color-surface-elevated);" id="components">
+      <h2>Component Examples</h2>
+
+      <div class="stack">
+
+        <!-- Buttons -->
+        <div>
+          <h3>Buttons</h3>
+          <div class="cluster">
+            <button>Primary Button</button>
+            <button class="button--secondary">Secondary</button>
+            <button class="button--outline">Outline</button>
+            <button disabled>Disabled</button>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div>
+          <h3>Alerts</h3>
+          <div class="stack">
+            <div class="alert alert--success" role="alert">
+              <strong>Success!</strong> Your changes have been saved successfully.
+            </div>
+            <div class="alert alert--warning" role="alert">
+              <strong>Warning!</strong> Please review the following items before proceeding.
+            </div>
+            <div class="alert alert--error" role="alert">
+              <strong>Error!</strong> Unable to process your request. Please try again.
+            </div>
+            <div class="alert alert--info" role="alert">
+              <strong>Info:</strong> New features are available in this release.
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Example -->
+        <div>
+          <h3>Forms</h3>
+          <form class="stack">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" rows="4" placeholder="Your message here..."></textarea>
+            </div>
+
+            <div class="cluster">
+              <button type="submit">Send Message</button>
+              <button type="reset" class="button--secondary">Clear</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Details/Accordion -->
+        <div>
+          <h3>Accordion (Native Details)</h3>
+          <details>
+            <summary>What is html.style?</summary>
+            <p>html.style is a modern CSS framework built on web standards like OKLCH colors, container queries, and semantic HTML. It's designed for the AI-native web of 2026.</p>
+          </details>
+          <details>
+            <summary>How do I get started?</summary>
+            <p>Simply include the html.style.css file in your project and start writing semantic HTML. The framework handles styling automatically.</p>
+          </details>
+          <details>
+            <summary>Is it production-ready?</summary>
+            <p>Yes! html.style leverages features that have reached baseline support in modern browsers (2026 support matrix).</p>
+          </details>
+        </div>
+
+        <!-- Layout Primitives -->
+        <div>
+          <h3>Layout Primitives</h3>
+
+          <h4>Stack (Vertical)</h4>
+          <div class="stack" style="background: var(--color-surface-sunken); padding: var(--space-component); border-radius: var(--p-radius-md);">
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 1</div>
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 2</div>
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 3</div>
+          </div>
+
+          <h4 style="margin-block-start: var(--space-block);">Cluster (Horizontal Wrap)</h4>
+          <div class="cluster" style="background: var(--color-surface-sunken); padding: var(--space-component); border-radius: var(--p-radius-md);">
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 1</div>
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 2</div>
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 3</div>
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 4</div>
+            <div style="background: var(--color-action-surface); padding: var(--space-component); border-radius: var(--p-radius-sm);">Item 5</div>
+          </div>
+        </div>
+
+        <!-- Typography -->
+        <div>
+          <h3>Typography</h3>
+          <h1>Heading Level 1</h1>
+          <h2>Heading Level 2</h2>
+          <h3>Heading Level 3</h3>
+          <h4>Heading Level 4</h4>
+          <p>This is a paragraph with <strong>strong text</strong>, <em>emphasized text</em>, and a <a href="#">link</a>. The text wraps beautifully with a maximum width of 70 characters for optimal readability.</p>
+          <p><small>This is small text for captions and disclaimers.</small></p>
+          <p>Inline code looks like <code>const foo = 'bar';</code> and code blocks look like:</p>
+          <pre><code>function greet(name) {
+  return `Hello, ${name}!`;
+}</code></pre>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: var(--color-surface-elevated); border-block-start: 1px solid var(--color-border-default); padding-block: var(--space-gutter);">
+    <div class="center">
+      <div class="stack" style="text-align: center;">
+        <p style="margin: 0; color: var(--color-text-secondary);">
+          Built with html.style - Modern Web Standards Framework
+        </p>
+        <p style="margin: 0; font-size: var(--text-small); color: var(--color-text-tertiary);">
+          © 2026 html.style. Licensed under MIT.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/html.style.js"></script>
+</body>
+</html>
