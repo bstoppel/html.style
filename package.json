@@ -10,8 +10,16 @@
     "README.md"
   ],
   "scripts": {
-    "test": "echo \"No build process required - html.style uses modern web standards\"",
-    "start": "echo \"Open dist/index.html in your browser to get started\""
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:visual": "playwright test tests/visual",
+    "test:a11y": "playwright test tests/a11y",
+    "test:performance": "playwright test tests/performance",
+    "test:update-snapshots": "playwright test --update-snapshots",
+    "test:debug": "playwright test --debug",
+    "serve": "http-server dist -p 8080",
+    "start": "npm run serve"
   },
   "keywords": [
     "css",
@@ -41,5 +49,10 @@
   "homepage": "https://github.com/bstoppel/html.style#readme",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.9.0",
+    "@playwright/test": "^1.42.0",
+    "http-server": "^14.1.1"
   }
 }
