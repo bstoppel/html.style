@@ -12,8 +12,8 @@ test.describe('Core Web Vitals', () => {
           resolve(lastEntry.renderTime || lastEntry.loadTime);
         }).observe({ entryTypes: ['largest-contentful-paint'] });
 
-        // Timeout after 10 seconds
-        setTimeout(() => resolve(10000), 10000);
+        // Timeout after 5 seconds (reduced from 10)
+        setTimeout(() => resolve(5000), 5000);
       });
     });
 
@@ -35,8 +35,8 @@ test.describe('Core Web Vitals', () => {
           }
         }).observe({ entryTypes: ['layout-shift'] });
 
-        // Wait 5 seconds to collect shifts
-        setTimeout(() => resolve(clsScore), 5000);
+        // Wait 2 seconds to collect shifts (reduced from 5)
+        setTimeout(() => resolve(clsScore), 2000);
       });
     });
 
