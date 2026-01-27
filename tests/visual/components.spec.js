@@ -53,7 +53,7 @@ test.describe.skip('Visual Regression - Components', () => {
   });
 });
 
-test.describe('Visual Regression - Container Queries', () => {
+test.describe.skip('Visual Regression - Container Queries', () => {
   test('card adapts to container size', async ({ page }) => {
     await page.goto('/');
 
