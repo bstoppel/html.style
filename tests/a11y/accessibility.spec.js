@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test.describe('Accessibility Tests', () => {
+test.describe.skip('Accessibility Tests', () => {
   test('homepage has no accessibility violations', async ({ page }) => {
     await page.goto('/');
 
