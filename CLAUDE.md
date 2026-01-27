@@ -92,6 +92,13 @@ All colors use OKLCH format for:
 - Use native APIs: `<dialog>`, `<details>`, Popover API, Anchor Positioning
 - TypeScript for any JS that IS required
 
+### Web Components for Reusability
+- Use native web components for reusable HTML elements (e.g., `<site-header>`)
+- Defined in `src/js/html.style.js` with minimal JS
+- Easy to remove: Delete the component block if not needed
+- Slot-like customization: Use `<span slot="name">content</span>` inside component
+- Build step inlines partials; JS fallback renders when served from src/
+
 ## CSS Patterns to Follow
 
 ### Container Queries (Not Media Queries)

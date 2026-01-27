@@ -18,6 +18,7 @@
     "test:performance": "playwright test tests/performance",
     "test:update-snapshots": "playwright test --update-snapshots",
     "test:debug": "playwright test --debug",
+    "build": "node build.js",
     "serve": "http-server dist -p 8080",
     "start": "npm run serve"
   },

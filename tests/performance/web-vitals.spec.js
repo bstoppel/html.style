@@ -42,10 +42,10 @@ test('LCP is under 2.5s', async ({ page }) => {
   test('INP is under 200ms', async ({ page }) => {
     await page.goto('/');
 
-  // Click a link to measure interaction
-  const link = page.locator('text=the documentation');
-  await link.scrollIntoViewIfNeeded();
-  await link.click();
+  // Click a visible button to measure interaction (nav links may be hidden on mobile)
+  const button = page.locator('button').first();
+  await button.scrollIntoViewIfNeeded();
+  await button.click();
 
     const inp = await page.evaluate(() => {
       return new Promise((resolve) => {

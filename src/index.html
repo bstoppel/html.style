@@ -69,26 +69,13 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <!-- Header -->
-  <header class="site-header">
-    <div class="center">
-      <div class="cluster" style="justify-content: space-between;">
-        <div>
-          <h1 style="margin: 0; font-size: var(--text-heading-lg);">html.style</h1>
-          <p style="margin: 0; font-size: var(--text-small); color: var(--color-text-secondary);">
-            Modern Web Standards Framework
-          </p>
-        </div>
-
-        <nav class="site-nav" aria-label="Main navigation">
-          <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#components">Components</a></li>
-            <li><a href="#docs">Docs</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
+  <site-header>
+    <span slot="title">html.style</span>
+    <span slot="subtitle">Modern Web Standards Framework</span>
+    <span slot="nav1">Features</span>
+    <span slot="nav2">Components</span>
+    <span slot="nav3">Docs</span>
+  </site-header>
 
   <!-- Main Content -->
   <main id="main-content">
