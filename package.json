@@ -19,6 +19,7 @@
     "test:update-snapshots": "playwright test --update-snapshots",
     "test:debug": "playwright test --debug",
     "build": "node build.js",
+    "build:check": "node build.js --check",
     "serve": "http-server dist -p 8080",
     "start": "npm run serve"
   },
