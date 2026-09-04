@@ -51,6 +51,14 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "browserslist": [
+    "chrome >= 131",
+    "edge >= 131",
+    "firefox >= 133",
+    "safari >= 18",
+    "ios_saf >= 18",
+    "and_chr >= 131"
+  ],
   "devDependencies": {
     "@axe-core/playwright": "^4.9.0",
     "@playwright/test": "^1.58.0",

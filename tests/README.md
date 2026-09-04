@@ -81,9 +81,24 @@ tests/
 
 ## Cross-Browser Testing
 
-Tests run on:
-- Desktop: Chrome, Firefox, Safari
-- Mobile: Chrome (Pixel 5), Safari (iPhone 13)
+Tests currently run on **Chromium only** (`Desktop Chrome`). That is the single project
+configured in `playwright.config.js`, and CI runs the same config — so Chromium-only
+applies locally and in CI alike.
+
+To test additional engines, add projects to `playwright.config.js`:
+
+```javascript
+projects: [
+  { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+  { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+  { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+  { name: 'mobile-chrome', use: { ...devices['Pixel 5'] } },
+  { name: 'mobile-safari', use: { ...devices['iPhone 13'] } },
+]
+```
+
+Visual regression snapshots are stored per project, so adding an engine means generating
+a new snapshot set for it (`npm run test:update-snapshots`) before its tests will pass.
 
 ## CI Integration
 

@@ -50,8 +50,10 @@ npm run test:performance  # Run performance tests only
 ## Key Technical Decisions
 
 ### Browser Support (2026 Baseline)
-- Chrome/Edge 120+, Firefox 121+, Safari 17.2+
+- Chrome/Edge 131+, Firefox 133+, Safari 18+
 - Baseline features: Container Queries, OKLCH, light-dark(), Cascade Layers, Relative Color Syntax
+- Floor is set by full Relative Color Syntax support, which the derived state tokens (`oklch(from ...)`) depend on. First support lands earlier (Chrome 119 / Firefox 128 / Safari 16.4) but is partial; `light-dark()` needs Chrome 123 / Firefox 120 / Safari 17.5
+- Do not state the floor as a version count ("current - 4"): Chrome and Firefox ship majors ~4-weekly, Safari annually, and Safari's numbering jumped 18 to 26 in 2025
 - No polyfills - progressive enhancement only
 
 ### Color System: OKLCH

@@ -233,9 +233,11 @@ See [examples.html](src/examples.html) for a comprehensive showcase of all compo
 
 html.style targets modern evergreen browsers:
 
-- **Chrome/Edge**: Current - 4 versions
-- **Firefox**: Current - 4 versions
-- **Safari**: Current - 4 versions
+- **Chrome/Edge**: 131+
+- **Firefox**: 133+
+- **Safari**: 18+
+
+These are hard floors, not a rolling window — the required features below land at different absolute versions in each engine, and the binding constraint is full Relative Color Syntax support, which the derived state tokens rely on. There are no polyfills; the framework assumes every feature listed here is present.
 
 Required features:
 - CSS Container Queries
