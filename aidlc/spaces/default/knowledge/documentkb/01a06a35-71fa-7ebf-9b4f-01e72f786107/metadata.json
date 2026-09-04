@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "01a06a35-71fa-7ebf-9b4f-01e72f786107",
+  "source": {
+    "kind": "managed",
+    "path": "documents/CLAUDE.md"
+  },
+  "sha256": "b67c5e512d26afe3ee06c4215f9bae666a599dfaf6884d7c29356b54d2546b98",
+  "bytes": 7350,
+  "indexed_at": "2026-09-04T03:00:05.254Z",
+  "extraction": {
+    "state": "unsupported_type",
+    "detectedType": "removed"
+  },
+  "summary": {
+    "state": "absent"
+  },
+  "tags": [
+    "guidelines",
+    "architecture",
+    "css",
+    "conventions",
+    "ai-dlc"
+  ],
+  "removed_at": "2026-09-04T04:41:02.084Z",
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}

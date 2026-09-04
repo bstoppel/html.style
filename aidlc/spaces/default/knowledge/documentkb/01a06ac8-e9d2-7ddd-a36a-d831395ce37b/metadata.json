@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "id": "01a06ac8-e9d2-7ddd-a36a-d831395ce37b",
+  "source": {
+    "kind": "managed",
+    "path": "documents/tests/README.md"
+  },
+  "sha256": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3",
+  "bytes": 4227,
+  "indexed_at": "2026-09-04T04:59:07.045Z",
+  "extraction": {
+    "state": "extracted",
+    "extractor": {
+      "name": "builtin-text",
+      "version": "1"
+    },
+    "chars": 4185,
+    "truncated": false,
+    "source_revision": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3"
+  },
+  "summary": {
+    "state": "generated",
+    "path": "documentkb/01a06ac8-e9d2-7ddd-a36a-d831395ce37b/summary.md",
+    "source_revision": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3"
+  },
+  "content": "documentkb/01a06ac8-e9d2-7ddd-a36a-d831395ce37b/content.md",
+  "content_sha256": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3",
+  "summary_sha256": "7a89b4fc21f7b92b6b26f662d2d9e1f2201b309b1a91c1fa29e270e0e6ae3e82",
+  "tags": [
+    "testing",
+    "playwright",
+    "quality",
+    "performance"
+  ],
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}

@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "documents": [
+    {
+      "id": "01a06a35-71fa-7ebf-9b4f-01e72f786107",
+      "source": {
+        "kind": "managed",
+        "path": "documents/CLAUDE.md"
+      },
+      "sha256": "b67c5e512d26afe3ee06c4215f9bae666a599dfaf6884d7c29356b54d2546b98",
+      "bytes": 7350,
+      "indexed_at": "2026-09-04T03:00:05.254Z",
+      "extraction": {
+        "state": "unsupported_type",
+        "detectedType": "removed"
+      },
+      "summary": {
+        "state": "absent"
+      },
+      "tags": [
+        "guidelines",
+        "architecture",
+        "css",
+        "conventions",
+        "ai-dlc"
+      ],
+      "removed_at": "2026-09-04T04:41:02.084Z"
+    },
+    {
+      "id": "01a06a35-7200-7042-94c9-197c1fb11700",
+      "source": {
+        "kind": "managed",
+        "path": "documents/CONTRIBUTING.md"
+      },
+      "sha256": "fb3e73002583530b6ec1580ec5bb38fcebd63dd7d99b39121d4d89c4caee48a9",
+      "bytes": 4072,
+      "indexed_at": "2026-09-04T04:32:34.052Z",
+      "extraction": {
+        "state": "unsupported_type",
+        "detectedType": "removed"
+      },
+      "summary": {
+        "state": "absent"
+      },
+      "tags": [
+        "contributing",
+        "process",
+        "code-style",
+        "accessibility"
+      ],
+      "removed_at": "2026-09-04T04:41:02.084Z"
+    },
+    {
+      "id": "01a06a35-7205-78a1-a542-deb4413fc2a5",
+      "source": {
+        "kind": "managed",
+        "path": "documents/README.md"
+      },
+      "sha256": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198",
+      "bytes": 8283,
+      "indexed_at": "2026-09-04T03:00:05.254Z",
+      "extraction": {
+        "state": "unsupported_type",
+        "detectedType": "removed"
+      },
+      "summary": {
+        "state": "absent"
+      },
+      "tags": [
+        "overview",
+        "usage",
+        "api",
+        "design-tokens",
+        "public-docs"
+      ],
+      "removed_at": "2026-09-04T04:41:02.084Z"
+    },
+    {
+      "id": "01a06a35-7209-798c-b2c3-a0918923f567",
+      "source": {
+        "kind": "managed",
+        "path": "documents/src/FAVICON_GENERATION.md"
+      },
+      "sha256": "2c83f76c9baa7a90d16f58593490582f4571912cf51ff476a87800a9d8746599",
+      "bytes": 2365,
+      "indexed_at": "2026-09-04T02:18:02.594Z",
+      "extraction": {
+        "state": "unsupported_type",
+        "detectedType": "removed"
+      },
+      "summary": {
+        "state": "absent"
+      },
+      "tags": [
+        "assets",
+        "favicon",
+        "tooling",
+        "runbook"
+      ],
+      "removed_at": "2026-09-04T04:41:02.084Z"
+    },
+    {
+      "id": "01a06a35-720e-7cf6-b611-d2fc8ed5e14f",
+      "source": {
+        "kind": "managed",
+        "path": "documents/tests/README.md"
+      },
+      "sha256": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3",
+      "bytes": 4227,
+      "indexed_at": "2026-09-04T04:26:05.780Z",
+      "extraction": {
+        "state": "unsupported_type",
+        "detectedType": "removed"
+      },
+      "summary": {
+        "state": "absent"
+      },
+      "tags": [
+        "testing",
+        "playwright",
+        "quality",
+        "performance"
+      ],
+      "removed_at": "2026-09-04T04:41:02.084Z"
+    },
+    {
+      "id": "01a06ac8-e9bd-75d0-b434-7cb4a4aa7411",
+      "source": {
+        "kind": "managed",
+        "path": "documents/CLAUDE.md"
+      },
+      "sha256": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a",
+      "bytes": 7420,
+      "indexed_at": "2026-09-04T04:59:07.045Z",
+      "extraction": {
+        "state": "extracted",
+        "extractor": {
+          "name": "builtin-text",
+          "version": "1"
+        },
+        "chars": 7342,
+        "truncated": false,
+        "source_revision": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a"
+      },
+      "summary": {
+        "state": "generated",
+        "path": "documentkb/01a06ac8-e9bd-75d0-b434-7cb4a4aa7411/summary.md",
+        "source_revision": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a"
+      },
+      "content": "documentkb/01a06ac8-e9bd-75d0-b434-7cb4a4aa7411/content.md",
+      "content_sha256": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a",
+      "summary_sha256": "8e50e6fcb200c104c2e0c910ee8e680209da762e4a6ed774bcae545498925497",
+      "tags": [
+        "guidelines",
+        "architecture",
+        "css",
+        "conventions",
+        "ai-dlc"
+      ]
+    },
+    {
+      "id": "01a06ac8-e9c3-7ab8-9a88-c77acbac8259",
+      "source": {
+        "kind": "managed",
+        "path": "documents/CONTRIBUTING.md"
+      },
+      "sha256": "c4f8b57c275f561cf112d4cfe057a9ffc335e86f988da47079f61d4ac292d67a",
+      "bytes": 4112,
+      "indexed_at": "2026-09-04T04:59:07.045Z",
+      "extraction": {
+        "state": "extracted",
+        "extractor": {
+          "name": "builtin-text",
+          "version": "1"
+        },
+        "chars": 4108,
+        "truncated": false,
+        "source_revision": "c4f8b57c275f561cf112d4cfe057a9ffc335e86f988da47079f61d4ac292d67a"
+      },
+      "summary": {
+        "state": "generated",
+        "path": "documentkb/01a06ac8-e9c3-7ab8-9a88-c77acbac8259/summary.md",
+        "source_revision": "c4f8b57c275f561cf112d4cfe057a9ffc335e86f988da47079f61d4ac292d67a"
+      },
+      "content": "documentkb/01a06ac8-e9c3-7ab8-9a88-c77acbac8259/content.md",
+      "content_sha256": "c4f8b57c275f561cf112d4cfe057a9ffc335e86f988da47079f61d4ac292d67a",
+      "summary_sha256": "3cbc49c7112c348ee3ae8f77756175875a4182e1970ecb011a1da009f16f722c",
+      "tags": [
+        "contributing",
+        "process",
+        "code-style",
+        "accessibility"
+      ]
+    },
+    {
+      "id": "01a06ac8-e9c8-7007-9136-fe5a40d8e860",
+      "source": {
+        "kind": "managed",
+        "path": "documents/README.md"
+      },
+      "sha256": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198",
+      "bytes": 8283,
+      "indexed_at": "2026-09-04T04:59:07.045Z",
+      "extraction": {
+        "state": "extracted",
+        "extractor": {
+          "name": "builtin-text",
+          "version": "1"
+        },
+        "chars": 8167,
+        "truncated": false,
+        "source_revision": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198"
+      },
+      "summary": {
+        "state": "generated",
+        "path": "documentkb/01a06ac8-e9c8-7007-9136-fe5a40d8e860/summary.md",
+        "source_revision": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198"
+      },
+      "content": "documentkb/01a06ac8-e9c8-7007-9136-fe5a40d8e860/content.md",
+      "content_sha256": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198",
+      "summary_sha256": "2a85f3c935ce0151d2bbebe1b0cc3f116396c53e59534bebb46b73185db36aa0",
+      "tags": [
+        "overview",
+        "usage",
+        "api",
+        "design-tokens",
+        "public-docs"
+      ]
+    },
+    {
+      "id": "01a06ac8-e9cd-75aa-b2f8-0b7fe6e87c39",
+      "source": {
+        "kind": "managed",
+        "path": "documents/src/FAVICON_GENERATION.md"
+      },
+      "sha256": "2c83f76c9baa7a90d16f58593490582f4571912cf51ff476a87800a9d8746599",
+      "bytes": 2365,
+      "indexed_at": "2026-09-04T04:59:07.045Z",
+      "extraction": {
+        "state": "extracted",
+        "extractor": {
+          "name": "builtin-text",
+          "version": "1"
+        },
+        "chars": 2323,
+        "truncated": false,
+        "source_revision": "2c83f76c9baa7a90d16f58593490582f4571912cf51ff476a87800a9d8746599"
+      },
+      "summary": {
+        "state": "generated",
+        "path": "documentkb/01a06ac8-e9cd-75aa-b2f8-0b7fe6e87c39/summary.md",
+        "source_revision": "2c83f76c9baa7a90d16f58593490582f4571912cf51ff476a87800a9d8746599"
+      },
+      "content": "documentkb/01a06ac8-e9cd-75aa-b2f8-0b7fe6e87c39/content.md",
+      "content_sha256": "2c83f76c9baa7a90d16f58593490582f4571912cf51ff476a87800a9d8746599",
+      "summary_sha256": "94122c05c1c346b3fef728724f421af4d38de3349ee843e616b303c870cacf00",
+      "tags": [
+        "assets",
+        "favicon",
+        "tooling",
+        "runbook"
+      ]
+    },
+    {
+      "id": "01a06ac8-e9d2-7ddd-a36a-d831395ce37b",
+      "source": {
+        "kind": "managed",
+        "path": "documents/tests/README.md"
+      },
+      "sha256": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3",
+      "bytes": 4227,
+      "indexed_at": "2026-09-04T04:59:07.045Z",
+      "extraction": {
+        "state": "extracted",
+        "extractor": {
+          "name": "builtin-text",
+          "version": "1"
+        },
+        "chars": 4185,
+        "truncated": false,
+        "source_revision": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3"
+      },
+      "summary": {
+        "state": "generated",
+        "path": "documentkb/01a06ac8-e9d2-7ddd-a36a-d831395ce37b/summary.md",
+        "source_revision": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3"
+      },
+      "content": "documentkb/01a06ac8-e9d2-7ddd-a36a-d831395ce37b/content.md",
+      "content_sha256": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3",
+      "summary_sha256": "7a89b4fc21f7b92b6b26f662d2d9e1f2201b309b1a91c1fa29e270e0e6ae3e82",
+      "tags": [
+        "testing",
+        "playwright",
+        "quality",
+        "performance"
+      ]
+    }
+  ]
+}

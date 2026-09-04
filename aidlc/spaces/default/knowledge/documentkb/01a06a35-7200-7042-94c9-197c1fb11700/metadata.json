@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "id": "01a06a35-7200-7042-94c9-197c1fb11700",
+  "source": {
+    "kind": "managed",
+    "path": "documents/CONTRIBUTING.md"
+  },
+  "sha256": "fb3e73002583530b6ec1580ec5bb38fcebd63dd7d99b39121d4d89c4caee48a9",
+  "bytes": 4072,
+  "indexed_at": "2026-09-04T04:32:34.052Z",
+  "extraction": {
+    "state": "unsupported_type",
+    "detectedType": "removed"
+  },
+  "summary": {
+    "state": "absent"
+  },
+  "tags": [
+    "contributing",
+    "process",
+    "code-style",
+    "accessibility"
+  ],
+  "removed_at": "2026-09-04T04:41:02.084Z",
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}

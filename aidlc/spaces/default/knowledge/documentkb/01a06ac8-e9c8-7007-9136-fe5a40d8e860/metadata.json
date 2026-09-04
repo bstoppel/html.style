@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "01a06ac8-e9c8-7007-9136-fe5a40d8e860",
+  "source": {
+    "kind": "managed",
+    "path": "documents/README.md"
+  },
+  "sha256": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198",
+  "bytes": 8283,
+  "indexed_at": "2026-09-04T04:59:07.045Z",
+  "extraction": {
+    "state": "extracted",
+    "extractor": {
+      "name": "builtin-text",
+      "version": "1"
+    },
+    "chars": 8167,
+    "truncated": false,
+    "source_revision": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198"
+  },
+  "summary": {
+    "state": "generated",
+    "path": "documentkb/01a06ac8-e9c8-7007-9136-fe5a40d8e860/summary.md",
+    "source_revision": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198"
+  },
+  "content": "documentkb/01a06ac8-e9c8-7007-9136-fe5a40d8e860/content.md",
+  "content_sha256": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198",
+  "summary_sha256": "2a85f3c935ce0151d2bbebe1b0cc3f116396c53e59534bebb46b73185db36aa0",
+  "tags": [
+    "overview",
+    "usage",
+    "api",
+    "design-tokens",
+    "public-docs"
+  ],
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}

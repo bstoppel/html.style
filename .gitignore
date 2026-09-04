@@ -42,3 +42,12 @@ PROJECT_CONTEXT*.md
 PROJECT_CONTEXT*.md.*
 
 .claude/
+# AI-DLC: per-user cursors and machine-local runtime
+aidlc/active-space
+aidlc/spaces/*/intents/active-intent
+aidlc/.aidlc-clone-id
+aidlc/.aidlc-sessions/
+aidlc/spaces/*/intents/.aidlc-*
+**/aidlc/spaces/*/intents/**/.aidlc-sensors/
+aidlc/spaces/*/intents/*/runtime-graph.json
+aidlc/spaces/*/intents/*/.aidlc-*

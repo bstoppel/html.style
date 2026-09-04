@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "id": "01a06a35-720e-7cf6-b611-d2fc8ed5e14f",
+  "source": {
+    "kind": "managed",
+    "path": "documents/tests/README.md"
+  },
+  "sha256": "0ac0a6290a0409975d4357fb1e65c970aecde0fa64b70d431a1dab1dda2098d3",
+  "bytes": 4227,
+  "indexed_at": "2026-09-04T04:26:05.780Z",
+  "extraction": {
+    "state": "unsupported_type",
+    "detectedType": "removed"
+  },
+  "summary": {
+    "state": "absent"
+  },
+  "tags": [
+    "testing",
+    "playwright",
+    "quality",
+    "performance"
+  ],
+  "removed_at": "2026-09-04T04:41:02.084Z",
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}

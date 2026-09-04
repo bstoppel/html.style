@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "01a06a35-7205-78a1-a542-deb4413fc2a5",
+  "source": {
+    "kind": "managed",
+    "path": "documents/README.md"
+  },
+  "sha256": "d8626b4ba5ca296ebe24c47188a88935005f42d25d16fccbfe0d654ea5628198",
+  "bytes": 8283,
+  "indexed_at": "2026-09-04T03:00:05.254Z",
+  "extraction": {
+    "state": "unsupported_type",
+    "detectedType": "removed"
+  },
+  "summary": {
+    "state": "absent"
+  },
+  "tags": [
+    "overview",
+    "usage",
+    "api",
+    "design-tokens",
+    "public-docs"
+  ],
+  "removed_at": "2026-09-04T04:41:02.084Z",
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}
