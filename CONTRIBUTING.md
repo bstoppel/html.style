@@ -140,8 +140,8 @@ test: add visual regression tests
 ## Questions?
 
 - Open a discussion for general questions
-- Check PROJECT_CONTEXT.full.md for detailed patterns
-- Review examples.html for component demonstrations
+- Check [CLAUDE.md](CLAUDE.md) for detailed patterns and conventions
+- Review [src/examples.html](src/examples.html) for component demonstrations
 
 ## License
 
