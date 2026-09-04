@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "01a06ac8-e9bd-75d0-b434-7cb4a4aa7411",
+  "source": {
+    "kind": "managed",
+    "path": "documents/CLAUDE.md"
+  },
+  "sha256": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a",
+  "bytes": 7420,
+  "indexed_at": "2026-09-04T04:59:07.045Z",
+  "extraction": {
+    "state": "extracted",
+    "extractor": {
+      "name": "builtin-text",
+      "version": "1"
+    },
+    "chars": 7342,
+    "truncated": false,
+    "source_revision": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a"
+  },
+  "summary": {
+    "state": "generated",
+    "path": "documentkb/01a06ac8-e9bd-75d0-b434-7cb4a4aa7411/summary.md",
+    "source_revision": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a"
+  },
+  "content": "documentkb/01a06ac8-e9bd-75d0-b434-7cb4a4aa7411/content.md",
+  "content_sha256": "f4ebe938c65f3298eb5ed445fd2017fa282c24186ab379a1e13e23009ca30a8a",
+  "summary_sha256": "8e50e6fcb200c104c2e0c910ee8e680209da762e4a6ed774bcae545498925497",
+  "tags": [
+    "guidelines",
+    "architecture",
+    "css",
+    "conventions",
+    "ai-dlc"
+  ],
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}

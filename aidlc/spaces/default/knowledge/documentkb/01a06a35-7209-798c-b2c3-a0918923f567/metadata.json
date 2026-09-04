@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "id": "01a06a35-7209-798c-b2c3-a0918923f567",
+  "source": {
+    "kind": "managed",
+    "path": "documents/src/FAVICON_GENERATION.md"
+  },
+  "sha256": "2c83f76c9baa7a90d16f58593490582f4571912cf51ff476a87800a9d8746599",
+  "bytes": 2365,
+  "indexed_at": "2026-09-04T02:18:02.594Z",
+  "extraction": {
+    "state": "unsupported_type",
+    "detectedType": "removed"
+  },
+  "summary": {
+    "state": "absent"
+  },
+  "tags": [
+    "assets",
+    "favicon",
+    "tooling",
+    "runbook"
+  ],
+  "removed_at": "2026-09-04T04:41:02.084Z",
+  "content_trust": "untrusted",
+  "content_handling": "data-not-instructions"
+}
