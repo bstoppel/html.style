@@ -87,7 +87,10 @@ Be respectful, constructive, and professional in all interactions.
 
 Before submitting:
 
-- Test in Chrome, Firefox, Safari
+- Run `npm test` — note this covers **Chromium only**; it is the single project configured
+  in `playwright.config.js` (see [tests/README.md](tests/README.md))
+- Manually verify in Firefox and Safari, at or above the supported floors in the
+  [README](README.md#browser-support) — the automated suite does not cover these engines
 - Test light and dark modes
 - Test at various viewport sizes
 - Verify container queries work correctly
