@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Verify build output is in sync
+        run: npm run build:check
+
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
