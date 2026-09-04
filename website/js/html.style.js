@@ -280,6 +280,53 @@ function init() {
 }
 
 /**
+ * Web Components for Reusable HTML Elements
+ * Native browser approach for partial reusability
+ * Easy to remove: Delete this entire block if not needed
+ */
+class SiteHeader extends HTMLElement {
+  connectedCallback() {
+    // Extract slot content from children (e.g., <span slot="title">Custom</span>)
+    const getSlot = (name, fallback) => {
+      const el = this.querySelector(`[slot="${name}"]`);
+      return el ? el.textContent : fallback;
+    };
+
+    const title = getSlot('title', 'html.style');
+    const subtitle = getSlot('subtitle', 'Modern Web Standards Framework');
+    const nav1 = getSlot('nav1', 'Features');
+    const nav2 = getSlot('nav2', 'Components');
+    const nav3 = getSlot('nav3', 'Docs');
+
+    // Replace content with rendered header
+    this.innerHTML = `
+      <header class="site-header">
+        <div class="center">
+          <div class="cluster" style="justify-content: space-between;">
+            <div>
+              <h1 style="margin: 0; font-size: var(--text-heading-lg);">${title}</h1>
+              <p style="margin: 0; font-size: var(--text-small); color: var(--color-text-secondary);">
+                ${subtitle}
+              </p>
+            </div>
+
+            <nav class="site-nav" aria-label="Main navigation">
+              <ul>
+                <li><a href="#features">${nav1}</a></li>
+                <li><a href="#components">${nav2}</a></li>
+                <li><a href="#docs">${nav3}</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+    `;
+  }
+}
+
+customElements.define('site-header', SiteHeader);
+
+/**
  * Export for use in other modules
  */
 export { ThemeManager, FormEnhancements, SmoothScroll, DialogEnhancements, ClipboardHelper };
