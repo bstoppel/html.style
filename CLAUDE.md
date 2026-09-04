@@ -154,7 +154,7 @@ Tests are run with Playwright and include:
 - All colors in OKLCH format
 
 ### Browser Fallbacks
-Use minimal fallbacks only for critical features (per PROJECT_CONTEXT pattern):
+Use minimal fallbacks only for critical features:
 ```css
 :root {
   --color: #6b46c1;           /* Fallback */
@@ -176,10 +176,11 @@ Do NOT add extensive @supports blocks or polyfills.
 
 ## Files to Understand
 
-- [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) - Quick reference guide
-- [PROJECT_CONTEXT.full.md](PROJECT_CONTEXT.full.md) - Comprehensive documentation
+- [README.md](README.md) - Public documentation, usage examples, and the design token chain
 - [src/css/](src/css/) - CSS source files
+- [src/examples.html](src/examples.html) - Component showcase covering every pattern
 - [dist/](dist/) - Built distribution files
+- [tests/README.md](tests/README.md) - Test suite structure and coverage
 
 ---
 
