@@ -195,6 +195,9 @@ Atoms are plain semantic HTML and layout primitives are CSS classes — neither
 needs JavaScript. Components are custom elements, used where behaviour or
 composed structure earns them.
 
+**No build step required.** The bundle has everything inlined, so a plain HTML
+file works — including from `file://`:
+
 ```html
 <script type="module" src="js/html.style.components.js"></script>
 ```
@@ -237,6 +240,12 @@ control.
 
 Theme it with the design tokens, which inherit through the shadow boundary, or
 target `::part(track)` and `::part(thumb)`.
+
+A shadow component renders nothing until its module loads. Without a build step
+there is no server render to supply Declarative Shadow DOM, so the stylesheet
+reserves the component's box instead — the control is visible and the layout
+does not shift when the script arrives. If you are server-rendering inside
+another framework, its SSR can emit Declarative Shadow DOM for these elements.
 
 ## Design Tokens
 

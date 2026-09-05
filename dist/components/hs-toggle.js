@@ -32,6 +32,16 @@ export class HsToggle extends LitElement {
   };
 
   static styles = css`
+    /* The global reset does not cross the shadow boundary, so the component
+       restates it. Without this, .track is content-box and its padding adds to
+       the declared size — which shows up as a layout shift when the element
+       upgrades. Every shadow component needs its own reset. */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     :host {
       display: inline-flex;
       align-items: center;

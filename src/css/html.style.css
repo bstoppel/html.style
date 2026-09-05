@@ -783,6 +783,29 @@
     color: var(--color-feedback-info-text);
   }
 
+  /* A shadow-DOM component renders nothing until its module upgrades it.
+     Declarative Shadow DOM would normally cover that gap, but it requires a
+     server render, and this framework's primary path is static HTML with no
+     build step — there is nothing to emit the shadow root ahead of time.
+     So reserve the box here instead: :defined stops matching the moment the
+     element upgrades, handing off to the component's own styles with no
+     layout shift. Light-DOM components need none of this. */
+  hs-toggle:not(:defined) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-component);
+    min-block-size: 1.5rem;
+  }
+
+  hs-toggle:not(:defined)::before {
+    content: "";
+    flex-shrink: 0;
+    inline-size: 2.5rem;
+    block-size: 1.5rem;
+    border-radius: var(--p-radius-full);
+    background: var(--color-border-emphasis);
+  }
+
   hs-alert > [data-hs-dismiss] {
     align-self: start;
     margin-inline-start: auto;

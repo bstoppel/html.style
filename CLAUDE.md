@@ -59,6 +59,12 @@ npm run test:performance  # Run performance tests only
 - Component APIs (Declarative Shadow DOM, `ElementInternals`, form-associated custom elements) all reached support well below this floor - the component layer needs no floor change
 - No polyfills
 
+### Delivery Model
+
+- **No build step for vanilla HTML/CSS/JS.** Copy `dist/`, add a stylesheet link and a script tag, done. This is the primary path and it constrains every other decision.
+- **A build step is acceptable inside another framework** (React, Vue, Solid, Svelte), where the consumer already has one.
+- This is why components ship twice: one bundle with Lit inlined (nothing to resolve, works from a `file://` page) and unbundled modules for consumers who bundle.
+
 ### Color System: OKLCH
 All colors use OKLCH format for:
 - Perceptual uniformity across hues
@@ -112,13 +118,15 @@ JavaScript belongs in the component layer and nowhere else.
 - Prefer native APIs inside components: `<dialog>`, `<details>`, Popover API, Anchor Positioning, `ElementInternals`.
 - TypeScript for any JS that IS required.
 
-**Progressive enhancement is scoped, not universal.** A page built from atoms and layout primitives works with JavaScript disabled. Components do not: Declarative Shadow DOM renders their markup server-side, but interactivity needs hydration. Do not claim otherwise in documentation.
+**Progressive enhancement is scoped, not universal.** A page built from atoms and layout primitives works with JavaScript disabled. Components do not. Light-DOM components at least look correct before their script runs, because the global stylesheet styles them directly; shadow-DOM components render nothing until they upgrade, which is what the `:defined` fallback is for. Do not describe the component layer as working without JavaScript.
 
 ### Web Components
 
 - Custom elements are prefixed `hs-`, one element per file under `src/components/`.
 - **Lit** is the base class for shadow-DOM components - the single sanctioned runtime dependency (see CONTRIBUTING.md for the rationale). Light-DOM components may extend `HTMLElement` directly where Lit buys nothing.
-- **Declarative Shadow DOM is required** for shadow components, so they render server-side rather than appearing empty until hydration. This is what protects the LCP target.
+- **Declarative Shadow DOM is a consumer capability, not one this framework can provide.** DSD needs a server render to emit `<template shadowrootmode>`; the primary path is static HTML with no build step, where nothing exists to emit it. Components must be DSD-*compatible* so a consumer's SSR (Next, Nuxt, Astro) can use it — do not claim the framework delivers it.
+- **Cover the pre-upgrade gap with `:defined` instead.** A shadow component renders nothing until its module upgrades it, so the global stylesheet reserves its box via `hs-*:not(:defined)`. The selector stops matching the moment the element upgrades, handing off with no layout shift. Light-DOM components need none of this.
+- **Every shadow component restates the reset it needs.** `box-sizing`, `prefers-reduced-motion`, and everything else in the reset layer stops at the shadow boundary. Omitting `box-sizing: border-box` silently resizes the component and surfaces as a layout shift on upgrade.
 - **Theming crosses the shadow boundary through CSS custom properties**, which inherit into shadow roots. The three-tier tokens are therefore the public theming API; expose anything further with `::part()`. Both are public API - changing either is a breaking change.
 - Ship a `custom-elements.json` manifest so editors and agents get completion and type information. This is what makes the AI-friendly claim concrete rather than aspirational.
 - Consumers: custom elements work in every framework, with known friction. Vue needs `compilerOptions.isCustomElement`, Angular needs `CUSTOM_ELEMENTS_SCHEMA`, React needs 19+. Document this; do not claim frictionless interop.

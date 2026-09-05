@@ -150,6 +150,64 @@ test.describe('hs-toggle (shadow DOM)', () => {
   });
 });
 
+test.describe('Pre-upgrade rendering (the no-build path)', () => {
+  // The framework's primary path is static HTML with no build step, so there is
+  // no server render and no Declarative Shadow DOM. A shadow component renders
+  // nothing until its module upgrades it; these tests hold the line on what the
+  // page looks like in that window.
+
+  test('a shadow component reserves its box, so upgrading shifts nothing', async ({ page }) => {
+    const box = async (blockModule) => {
+      const ctx = await page.context().browser().newContext();
+      const p = await ctx.newPage();
+      if (blockModule) await p.route('**/html.style.components.js', (r) => r.abort());
+      await p.goto('/examples.html');
+      await p.waitForTimeout(200);
+      const rect = await p
+        .locator('hs-toggle[name="notifications"]')
+        .evaluate((el) => {
+          const r = el.getBoundingClientRect();
+          return { w: Math.round(r.width), h: Math.round(r.height) };
+        });
+      await ctx.close();
+      return rect;
+    };
+
+    const before = await box(true);
+    const after = await box(false);
+    expect(before).toEqual(after);
+  });
+
+  test('an un-upgraded shadow component still shows its control', async ({ page }) => {
+    await page.route('**/html.style.components.js', (route) => route.abort());
+    await page.goto('/examples.html');
+
+    // The :defined fallback draws the track, so the switch is visibly present
+    // rather than the label sitting alone with nothing to operate.
+    const track = await page
+      .locator('hs-toggle[name="notifications"]')
+      .evaluate((el) => {
+        const cs = getComputedStyle(el, '::before');
+        return { content: cs.content, width: cs.width, height: cs.height };
+      });
+
+    expect(track.content).toBe('""');
+    expect(parseFloat(track.width)).toBeGreaterThan(0);
+    expect(parseFloat(track.height)).toBeGreaterThan(0);
+  });
+
+  test('a light-DOM component needs no fallback at all', async ({ page }) => {
+    await page.route('**/html.style.components.js', (route) => route.abort());
+    await page.goto('/examples.html');
+
+    // Styled by the global stylesheet directly, so there is no gap to cover.
+    const display = await page
+      .locator('hs-alert[variant="success"]')
+      .evaluate((el) => getComputedStyle(el).display);
+    expect(display).toBe('flex');
+  });
+});
+
 test.describe('Component accessibility', () => {
   test('the component section has no violations in light mode', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
