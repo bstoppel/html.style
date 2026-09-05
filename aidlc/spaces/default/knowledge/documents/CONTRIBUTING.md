@@ -39,18 +39,19 @@ Be respectful, constructive, and professional in all interactions.
 - Follow `.editorconfig` settings (2 spaces, LF line endings)
 - Use semantic HTML where possible
 - Prefer modern CSS features (container queries, OKLCH, cascade layers)
-- Keep JavaScript minimal and native-first
+- Keep JavaScript out of atoms and layout primitives; it belongs in components
 
 ### CSS Standards
 
 **Colors:**
 ```css
-/* Always provide hex fallback before OKLCH */
+/* OKLCH only - no hex fallback */
 .element {
-  background: #6b46c1;
   background: oklch(0.6 0.18 260);
 }
 ```
+OKLCH predates the supported browser floor by many versions, so a fallback
+declaration is dead weight. The framework's own stylesheet carries none.
 
 **Design Tokens:**
 - Primitives: `--p-*` prefix
@@ -63,17 +64,27 @@ Be respectful, constructive, and professional in all interactions.
 ```
 
 **Naming:**
-- Components: `.component-name`, `.component-name--variant`
+- Component elements: `<hs-*>` (a custom element name requires a hyphen)
+- Component classes: `.component-name`, `.component-name--variant`
 - Layout primitives: `.stack`, `.cluster`, `.grid`
 - Atoms layer: Style semantic HTML directly (NO classes)
 
 ### JavaScript Standards
 
-- Progressive enhancement (works without JS)
-- Use native APIs over libraries
+- **Progressive enhancement is scoped.** Atoms and layout primitives work with
+  JavaScript disabled. Components do not - Declarative Shadow DOM renders their
+  markup server-side, but interactivity requires hydration. Do not describe the
+  component layer as working without JS.
+- Components are custom elements prefixed `hs-`, one per file in `src/components/`
+- Shadow-DOM components extend Lit and must support Declarative Shadow DOM;
+  light-DOM components may extend `HTMLElement` directly
+- Use native APIs over libraries (`<dialog>`, Popover API, `ElementInternals`)
 - Feature detection, not browser sniffing
 - Respect Global Privacy Control (GPC)
 - ES modules (`import`/`export`)
+
+**Which DOM?** A component that *arranges content the consumer provides* uses light
+DOM. One that *owns internal structure* uses shadow DOM. When in doubt, light DOM.
 
 ### Accessibility
 
@@ -116,7 +127,8 @@ test: add visual regression tests
 1. **Semantic HTML First** - Atoms layer = NO classes
 2. **Container Queries Over Media Queries** - Components adapt to container
 3. **OKLCH Color System** - All colors use OKLCH
-4. **Native-First** - Delete JavaScript dependencies
+4. **Native Where Native Suffices** - no JavaScript for anything CSS or semantic
+   HTML already does; JavaScript belongs in the component layer
 5. **AI-Friendly** - Predictable, machine-readable patterns
 6. **Delete-Key Friendly** - Only include essentials
 
@@ -129,9 +141,21 @@ test: add visual regression tests
 - Documentation improvements
 - Test additions
 
+### Dependencies
+
+**Lit is the single sanctioned runtime dependency**, for shadow-DOM components only.
+
+Writing reactive attributes, template caching, and Declarative Shadow DOM
+serialisation by hand is several hundred lines of infrastructure before the first
+component ships, and DSD is a hard requirement here rather than an optimisation.
+Lit is ~5KB and `@lit-labs/ssr` covers the serialisation directly. This is a
+deliberate, bounded exception to the no-dependency rule - not a precedent.
+
+Proposals for any other runtime dependency should expect to be rejected.
+
 ### What We Don't Accept
 
-- Dependencies on JavaScript libraries (jQuery, Lodash, etc.)
+- Runtime dependencies other than Lit (see above)
 - Non-standard color formats (prefer OKLCH)
 - Utility class frameworks (we use semantic HTML)
 - Build-time complexity without clear benefit
