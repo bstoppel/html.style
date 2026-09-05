@@ -63,7 +63,7 @@
     <div class="center">
       <div class="cluster" style="justify-content: space-between;">
         <h1 style="margin: 0;">html.style Examples</h1>
-        <nav>
+        <nav aria-label="Page sections">
           <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: var(--space-inline);">
             <li><a href="index.html">Home</a></li>
             <li><a href="#colors">Colors</a></li>
@@ -75,7 +75,7 @@
     </div>
   </header>
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
 
     <!-- Design Tokens -->
     <section class="demo-section" id="colors">
@@ -489,7 +489,7 @@ console.log(greet('World'));</code></pre>
               <div class="footer-grid">
                 <div class="stack" style="--space-block: var(--p-space-sm);">
                   <strong>Product</strong>
-                  <nav>
+                  <nav aria-label="Product">
                     <ul style="list-style: none; padding: 0; margin: 0;">
                       <li><a href="#" style="color: var(--color-text-secondary);">Features</a></li>
                       <li><a href="#" style="color: var(--color-text-secondary);">Pricing</a></li>
@@ -499,7 +499,7 @@ console.log(greet('World'));</code></pre>
                 </div>
                 <div class="stack" style="--space-block: var(--p-space-sm);">
                   <strong>Company</strong>
-                  <nav>
+                  <nav aria-label="Company">
                     <ul style="list-style: none; padding: 0; margin: 0;">
                       <li><a href="#" style="color: var(--color-text-secondary);">About</a></li>
                       <li><a href="#" style="color: var(--color-text-secondary);">Blog</a></li>
@@ -509,7 +509,7 @@ console.log(greet('World'));</code></pre>
                 </div>
                 <div class="stack" style="--space-block: var(--p-space-sm);">
                   <strong>Legal</strong>
-                  <nav>
+                  <nav aria-label="Legal">
                     <ul style="list-style: none; padding: 0; margin: 0;">
                       <li><a href="#" style="color: var(--color-text-secondary);">Privacy</a></li>
                       <li><a href="#" style="color: var(--color-text-secondary);">Terms</a></li>
