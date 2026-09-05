@@ -26,6 +26,7 @@ npm test
 npm run test:visual        # Visual regression tests
 npm run test:a11y          # Accessibility tests
 npm run test:performance   # Performance tests
+npm run test:components    # Web component tests
 ```
 
 **Debug tests:**
@@ -48,6 +49,8 @@ tests/
 │   └── components.spec.js      # Visual regression tests
 ├── a11y/
 │   └── accessibility.spec.js   # Accessibility tests (axe-core)
+├── components/
+│   └── components.spec.js      # Web component behaviour and a11y
 └── performance/
     └── web-vitals.spec.js      # Core Web Vitals tests
 ```
@@ -70,6 +73,14 @@ tests/
 - Color contrast (4.5:1 minimum)
 - Semantic HTML validation
 - Screen reader compatibility
+
+### Components
+- Light-DOM components styled before their JavaScript defines them
+- Dismiss behaviour, cancelable events, and role handling
+- Shadow-DOM state reflected to assistive technology via ElementInternals
+- Keyboard operation, focus order, and the disabled state
+- Form participation, reset, and `::part()` exposure
+- axe scan of the component section in both colour schemes
 
 ### Performance
 - **LCP** (Largest Contentful Paint) < 2.5s

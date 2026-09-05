@@ -22,9 +22,11 @@
 
 ```
 html.style/
-├── src/           # Source files
+├── src/           # Source files (the only hand-edited tree)
 │   ├── css/       # CSS source files
 │   ├── js/        # JavaScript source files
+│   ├── components/  # Web components, one <hs-*> element per file
+│   ├── partials/  # Build-time HTML partials
 │   └── *.html     # HTML templates
 ├── dist/          # Distribution files (what users download)
 ├── docs/          # Documentation
