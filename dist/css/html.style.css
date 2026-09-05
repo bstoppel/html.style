@@ -155,7 +155,7 @@
     /* Text Colors */
     --color-text-primary: light-dark(var(--p-neutral-900), var(--p-neutral-50));
     --color-text-secondary: light-dark(var(--p-neutral-600), var(--p-neutral-400));
-    --color-text-tertiary: light-dark(var(--p-neutral-500), var(--p-neutral-500));
+    --color-text-tertiary: light-dark(var(--p-neutral-500), var(--p-neutral-400));
     --color-text-inverse: light-dark(var(--p-neutral-50), var(--p-neutral-900));
     --color-text-link: light-dark(var(--p-brand-600), var(--p-brand-400));
 
@@ -198,8 +198,20 @@
        ================================ */
 
     /* Action States - Derived via Relative Color Syntax */
-    --color-action-hover: oklch(from var(--color-action-primary) calc(l + 0.1) c h);
-    --color-action-active: oklch(from var(--color-action-primary) calc(l - 0.1) c h);
+    --color-action-hover: light-dark(
+      oklch(from var(--color-action-primary) calc(l - 0.08) c h),
+      oklch(from var(--color-action-primary) calc(l + 0.08) c h)
+    );
+    --color-action-active: light-dark(
+      oklch(from var(--color-action-primary) calc(l - 0.16) c h),
+      oklch(from var(--color-action-primary) calc(l + 0.16) c h)
+    );
+    /* Action colour as TEXT on a subtle surface (badge, pill) rather than as a
+       background. Needs more contrast than the background variant. */
+    --color-action-on-surface: light-dark(
+      oklch(from var(--color-action-primary) calc(l - 0.1) c h),
+      oklch(from var(--color-action-primary) calc(l + 0.1) c h)
+    );
     --color-action-disabled: oklch(from var(--color-action-primary) l calc(c * 0.3) h / 0.5);
     --color-action-surface: oklch(from var(--color-action-primary) l c h / 0.1);
     --color-action-border: oklch(from var(--color-action-primary) calc(l - 0.2) c h);
@@ -213,6 +225,13 @@
     --color-feedback-warning-surface: oklch(from var(--color-feedback-warning) l c h / 0.1);
     --color-feedback-error-surface: oklch(from var(--color-feedback-error) l c h / 0.1);
     --color-feedback-info-surface: oklch(from var(--color-feedback-info) l c h / 0.1);
+
+    /* Feedback colours as TEXT on their own surface. The border/fill values are
+       too light in light mode and too dark in dark mode to meet 4.5:1. */
+    --color-feedback-success-text: light-dark(oklch(0.44 0.15 145), oklch(0.84 0.15 145));
+    --color-feedback-warning-text: light-dark(oklch(0.44 0.13 85), oklch(0.86 0.16 85));
+    --color-feedback-error-text: light-dark(oklch(0.46 0.2 25), oklch(0.8 0.18 25));
+    --color-feedback-info-text: light-dark(oklch(0.46 0.16 250), oklch(0.82 0.14 250));
   }
 
   /* Brand Theme Variants */
@@ -715,7 +734,7 @@
     align-items: center;
     gap: var(--p-space-xs);
     background: var(--color-action-surface);
-    color: var(--color-action-primary);
+    color: var(--color-action-on-surface);
     border-radius: var(--p-radius-full);
     padding: var(--p-space-xs) var(--space-component);
     font-size: var(--text-small);
@@ -735,25 +754,25 @@
   .alert--success {
     background: var(--color-feedback-success-surface);
     border-color: var(--color-feedback-success);
-    color: var(--color-feedback-success);
+    color: var(--color-feedback-success-text);
   }
 
   .alert--warning {
     background: var(--color-feedback-warning-surface);
     border-color: var(--color-feedback-warning);
-    color: var(--color-feedback-warning);
+    color: var(--color-feedback-warning-text);
   }
 
   .alert--error {
     background: var(--color-feedback-error-surface);
     border-color: var(--color-feedback-error);
-    color: var(--color-feedback-error);
+    color: var(--color-feedback-error-text);
   }
 
   .alert--info {
     background: var(--color-feedback-info-surface);
     border-color: var(--color-feedback-info);
-    color: var(--color-feedback-info);
+    color: var(--color-feedback-info-text);
   }
 
   /* Form Group */
@@ -803,10 +822,6 @@
   }
 
   /* Navigation */
-  .site-nav {
-    container-type: inline-size;
-  }
-
   .site-nav ul {
     display: flex;
     gap: var(--space-inline);

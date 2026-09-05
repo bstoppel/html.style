@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test.describe.skip('Accessibility Tests', () => {
+test.describe('Accessibility Tests', () => {
   test('homepage has no accessibility violations', async ({ page }) => {
     await page.goto('/');
 
@@ -21,8 +21,8 @@ test.describe.skip('Accessibility Tests', () => {
   });
 
   test('dark mode has no accessibility violations', async ({ page }) => {
-    await page.goto('/');
     await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto('/');
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .analyze();
@@ -74,8 +74,8 @@ test.describe.skip('Accessibility Tests', () => {
   });
 
   test('color contrast meets WCAG AA in light mode', async ({ page }) => {
-    await page.goto('/');
     await page.emulateMedia({ colorScheme: 'light' });
+    await page.goto('/');
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2aa', 'wcag21aa'])
@@ -85,8 +85,8 @@ test.describe.skip('Accessibility Tests', () => {
   });
 
   test('color contrast meets WCAG AA in dark mode', async ({ page }) => {
-    await page.goto('/');
     await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto('/');
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2aa', 'wcag21aa'])
