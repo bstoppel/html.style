@@ -806,6 +806,33 @@
     background: var(--color-border-emphasis);
   }
 
+  /* Shadow component: reserve the tablist's height so the panel content does
+     not jump upward when the element upgrades. */
+  hs-tabs:not(:defined) {
+    display: block;
+    min-block-size: 3rem;
+    border-block-end: 1px solid var(--color-border-default);
+  }
+
+  hs-tabs:not(:defined) > hs-tab-panel:not(:first-of-type) {
+    display: none;
+  }
+
+  /* Light-DOM component: it renders a real <button>, so it only needs the
+     button to look like an icon affordance rather than a primary action. */
+  hs-theme-toggle > button {
+    background: none;
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-primary);
+    padding: var(--p-space-xs) var(--space-component);
+    font-size: var(--text-body);
+    line-height: 1;
+  }
+
+  hs-theme-toggle > button:hover {
+    background: var(--color-surface-sunken);
+  }
+
   hs-alert > [data-hs-dismiss] {
     align-self: start;
     margin-inline-start: auto;

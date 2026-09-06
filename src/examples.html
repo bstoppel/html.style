@@ -378,6 +378,33 @@ console.log(greet('World'));</code></pre>
           <hs-toggle name="digest">Weekly digest</hs-toggle>
           <hs-toggle name="beta" disabled>Beta features (unavailable)</hs-toggle>
         </form>
+
+        <h3>hs-tabs (shadow DOM)</h3>
+        <p>
+          The platform provides nothing here, so the component supplies roving
+          tabindex, arrow-key navigation, and the ARIA wiring. You write panels
+          and their labels; the tablist is derived from them.
+        </p>
+        <hs-tabs id="tabs-demo">
+          <hs-tab-panel label="Overview">
+            <p>Tabs own their internal structure, so they encapsulate.</p>
+          </hs-tab-panel>
+          <hs-tab-panel label="Keyboard">
+            <p>Arrow keys move between tabs, Home and End jump to the ends.</p>
+          </hs-tab-panel>
+          <hs-tab-panel label="Activation">
+            <p>Set <code>activation="manual"</code> to require Enter or Space.</p>
+          </hs-tab-panel>
+        </hs-tabs>
+
+        <h3>hs-theme-toggle (light DOM)</h3>
+        <p>
+          Renders a real <code>&lt;button&gt;</code> rather than reimplementing
+          one, so focus and activation stay native. It supplies only what the
+          platform lacks: reading the stored preference and flipping
+          <code>color-scheme</code>.
+        </p>
+        <hs-theme-toggle id="theme-demo"></hs-theme-toggle>
       </div>
     </section>
 
