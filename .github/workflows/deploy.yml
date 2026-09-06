@@ -17,9 +17,6 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Verify build output is in sync
-        run: npm run build:check
-
       - name: Cache npm dependencies
         uses: actions/cache@v3
         with:
@@ -30,6 +27,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install  # Changed from npm ci to npm install to generate package-lock.json if missing
+
+      # Must run after `npm install`: build.js bundles components with esbuild.
+      # Still ahead of the browser download, so a stale dist/ fails fast.
+      - name: Verify build output is in sync
+        run: npm run build:check
 
       - name: Install Playwright browsers
         run: npx playwright install
