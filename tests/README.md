@@ -37,9 +37,28 @@ npm run test:ui            # Interactive UI mode
 ```
 
 **Update visual snapshots:**
+
+Baselines are per-platform: Playwright names them `…-chromium-darwin.png` and
+`…-chromium-linux.png`, and each platform only ever reads its own. CI runs on
+Linux, so a macOS-only regeneration leaves CI comparing against stale images.
+
+After an intentional visual change, regenerate **both**:
+
 ```bash
+# macOS (local)
 npm run test:update-snapshots
 ```
+
+```bash
+# Linux (CI) — run the workflow, then commit the artifact it uploads
+gh workflow run visual-baselines.yml --ref <your-branch>
+gh run download <run-id> -n visual-baselines
+```
+
+The workflow runs on the same Linux image CI uses and verifies `dist/` is in
+sync first, so baselines cannot lock in a stale render. Dispatching it against
+your branch (`--ref`) runs the workflow as defined there, which matters when the
+change being baselined is on that branch.
 
 ## Test Structure
 
