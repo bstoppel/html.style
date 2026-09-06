@@ -1,0 +1,45 @@
+name: Update visual baselines
+
+# Playwright names snapshots per platform, so baselines generated on macOS are
+# never used by CI and vice versa. CI runs on Linux, so Linux baselines have to
+# be produced on Linux. Run this manually after an intentional visual change,
+# download the artifact, and commit it.
+#
+# macOS baselines are regenerated locally with:
+#   npm run test:update-snapshots
+
+on:
+  workflow_dispatch:
+
+jobs:
+  baselines:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      # Baselines must come from output that matches src/, or they lock in a
+      # stale render.
+      - name: Verify build output is in sync
+        run: npm run build:check
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate baselines
+        run: npx playwright test tests/visual --update-snapshots
+
+      - name: Upload baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines
+          path: tests/visual/*-snapshots/**
+          if-no-files-found: error
