@@ -159,6 +159,29 @@
 
       <div class="stack">
 
+        <!-- Custom Elements -->
+        <div>
+          <h3>Custom Elements</h3>
+          <p>
+            Everything else on this page is semantic HTML and CSS classes with
+            no JavaScript. These are <code>&lt;hs-*&gt;</code> custom elements,
+            used where behaviour needs them.
+          </p>
+
+          <div class="stack">
+            <hs-alert variant="info" dismissible>
+              <strong>hs-alert</strong> uses light DOM, so this stylesheet
+              styles it directly and it looks right before its script runs.
+              Try dismissing it.
+            </hs-alert>
+
+            <form class="stack" id="component-demo">
+              <hs-toggle name="notifications" checked>Email notifications</hs-toggle>
+              <hs-toggle name="digest">Weekly digest</hs-toggle>
+            </form>
+          </div>
+        </div>
+
         <!-- Buttons -->
         <div>
           <h3>Buttons</h3>
@@ -192,7 +215,7 @@
         <!-- Form Example -->
         <div>
           <h3>Forms</h3>
-          <form class="stack">
+          <form class="stack" id="form-demo">
             <div class="form-group">
               <label for="name">Name</label>
               <input type="text" id="name" placeholder="Enter your name" required>
@@ -288,5 +311,11 @@
   </footer>
 
   <script type="module" src="js/html.style.js"></script>
+
+  <!-- The classic build rather than the module one, because this file is the
+       starter template: ES modules are blocked from file:// by CORS, so this is
+       what works when you copy dist/ and open the page straight off disk. Over
+       http:// either build works — see docs/frameworks.md. -->
+  <script src="js/html.style.components.classic.js" defer></script>
 </body>
 </html>
