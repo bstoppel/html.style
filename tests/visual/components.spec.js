@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 // npx playwright test --update-snapshots 
 // locally to generate and commit the initial screenshots, 
 // then push them to the repo for CI to compare against.
-test.describe.skip('Visual Regression - Components', () => {
+test.describe('Visual Regression - Components', () => {
   test('buttons render correctly', async ({ page }) => {
     await page.goto('/');
     const button = page.locator('button').first();
@@ -53,7 +53,7 @@ test.describe.skip('Visual Regression - Components', () => {
   });
 });
 
-test.describe.skip('Visual Regression - Container Queries', () => {
+test.describe('Visual Regression - Container Queries', () => {
   test('card adapts to container size', async ({ page }) => {
     await page.goto('/');
 
