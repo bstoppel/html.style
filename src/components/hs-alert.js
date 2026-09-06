@@ -15,6 +15,20 @@
 
 const DEFAULT_DISMISS_LABEL = 'Dismiss';
 
+/**
+ * @element hs-alert
+ *
+ * @attr {'success'|'warning'|'error'|'info'} variant - Feedback tone. Styled by
+ *   the global stylesheet, so it applies before this module loads.
+ * @attr {boolean} dismissible - Render a dismiss button.
+ * @attr {string} dismiss-label - Accessible name for the dismiss button.
+ *   Defaults to "Dismiss".
+ *
+ * @slot - The alert's content.
+ *
+ * @fires hs-dismiss - Cancelable, fired before the alert removes itself.
+ *   Call preventDefault() to keep it in place.
+ */
 export class HsAlert extends HTMLElement {
   static observedAttributes = ['dismissible', 'dismiss-label'];
 

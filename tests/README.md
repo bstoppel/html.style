@@ -81,6 +81,8 @@ tests/
 - Keyboard operation, focus order, and the disabled state
 - Form participation, reset, and `::part()` exposure
 - axe scan of the component section in both colour schemes
+- The custom elements manifest documents every registered element and its
+  public API (parts, attributes, slots)
 
 ### Performance
 - **LCP** (Largest Contentful Paint) < 2.5s

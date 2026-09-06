@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const CHECK = process.argv.includes('--check');
 
@@ -34,6 +35,15 @@ const ASSET_DIRS = ['css', 'js', 'components'];
  */
 const COMPONENT_ENTRY = 'src/components/index.js';
 const COMPONENT_BUNDLE = 'js/html.style.components.js';
+
+/**
+ * The custom elements manifest is what gives editors and agents completion and
+ * type information for <hs-*>. It is generated from the SHIPPED modules under
+ * dist/components/, so the module paths it records are the ones a consumer
+ * actually has.
+ */
+const MANIFEST = 'custom-elements.json';
+const MANIFEST_TMP = '.cem-tmp';
 const STATIC_FILES = ['favicon.svg', 'site.webmanifest', 'robots.txt'];
 
 /** The project website consumes the framework's own assets; kept in sync so it cannot drift. */
@@ -135,6 +145,35 @@ function bundleComponents() {
   return sync(path.join(DIST, COMPONENT_BUNDLE), Buffer.from(result.outputFiles[0].contents)) ? 1 : 0;
 }
 
+function generateManifest() {
+  const components = path.join(DIST, 'components');
+  if (!fs.existsSync(components)) return 0;
+
+  // The analyzer is a CLI that writes its own file, so run it into a temp
+  // directory and route the result through sync(). Letting it write into dist/
+  // directly would make --check unable to tell a stale manifest from a fresh
+  // one, because the file would already have been overwritten.
+  const analyzerPkg = require.resolve('@custom-elements-manifest/analyzer/package.json');
+  const cli = path.join(path.dirname(analyzerPkg), 'cem.js');
+
+  // --outdir is resolved relative to cwd and silently ignores an absolute
+  // path, so the scratch directory has to live inside the project.
+  const tmp = MANIFEST_TMP;
+  fs.mkdirSync(tmp, { recursive: true });
+
+  try {
+    execFileSync(
+      process.execPath,
+      [cli, 'analyze', '--globs', `${components}/*.js`, '--litelement', '--outdir', tmp],
+      { stdio: 'pipe' }
+    );
+    const generated = fs.readFileSync(path.join(tmp, MANIFEST));
+    return sync(path.join(DIST, MANIFEST), generated) ? 1 : 0;
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+}
+
 function buildHtml(partials) {
   let changed = 0;
 
@@ -161,6 +200,8 @@ let changed = buildHtml(partials);
 changed += bundleComponents();
 for (const dir of ASSET_DIRS) changed += copyDir(path.join(SRC, dir), path.join(DIST, dir));
 changed += copyFiles(STATIC_FILES, SRC, DIST);
+// After the component copy above, so the manifest describes what dist/ holds.
+changed += generateManifest();
 
 if (fs.existsSync(WEBSITE)) {
   for (const dir of WEBSITE_ASSET_DIRS) changed += copyDir(path.join(SRC, dir), path.join(WEBSITE, dir));
