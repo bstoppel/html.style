@@ -51,3 +51,6 @@ aidlc/spaces/*/intents/.aidlc-*
 **/aidlc/spaces/*/intents/**/.aidlc-sensors/
 aidlc/spaces/*/intents/*/runtime-graph.json
 aidlc/spaces/*/intents/*/.aidlc-*
+
+# Transient scratch for custom-elements.json generation
+.cem-tmp/

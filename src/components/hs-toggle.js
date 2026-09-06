@@ -21,6 +21,26 @@
 
 import { LitElement, html, css } from 'lit';
 
+/**
+ * @element hs-toggle
+ *
+ * @attr {boolean} checked - Whether the switch is on.
+ * @attr {boolean} disabled - Inactive and removed from the tab order.
+ * @attr {string} name - Field name used when the form is submitted.
+ * @attr {string} value - Value submitted when checked. Defaults to "on".
+ *
+ * @slot - The switch's label.
+ *
+ * @fires change - Fired when the state changes, like a native control.
+ *
+ * @csspart track - The switch's background rail.
+ * @csspart thumb - The moving knob.
+ *
+ * @cssprop [--color-action-primary] - Track colour when checked.
+ * @cssprop [--color-border-emphasis] - Track colour when unchecked.
+ * @cssprop [--color-surface-elevated] - Thumb colour.
+ * @cssprop [--space-component] - Gap between the switch and its label.
+ */
 export class HsToggle extends LitElement {
   static formAssociated = true;
 

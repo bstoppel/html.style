@@ -208,6 +208,14 @@ Or import just what you need:
 import 'html.style/components/hs-toggle.js';
 ```
 
+### Editor and agent support
+
+The package ships a [custom elements manifest](https://github.com/webcomponents/custom-elements-manifest)
+at `dist/custom-elements.json`, declared via the `customElements` field in
+`package.json`. Editors that read it (VS Code, JetBrains) give completion and
+hover documentation for every `<hs-*>` element, its attributes, slots, events,
+CSS parts, and themeable custom properties.
+
 ### hs-alert
 
 Light DOM, so the global stylesheet styles it exactly as `.alert` and it looks

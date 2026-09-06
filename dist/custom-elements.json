@@ -1,0 +1,330 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-alert.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsAlert",
+          "slots": [
+            {
+              "description": "The alert's content.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "#syncDismissButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "dismiss",
+              "description": "Remove the alert. Fires a cancelable `hs-dismiss` first so a consumer can\nanimate the exit, or call preventDefault() to keep it in place."
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-dismiss",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Cancelable, fired before the alert removes itself. Call preventDefault() to keep it in place."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "dismissible",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render a dismiss button."
+            },
+            {
+              "name": "dismiss-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name for the dismiss button. Defaults to \"Dismiss\"."
+            },
+            {
+              "type": {
+                "text": "'success'|'warning'|'error'|'info'"
+              },
+              "description": "Feedback tone. Styled by the global stylesheet, so it applies before this module loads.",
+              "name": "variant"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-alert",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsAlert",
+          "declaration": {
+            "name": "HsAlert",
+            "module": "dist/components/hs-alert.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-alert",
+          "declaration": {
+            "name": "HsAlert",
+            "module": "dist/components/hs-alert.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-toggle.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsToggle",
+          "cssProperties": [
+            {
+              "description": "Track colour when checked.",
+              "name": "--color-action-primary"
+            },
+            {
+              "description": "Track colour when unchecked.",
+              "name": "--color-border-emphasis"
+            },
+            {
+              "description": "Thumb colour.",
+              "name": "--color-surface-elevated"
+            },
+            {
+              "description": "Gap between the switch and its label.",
+              "name": "--space-component"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The switch's background rail.",
+              "name": "track"
+            },
+            {
+              "description": "The moving knob.",
+              "name": "thumb"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The switch's label.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "#internals",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#defaultChecked",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "#onClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "toggle",
+              "description": "Flip the switch, unless disabled. Fires `change` like a native control."
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback"
+            },
+            {
+              "kind": "method",
+              "name": "formStateRestoreCallback",
+              "parameters": [
+                {
+                  "name": "state"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'on'",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'switch'"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "name"
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired when the state changes, like a native control."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the switch is on.",
+              "name": "checked",
+              "default": "false",
+              "fieldName": "checked"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Inactive and removed from the tab order.",
+              "name": "disabled",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Field name used when the form is submitted.",
+              "name": "name",
+              "fieldName": "name"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value submitted when checked. Defaults to \"on\".",
+              "name": "value",
+              "default": "'on'",
+              "fieldName": "value"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-toggle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsToggle",
+          "declaration": {
+            "name": "HsToggle",
+            "module": "dist/components/hs-toggle.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-toggle",
+          "declaration": {
+            "name": "HsToggle",
+            "module": "dist/components/hs-toggle.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/index.js",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsAlert",
+          "declaration": {
+            "name": "HsAlert",
+            "module": "./hs-alert.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToggle",
+          "declaration": {
+            "name": "HsToggle",
+            "module": "./hs-toggle.js"
+          }
+        }
+      ]
+    }
+  ]
+}
