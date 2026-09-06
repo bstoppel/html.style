@@ -34,8 +34,23 @@ test.describe('Visual Regression - Components', () => {
 
   test('forms render correctly', async ({ page }) => {
     await page.goto('/');
-    const form = page.locator('form').first();
-    await expect(form).toHaveScreenshot('form.png');
+    // Target by id, not .first(). Adding a form earlier in the document
+    // silently repointed this test at different markup.
+    await expect(page.locator('#form-demo')).toHaveScreenshot('form.png');
+  });
+
+  test('custom elements render correctly', async ({ page }) => {
+    await page.goto('/');
+    // Nothing visual covered the components before, which is how a switch with
+    // a 0x0 thumb shipped and passed the whole suite.
+    await expect(page.locator('hs-alert').first()).toHaveScreenshot('hs-alert.png');
+    await expect(page.locator('#component-demo')).toHaveScreenshot('hs-toggles.png');
+  });
+
+  test('custom elements render correctly in dark mode', async ({ page }) => {
+    await page.emulateMedia({ colorScheme: 'dark' });
+    await page.goto('/');
+    await expect(page.locator('#component-demo')).toHaveScreenshot('hs-toggles-dark.png');
   });
 
   test('alerts render in all variants', async ({ page }) => {
