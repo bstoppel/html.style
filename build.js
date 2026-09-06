@@ -37,6 +37,14 @@ const COMPONENT_ENTRY = 'src/components/index.js';
 const COMPONENT_BUNDLE = 'js/html.style.components.js';
 
 /**
+ * A classic-script build of the same components. ES modules are blocked from
+ * file:// by CORS, so a page opened straight off disk cannot use the module
+ * bundle at all. This one registers the elements as a side effect of a plain
+ * <script src>, which file:// does allow.
+ */
+const COMPONENT_BUNDLE_CLASSIC = 'js/html.style.components.classic.js';
+
+/**
  * The custom elements manifest is what gives editors and agents completion and
  * type information for <hs-*>. It is generated from the SHIPPED modules under
  * dist/components/, so the module paths it records are the ones a consumer
@@ -132,17 +140,22 @@ function bundleComponents() {
   // buildSync keeps this script synchronous, so --check stays a straight
   // compare with no async plumbing.
   const { buildSync } = require('esbuild');
-  const result = buildSync({
+  const common = {
     entryPoints: [COMPONENT_ENTRY],
     bundle: true,
-    format: 'esm',
     target: 'es2022',
     minify: true,
     write: false,
     banner: { js: '/*! html.style components - MIT - https://html.style */' },
-  });
+  };
 
-  return sync(path.join(DIST, COMPONENT_BUNDLE), Buffer.from(result.outputFiles[0].contents)) ? 1 : 0;
+  const esm = buildSync({ ...common, format: 'esm' });
+  const classic = buildSync({ ...common, format: 'iife' });
+
+  let changed = 0;
+  if (sync(path.join(DIST, COMPONENT_BUNDLE), Buffer.from(esm.outputFiles[0].contents))) changed++;
+  if (sync(path.join(DIST, COMPONENT_BUNDLE_CLASSIC), Buffer.from(classic.outputFiles[0].contents))) changed++;
+  return changed;
 }
 
 function generateManifest() {

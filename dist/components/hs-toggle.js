@@ -133,6 +133,11 @@ export class HsToggle extends LitElement {
     super.connectedCallback();
     // Remember the authored state so formResetCallback can return to it.
     this.#defaultChecked = this.hasAttribute('checked');
+    // Publish the form value synchronously. willUpdate also does this, but Lit
+    // batches updates, so a toggle that is created and appended by framework
+    // code would contribute nothing to FormData until after the first render —
+    // where a native control contributes immediately.
+    this.#internals.setFormValue(this.checked ? this.value : null);
     if (!this.hasAttribute('tabindex')) this.tabIndex = this.disabled ? -1 : 0;
     this.addEventListener('click', this.#onClick);
     this.addEventListener('keydown', this.#onKeydown);
