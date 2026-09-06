@@ -76,8 +76,12 @@ declaration is dead weight. The framework's own stylesheet carries none.
   markup server-side, but interactivity requires hydration. Do not describe the
   component layer as working without JS.
 - Components are custom elements prefixed `hs-`, one per file in `src/components/`
-- Shadow-DOM components extend Lit and must support Declarative Shadow DOM;
-  light-DOM components may extend `HTMLElement` directly
+- Shadow-DOM components extend Lit; light-DOM components may extend
+  `HTMLElement` directly
+- Shadow components must restate the reset they need (`box-sizing`,
+  `prefers-reduced-motion`) — the global reset stops at the shadow boundary
+- Give every shadow component a `hs-*:not(:defined)` rule in the global
+  stylesheet that reserves its box, so the no-build path has no layout shift
 - Use native APIs over libraries (`<dialog>`, Popover API, `ElementInternals`)
 - Feature detection, not browser sniffing
 - Respect Global Privacy Control (GPC)

@@ -342,6 +342,45 @@ console.log(greet('World'));</code></pre>
       </div>
     </section>
 
+    <!-- Components -->
+    <section class="demo-section" id="custom-elements">
+      <div class="center">
+        <h2>Custom Elements</h2>
+        <p>
+          Atoms and layout primitives are plain HTML and CSS. Components are
+          custom elements, used where behaviour or composed structure needs
+          them.
+        </p>
+
+        <h3>hs-alert (light DOM)</h3>
+        <p>
+          Styled by the global stylesheet exactly as <code>.alert</code> is, so
+          it looks right before its JavaScript loads. The script adds only the
+          dismiss behaviour.
+        </p>
+        <div class="stack">
+          <hs-alert variant="success">
+            <strong>Saved.</strong> Your changes are stored.
+          </hs-alert>
+          <hs-alert variant="info" dismissible>
+            <strong>Tip:</strong> This one can be dismissed.
+          </hs-alert>
+        </div>
+
+        <h3>hs-toggle (shadow DOM)</h3>
+        <p>
+          Owns its internal structure, so it encapsulates. There is no
+          cross-browser native switch, which is what earns it a component. It
+          participates in forms through <code>ElementInternals</code>.
+        </p>
+        <form class="stack" id="toggle-demo">
+          <hs-toggle name="notifications" checked>Email notifications</hs-toggle>
+          <hs-toggle name="digest">Weekly digest</hs-toggle>
+          <hs-toggle name="beta" disabled>Beta features (unavailable)</hs-toggle>
+        </form>
+      </div>
+    </section>
+
     <!-- Layout Primitives -->
     <section class="demo-section">
       <div class="center">
@@ -583,6 +622,7 @@ console.log(greet('World'));</code></pre>
     </div>
   </footer>
 
+  <script type="module" src="js/html.style.components.js"></script>
   <script type="module">
     import { ThemeManager } from './js/html.style.js';
     window.ThemeManager = ThemeManager;

@@ -4,6 +4,15 @@
   "description": "Modern web standards CSS framework with OKLCH colors, container queries, and semantic HTML",
   "main": "dist/css/html.style.css",
   "style": "dist/css/html.style.css",
+  "exports": {
+    ".": "./dist/css/html.style.css",
+    "./css": "./dist/css/html.style.css",
+    "./components": "./dist/components/index.js",
+    "./components/*": "./dist/components/*",
+    "./bundle": "./dist/js/html.style.components.js",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist/**/*",
     "LICENSE",
@@ -16,6 +25,7 @@
     "test:visual": "playwright test tests/visual",
     "test:a11y": "playwright test tests/a11y",
     "test:performance": "playwright test tests/performance",
+    "test:components": "playwright test tests/components",
     "test:update-snapshots": "playwright test --update-snapshots",
     "test:debug": "playwright test --debug",
     "build": "node build.js",
@@ -63,6 +73,10 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.9.0",
     "@playwright/test": "^1.58.0",
+    "esbuild": "^0.28.2",
     "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "lit": "^3.3.3"
   }
 }

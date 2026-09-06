@@ -32,7 +32,9 @@ html.style/
 │   ├── css/
 │   │   └── html.style.css    # Framework styles
 │   ├── js/
-│   │   └── html.style.js     # Optional enhancements
+│   │   ├── html.style.js     # Optional enhancements
+│   │   └── html.style.components.js  # All components, one bundle
+│   ├── components/           # Individual component modules
 │   ├── index.html             # Starter template
 │   ├── favicon.svg            # Dark mode favicon
 │   ├── site.webmanifest       # PWA manifest
@@ -57,8 +59,9 @@ No build process required. Open `dist/index.html` in your code editor and start 
 - **Cascade Layers** - Predictable specificity with `@layer` (reset, tokens, atoms, molecules, organisms, templates)
 - **Three-Tier Design Tokens** - Primitives → Semantic → State (derived via Relative Color Syntax)
 - **Layout Primitives** - Intrinsically responsive layouts (stack, cluster, grid, center)
-- **Progressive Enhancement** - Works without JavaScript, enhanced with JS
+- **Progressive Enhancement** - Atoms and layout work with no JavaScript at all; components add behaviour on top
 - **Privacy-First** - Global Privacy Control (GPC) detection and compliance
+- **Web Components** - `<hs-*>` custom elements for behaviour the platform doesn't provide
 
 ## Basic Usage
 
@@ -185,6 +188,64 @@ ThemeManager.setTheme('dark');  // 'light', 'dark', or 'auto'
   <button type="submit">Send</button>
 </form>
 ```
+
+## Components
+
+Atoms are plain semantic HTML and layout primitives are CSS classes — neither
+needs JavaScript. Components are custom elements, used where behaviour or
+composed structure earns them.
+
+**No build step required.** The bundle has everything inlined, so a plain HTML
+file works — including from `file://`:
+
+```html
+<script type="module" src="js/html.style.components.js"></script>
+```
+
+Or import just what you need:
+
+```javascript
+import 'html.style/components/hs-toggle.js';
+```
+
+### hs-alert
+
+Light DOM, so the global stylesheet styles it exactly as `.alert` and it looks
+right before its JavaScript loads. JavaScript only adds dismissal.
+
+```html
+<hs-alert variant="success">
+  <strong>Saved.</strong> Your changes are stored.
+</hs-alert>
+
+<hs-alert variant="info" dismissible>You can close this one.</hs-alert>
+```
+
+`variant` accepts `success`, `warning`, `error`, `info`. A `dismissible` alert
+fires a cancelable `hs-dismiss` event before removing itself.
+
+### hs-toggle
+
+Shadow DOM, because it owns its internal structure. There is no cross-browser
+native switch, which is what earns it a component. It participates in forms
+through `ElementInternals` — submitting, resetting, and restoring like a native
+control.
+
+```html
+<form>
+  <hs-toggle name="notifications" checked>Email notifications</hs-toggle>
+  <hs-toggle name="digest">Weekly digest</hs-toggle>
+</form>
+```
+
+Theme it with the design tokens, which inherit through the shadow boundary, or
+target `::part(track)` and `::part(thumb)`.
+
+A shadow component renders nothing until its module loads. Without a build step
+there is no server render to supply Declarative Shadow DOM, so the stylesheet
+reserves the component's box instead — the control is visible and the layout
+does not shift when the script arrives. If you are server-rendering inside
+another framework, its SSR can emit Declarative Shadow DOM for these elements.
 
 ## Design Tokens
 

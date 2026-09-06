@@ -741,8 +741,12 @@
     font-variation-settings: "wght" 500;
   }
 
-  /* Alert Messages */
-  .alert {
+  /* Alert Messages
+     hs-alert is a light-DOM component: it is styled by this stylesheet exactly
+     as .alert is, and works as a plain styled element before its JS loads.
+     The class form stays supported. */
+  .alert,
+  hs-alert {
     container-type: inline-size;
     display: flex;
     gap: var(--space-component);
@@ -751,28 +755,72 @@
     border-inline-start: 4px solid;
   }
 
-  .alert--success {
+  .alert--success,
+  hs-alert[variant="success"] {
     background: var(--color-feedback-success-surface);
     border-color: var(--color-feedback-success);
     color: var(--color-feedback-success-text);
   }
 
-  .alert--warning {
+  .alert--warning,
+  hs-alert[variant="warning"] {
     background: var(--color-feedback-warning-surface);
     border-color: var(--color-feedback-warning);
     color: var(--color-feedback-warning-text);
   }
 
-  .alert--error {
+  .alert--error,
+  hs-alert[variant="error"] {
     background: var(--color-feedback-error-surface);
     border-color: var(--color-feedback-error);
     color: var(--color-feedback-error-text);
   }
 
-  .alert--info {
+  .alert--info,
+  hs-alert[variant="info"] {
     background: var(--color-feedback-info-surface);
     border-color: var(--color-feedback-info);
     color: var(--color-feedback-info-text);
+  }
+
+  /* A shadow-DOM component renders nothing until its module upgrades it.
+     Declarative Shadow DOM would normally cover that gap, but it requires a
+     server render, and this framework's primary path is static HTML with no
+     build step — there is nothing to emit the shadow root ahead of time.
+     So reserve the box here instead: :defined stops matching the moment the
+     element upgrades, handing off to the component's own styles with no
+     layout shift. Light-DOM components need none of this. */
+  hs-toggle:not(:defined) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-component);
+    min-block-size: 1.5rem;
+  }
+
+  hs-toggle:not(:defined)::before {
+    content: "";
+    flex-shrink: 0;
+    inline-size: 2.5rem;
+    block-size: 1.5rem;
+    border-radius: var(--p-radius-full);
+    background: var(--color-border-emphasis);
+  }
+
+  hs-alert > [data-hs-dismiss] {
+    align-self: start;
+    margin-inline-start: auto;
+    padding: 0 var(--p-space-xs);
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: var(--text-lg, 1.125rem);
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  hs-alert > [data-hs-dismiss]:hover {
+    background: none;
+    opacity: 0.7;
   }
 
   /* Form Group */

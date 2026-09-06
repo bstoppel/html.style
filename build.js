@@ -24,7 +24,16 @@ const DIST = 'dist';
 const WEBSITE = 'website';
 
 /** Mirrored verbatim from src/ into dist/. */
-const ASSET_DIRS = ['css', 'js'];
+const ASSET_DIRS = ['css', 'js', 'components'];
+
+/**
+ * Components are ALSO shipped as one bundle. Lit imports by bare specifier
+ * ('lit'), which a browser cannot resolve on its own, so the unbundled sources
+ * mirrored above are for consumers who run their own bundler, and this file is
+ * for the copy-dist-and-open path the project exists to support.
+ */
+const COMPONENT_ENTRY = 'src/components/index.js';
+const COMPONENT_BUNDLE = 'js/html.style.components.js';
 const STATIC_FILES = ['favicon.svg', 'site.webmanifest', 'robots.txt'];
 
 /** The project website consumes the framework's own assets; kept in sync so it cannot drift. */
@@ -107,6 +116,25 @@ function render(partial, instanceInner) {
   );
 }
 
+function bundleComponents() {
+  if (!fs.existsSync(COMPONENT_ENTRY)) return 0;
+
+  // buildSync keeps this script synchronous, so --check stays a straight
+  // compare with no async plumbing.
+  const { buildSync } = require('esbuild');
+  const result = buildSync({
+    entryPoints: [COMPONENT_ENTRY],
+    bundle: true,
+    format: 'esm',
+    target: 'es2022',
+    minify: true,
+    write: false,
+    banner: { js: '/*! html.style components - MIT - https://html.style */' },
+  });
+
+  return sync(path.join(DIST, COMPONENT_BUNDLE), Buffer.from(result.outputFiles[0].contents)) ? 1 : 0;
+}
+
 function buildHtml(partials) {
   let changed = 0;
 
@@ -130,6 +158,7 @@ function buildHtml(partials) {
 const partials = loadPartials();
 
 let changed = buildHtml(partials);
+changed += bundleComponents();
 for (const dir of ASSET_DIRS) changed += copyDir(path.join(SRC, dir), path.join(DIST, dir));
 changed += copyFiles(STATIC_FILES, SRC, DIST);
 
