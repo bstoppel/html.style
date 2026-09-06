@@ -114,11 +114,19 @@ Or link directly:
 ### Theme Switching
 
 ```html
-<button onclick="ThemeManager.toggle()">Toggle Theme</button>
+<hs-theme-toggle></hs-theme-toggle>
 ```
 
+That is the whole thing — it renders a real `<button>`, remembers the choice,
+and reports its state with `aria-pressed`.
+
+An inline `onclick` handler cannot work here: `ThemeManager` is an ES module
+export, not a global, so the handler has nothing to call. Use the component, or
+wire it up from a module:
+
 ```javascript
-// Set specific theme
+import { ThemeManager } from './js/html.style.js';
+
 ThemeManager.setTheme('dark');  // 'light', 'dark', or 'auto'
 ```
 
@@ -262,6 +270,39 @@ control.
 
 Theme it with the design tokens, which inherit through the shadow boundary, or
 target `::part(track)` and `::part(thumb)`.
+
+### hs-tabs
+
+Shadow DOM. The platform provides nothing here, so the component supplies roving
+tabindex, arrow-key navigation, and the ARIA wiring. Write panels and their
+labels; the tablist is derived from them.
+
+```html
+<hs-tabs>
+  <hs-tab-panel label="Overview">Anything you like.</hs-tab-panel>
+  <hs-tab-panel label="Details">Including markup.</hs-tab-panel>
+</hs-tabs>
+```
+
+Arrow keys move between tabs and wrap; Home and End jump to the ends. Add
+`activation="manual"` to move focus without selecting until Enter or Space —
+useful when switching tabs is expensive. Fires `hs-tab-change` with
+`{ index, label }`, and exposes `::part(tablist)`, `::part(tab)`,
+`::part(tab-active)` and `::part(panel)`.
+
+### hs-theme-toggle
+
+Light DOM. Renders a real `<button>` rather than reimplementing one, so focus,
+activation and the accessible name stay native. It supplies only what the
+platform lacks: reading the stored preference and flipping `color-scheme`.
+
+```html
+<hs-theme-toggle></hs-theme-toggle>
+```
+
+Reports state through `aria-pressed` and keeps its accessible name stable across
+states, so voice control does not lose the target mid-interaction. Fires
+`hs-theme-change` with `{ scheme }`.
 
 A shadow component renders nothing until its module loads. Without a build step
 there is no server render to supply Declarative Shadow DOM, so the stylesheet

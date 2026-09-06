@@ -88,6 +88,314 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-tabs.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A panel's content holder. Deliberately inert: it carries a label and its\nchildren, and `hs-tabs` does the rest.",
+          "name": "HsTabPanel",
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Text shown on this panel's tab.",
+              "name": "label"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-tab-panel",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsTabs",
+          "cssProperties": [
+            {
+              "description": "Active tab indicator and text.",
+              "name": "--color-action-primary"
+            },
+            {
+              "description": "Rule under the tablist.",
+              "name": "--color-border-default"
+            },
+            {
+              "description": "Inactive tab text.",
+              "name": "--color-text-secondary"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The row of tabs.",
+              "name": "tablist"
+            },
+            {
+              "description": "Every tab button.",
+              "name": "tab"
+            },
+            {
+              "description": "The active tab button, in addition to `tab`.",
+              "name": "tab-active"
+            },
+            {
+              "description": "The active panel wrapper.",
+              "name": "panel"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<hs-tab-panel>` elements. Anything else is ignored.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#panels",
+              "privacy": "private",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "panels",
+              "description": "The `<hs-tab-panel>` children, in document order.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "#onSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#select",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                },
+                {
+                  "name": "{ focus = false }",
+                  "default": "{}"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#focusTab",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "activation",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "attribute": "activation",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_labels",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "attribute": "_labels"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-tab-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after the active tab changes. `detail` carries `{ index, label }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Index of the active tab. Reflected.",
+              "name": "selected",
+              "default": "0",
+              "fieldName": "selected"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "`auto` (default) selects on arrow-key focus; `manual` requires Enter or Space.",
+              "name": "activation",
+              "default": "'auto'",
+              "fieldName": "activation"
+            },
+            {
+              "name": "_labels",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "fieldName": "_labels"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsTabPanel",
+          "declaration": {
+            "name": "HsTabPanel",
+            "module": "dist/components/hs-tabs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-tab-panel",
+          "declaration": {
+            "name": "HsTabPanel",
+            "module": "dist/components/hs-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsTabs",
+          "declaration": {
+            "name": "HsTabs",
+            "module": "dist/components/hs-tabs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-tabs",
+          "declaration": {
+            "name": "HsTabs",
+            "module": "dist/components/hs-tabs.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-theme-toggle.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsThemeToggle",
+          "slots": [
+            {
+              "description": "Not used; the component renders its own button.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#button",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "scheme",
+              "description": "The scheme in effect: an explicit choice, else the system preference."
+            },
+            {
+              "kind": "method",
+              "name": "toggle"
+            },
+            {
+              "kind": "method",
+              "name": "#render",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired after the scheme changes. `detail` carries `{ scheme }`, one of `light` or `dark`.",
+              "name": "hs-theme-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name for the button. Defaults to \"Toggle colour scheme\"."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-theme-toggle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsThemeToggle",
+          "declaration": {
+            "name": "HsThemeToggle",
+            "module": "dist/components/hs-theme-toggle.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-theme-toggle",
+          "declaration": {
+            "name": "HsThemeToggle",
+            "module": "dist/components/hs-theme-toggle.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-toggle.js",
       "declarations": [
         {
@@ -314,6 +622,30 @@
           "declaration": {
             "name": "HsAlert",
             "module": "./hs-alert.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsTabs",
+          "declaration": {
+            "name": "HsTabs",
+            "module": "./hs-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsTabPanel",
+          "declaration": {
+            "name": "HsTabPanel",
+            "module": "./hs-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsThemeToggle",
+          "declaration": {
+            "name": "HsThemeToggle",
+            "module": "./hs-theme-toggle.js"
           }
         },
         {

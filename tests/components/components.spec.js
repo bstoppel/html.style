@@ -265,6 +265,40 @@ test.describe('Custom elements manifest', () => {
     for (const tag of registered) expect(documented).toContain(tag);
   });
 
+  test('documents every part components actually expose', async ({ page }) => {
+    await page.goto('/examples.html');
+
+    // The analyzer only reads JSDoc on the CLASS. Tags left in a module header
+    // are silently ignored, and you still get a manifest — just one missing
+    // half the API. That has now happened twice, so cross-check the manifest
+    // against the parts the shadow roots really render.
+    const exposed = await page.evaluate(() => {
+      const found = {};
+      for (const el of document.querySelectorAll('*')) {
+        const tag = el.tagName.toLowerCase();
+        if (!tag.startsWith('hs-') || !el.shadowRoot) continue;
+        const parts = [...el.shadowRoot.querySelectorAll('[part]')]
+          .flatMap((n) => n.getAttribute('part').split(/\s+/))
+          .filter(Boolean);
+        found[tag] = [...new Set([...(found[tag] ?? []), ...parts])].sort();
+      }
+      return found;
+    });
+
+    const manifest = await (await page.request.get('/custom-elements.json')).json();
+    const declarations = manifest.modules.flatMap((m) => m.declarations ?? []);
+
+    expect(Object.keys(exposed).length).toBeGreaterThan(0);
+    for (const [tag, parts] of Object.entries(exposed)) {
+      const documented = (declarations.find((d) => d.tagName === tag)?.cssParts ?? []).map(
+        (p) => p.name
+      );
+      for (const part of parts) {
+        expect(documented, `${tag} should document ::part(${part})`).toContain(part);
+      }
+    }
+  });
+
   test('records the public API surface, not just tag names', async ({ page }) => {
     const manifest = await (await page.request.get('/custom-elements.json')).json();
     const toggle = manifest.modules
