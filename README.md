@@ -33,7 +33,8 @@ html.style/
 │   │   └── html.style.css    # Framework styles
 │   ├── js/
 │   │   ├── html.style.js     # Optional enhancements
-│   │   └── html.style.components.js  # All components, one bundle
+│   │   ├── html.style.components.js  # All components, one bundle
+│   │   └── html.style.components.classic.js  # Same, for file:// pages
 │   ├── components/           # Individual component modules
 │   ├── index.html             # Starter template
 │   ├── favicon.svg            # Dark mode favicon
@@ -49,6 +50,8 @@ html.style/
 ### Quick Start: Just Open and Edit
 
 No build process required. Open `dist/index.html` in your code editor and start building. The framework uses modern web standards that work directly in browsers.
+
+One caveat worth knowing up front: **no build step is not the same as no server.** ES modules are blocked from `file://` by CORS, so pages using `<script type="module">` need to be served over HTTP — any static server will do (`npx http-server dist`). Stylesheets and plain HTML work fine from disk either way, and components additionally ship a classic-script build that works from `file://`. See [docs/frameworks.md](docs/frameworks.md).
 
 ## Features
 
@@ -196,11 +199,22 @@ needs JavaScript. Components are custom elements, used where behaviour or
 composed structure earns them.
 
 **No build step required.** The bundle has everything inlined, so a plain HTML
-file works — including from `file://`:
+file works:
 
 ```html
 <script type="module" src="js/html.style.components.js"></script>
 ```
+
+Opening the page from `file://` instead of a server? Use the classic build —
+ES modules are blocked from `file://` by CORS:
+
+```html
+<script src="js/html.style.components.classic.js" defer></script>
+```
+
+Full setup for React, Vue, Angular, Svelte and Solid, plus the behaviours that
+surprise people, is in **[docs/frameworks.md](docs/frameworks.md)**. A complete
+working vanilla page is [src/example-vanilla.html](src/example-vanilla.html).
 
 Or import just what you need:
 

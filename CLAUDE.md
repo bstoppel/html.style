@@ -63,7 +63,8 @@ npm run test:performance  # Run performance tests only
 
 - **No build step for vanilla HTML/CSS/JS.** Copy `dist/`, add a stylesheet link and a script tag, done. This is the primary path and it constrains every other decision.
 - **A build step is acceptable inside another framework** (React, Vue, Solid, Svelte), where the consumer already has one.
-- This is why components ship twice: one bundle with Lit inlined (nothing to resolve, works from a `file://` page) and unbundled modules for consumers who bundle.
+- **No build step is not the same as no server.** ES modules are blocked from `file://` by CORS, so a page opened off disk cannot load a `type="module"` script at all. Components therefore ship a classic-script build alongside the module bundle; that is the one that works from `file://`.
+- This is why components ship three ways: an ES module bundle with Lit inlined, a classic-script bundle for `file://`, and unbundled modules for consumers who bundle. Never point a browser at `dist/components/*.js` directly — those import `lit` by bare specifier.
 
 ### Color System: OKLCH
 All colors use OKLCH format for:

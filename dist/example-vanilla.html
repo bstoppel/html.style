@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Using html.style components with plain HTML, CSS and JavaScript — no build step.">
+  <link rel="stylesheet" href="css/html.style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Vanilla Example - html.style</title>
+
+  <!-- Everything is inlined here, including Lit, so there is nothing to resolve
+       and no build step. This is the CLASSIC-script build: ES modules are
+       blocked from file:// by CORS, so this is the one that works when the page
+       is opened straight off disk. Over http:// either build works; the module
+       build is js/html.style.components.js. -->
+  <script src="js/html.style.components.classic.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <main id="main-content" tabindex="-1">
+    <div class="center">
+      <div class="stack">
+        <h1>Vanilla usage</h1>
+        <p>
+          No framework, no bundler, no build step. One stylesheet link and one
+          script tag. View source — this page is the whole example.
+        </p>
+
+        <h2>Alerts</h2>
+        <p>
+          <code>hs-alert</code> is a light-DOM component, so the stylesheet
+          styles it directly and it looks correct even before the script runs.
+        </p>
+
+        <div class="stack" id="alerts">
+          <hs-alert variant="success">
+            <strong>Saved.</strong> Your changes are stored.
+          </hs-alert>
+          <hs-alert variant="warning" dismissible>
+            <strong>Heads up.</strong> This one can be dismissed.
+          </hs-alert>
+        </div>
+
+        <p>
+          <button type="button" id="add-alert">Add another alert</button>
+        </p>
+
+        <h2>Toggles in a form</h2>
+        <p>
+          <code>hs-toggle</code> participates in forms through
+          <code>ElementInternals</code>, so <code>FormData</code> reads it like
+          any native control — no hidden inputs.
+        </p>
+
+        <form id="prefs" class="stack">
+          <hs-toggle name="notifications" checked>Email notifications</hs-toggle>
+          <hs-toggle name="digest">Weekly digest</hs-toggle>
+
+          <div class="cluster">
+            <button type="submit">Show form data</button>
+            <button type="reset" class="button--outline">Reset</button>
+          </div>
+        </form>
+
+        <output id="result" class="alert alert--info" role="status" hidden></output>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Classic script, not a module, for the same file:// reason as above.
+    // Plain DOM APIs throughout. Custom elements are elements: addEventListener,
+    // setAttribute, and querySelector all work exactly as they do on a <button>.
+
+    const result = document.querySelector('#result');
+
+    function show(message) {
+      result.textContent = message;
+      result.hidden = false;
+    }
+
+    // Custom events bubble, so one listener on the container covers every
+    // alert — including ones added later.
+    document.querySelector('#alerts').addEventListener('hs-dismiss', (event) => {
+      show(`Dismissed a ${event.target.getAttribute('variant')} alert.`);
+    });
+
+    document.querySelector('#add-alert').addEventListener('click', () => {
+      const alert = document.createElement('hs-alert');
+      alert.setAttribute('variant', 'info');
+      alert.setAttribute('dismissible', '');
+      alert.textContent = 'Added at ' + new Date().toLocaleTimeString() + '.';
+      document.querySelector('#alerts').append(alert);
+    });
+
+    // Toggles fire `change` like a native control.
+    document.querySelector('#prefs').addEventListener('change', (event) => {
+      show(`${event.target.name} is now ${event.target.checked ? 'on' : 'off'}.`);
+    });
+
+    document.querySelector('#prefs').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = [...new FormData(event.target).entries()];
+      show(data.length ? JSON.stringify(Object.fromEntries(data)) : 'Nothing enabled.');
+    });
+
+    document.querySelector('#prefs').addEventListener('reset', () => {
+      // Reset is applied after this event, so read on the next frame.
+      requestAnimationFrame(() => show('Reset to the authored state.'));
+    });
+  </script>
+</body>
+</html>
