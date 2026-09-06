@@ -141,6 +141,35 @@ test.describe('hs-toggle (shadow DOM)', () => {
     expect(checked).toBe(true);
   });
 
+  test('the thumb is actually rendered and moves when checked', async ({ page }) => {
+    await page.goto('/examples.html');
+
+    // This shipped broken: .thumb is a <span>, so it stayed display:inline and
+    // ignored its own size, rendering 0x0. The track only escaped that because
+    // it is a flex item of :host. Nothing else in the suite looks at the shadow
+    // root's geometry, so a switch with no knob passed every other test.
+    const geometry = async (selector) =>
+      page.locator(selector).evaluate((el) => {
+        const track = el.shadowRoot.querySelector('.track').getBoundingClientRect();
+        const thumb = el.shadowRoot.querySelector('.thumb').getBoundingClientRect();
+        return {
+          width: Math.round(thumb.width),
+          height: Math.round(thumb.height),
+          offset: Math.round(thumb.x - track.x),
+        };
+      });
+
+    const on = await geometry('hs-toggle[name="notifications"]');
+    const off = await geometry('hs-toggle[name="digest"]');
+
+    expect(on.width).toBeGreaterThan(0);
+    expect(on.height).toBeGreaterThan(0);
+    expect(off.width).toBe(on.width);
+
+    // The knob has to visibly travel, or the two states are indistinguishable.
+    expect(on.offset).toBeGreaterThan(off.offset);
+  });
+
   test('exposes track and thumb as parts for theming', async ({ page }) => {
     await page.goto('/examples.html');
     const parts = await page.locator('hs-toggle').first().evaluate((el) =>
