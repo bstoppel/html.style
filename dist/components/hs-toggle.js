@@ -82,6 +82,11 @@ export class HsToggle extends LitElement {
     }
 
     .track {
+      /* The thumb is a <span>, so it stays display:inline and ignores its own
+         size unless its parent lays it out. The track escapes that only because
+         it is a flex item of :host; the thumb has no such rescue. */
+      display: flex;
+      align-items: center;
       flex-shrink: 0;
       inline-size: 2.5rem;
       block-size: 1.5rem;
