@@ -28,23 +28,28 @@ open dist/index.html
 
 ```
 html.style/
-├── dist/
-│   ├── css/
-│   │   └── html.style.css    # Framework styles
+├── dist/                             # What you copy — everything below is generated
+│   ├── css/html.style.css            # Framework styles
 │   ├── js/
-│   │   ├── html.style.js     # Optional enhancements
-│   │   ├── html.style.components.js  # All components, one bundle
+│   │   ├── html.style.js             # Optional enhancements
+│   │   ├── html.style.components.js  # All components, one ES module bundle
 │   │   └── html.style.components.classic.js  # Same, for file:// pages
-│   ├── components/           # Individual component modules
-│   ├── index.html             # Starter template
-│   ├── favicon.svg            # Dark mode favicon
-│   ├── site.webmanifest       # PWA manifest
-│   └── robots.txt             # SEO
-├── src/                       # Source files (for reference)
-│   ├── examples.html          # Component showcase
-│   ├── template-landing.html  # Landing page example
-│   └── template-blog.html     # Blog layout example
-└── README.md
+│   ├── components/                   # Individual component modules
+│   ├── custom-elements.json          # Manifest — editor completion for <hs-*>
+│   ├── index.html                    # Starter template
+│   ├── examples.html                 # Showcase of every pattern
+│   ├── example-vanilla.html          # Minimal no-build page
+│   ├── template-landing.html         # Landing page example
+│   ├── template-blog.html            # Blog layout example
+│   ├── 404.html
+│   ├── favicon.svg
+│   ├── site.webmanifest
+│   └── robots.txt
+├── src/                              # The only hand-edited tree
+│   ├── css/, js/, components/        # Sources for the above
+│   ├── partials/                     # Build-time HTML partials
+│   └── *.html                        # Page sources
+└── docs/                             # frameworks.md, design-system.md
 ```
 
 ### Quick Start: Just Open and Edit
@@ -61,7 +66,9 @@ One caveat worth knowing up front: **no build step is not the same as no server.
 - **Semantic HTML First** - Style HTML tags directly, minimal class usage
 - **Cascade Layers** - Predictable specificity with `@layer` (reset, tokens, atoms, molecules, organisms, templates)
 - **Three-Tier Design Tokens** - Primitives → Semantic → State (derived via Relative Color Syntax)
-- **Layout Primitives** - Intrinsically responsive layouts (stack, cluster, grid, center)
+- **Layout Primitives** - Intrinsically responsive layouts (stack, cluster, grid, center, switcher)
+- **Configurable by Design** - Every component setting is a CSS custom property with a default; nothing must be set, anything can be changed
+- **Machine-Readable** - A generated `custom-elements.json` gives editors and agents completion for every element, attribute, slot, event, part and setting
 - **Progressive Enhancement** - Atoms and layout work with no JavaScript at all; components add behaviour on top
 - **Privacy-First** - Global Privacy Control (GPC) detection and compliance
 - **Web Components** - `<hs-*>` custom elements for behaviour the platform doesn't provide
@@ -149,9 +156,15 @@ ThemeManager.setTheme('dark');  // 'light', 'dark', or 'auto'
 
 <!-- Responsive grid (auto-fit) -->
 <div class="card-grid">
-  <article class="card">...</article>
-  <article class="card">...</article>
-  <article class="card">...</article>
+  <hs-card>...</hs-card>
+  <hs-card>...</hs-card>
+  <hs-card>...</hs-card>
+</div>
+
+<!-- Switcher: side by side until the container is too narrow, then stacked -->
+<div class="switcher">
+  <div>First</div>
+  <div>Second</div>
 </div>
 ```
 
@@ -168,6 +181,9 @@ ThemeManager.setTheme('dark');  // 'light', 'dark', or 'auto'
 
 ### Alerts
 
+There is also an [`<hs-alert>`](#hs-alert) element, which adds dismissal. The
+class form below stays supported and needs no JavaScript.
+
 ```html
 <div class="alert alert--success" role="alert">
   <strong>Success!</strong> Your changes have been saved.
@@ -183,6 +199,10 @@ ThemeManager.setTheme('dark');  // 'light', 'dark', or 'auto'
 ```
 
 ### Forms
+
+[`<hs-field>`](#hs-field) does this wiring for you — generating the id,
+associating the label, and reporting the browser's own validation message. The
+manual form below stays supported.
 
 ```html
 <form class="stack">
@@ -441,14 +461,22 @@ html[data-theme="green"] {
 
 ## Component Examples
 
-See [examples.html](src/examples.html) for a comprehensive showcase of all components including:
+Two pages ship with the framework:
 
+- **[`dist/examples.html`](src/examples.html)** — every pattern, including all ten
+  custom elements
+- **[`dist/example-vanilla.html`](src/example-vanilla.html)** — a minimal page
+  using the components with no framework and no build step
+
+The showcase covers:
+
+- Custom elements — cards, badges, alerts, toggles, tabs, fields, copy buttons,
+  dialogs, accordions, theme toggle
 - Typography (headings, paragraphs, lists, code)
 - Buttons (primary, secondary, outline, disabled states)
 - Forms (all input types, validation states)
-- Cards with container query demonstrations
 - Alert messages (success, warning, error, info)
-- Layout primitives (stack, cluster, grid, center)
+- Layout primitives (stack, cluster, grid, center, switcher)
 - Native elements (details/summary, dialog, tables)
 - Interactive container query demo
 
@@ -498,7 +526,9 @@ FormEnhancements.init();
 ### Other Modules
 
 - `SmoothScroll` - Smooth scrolling for skip links (respects `prefers-reduced-motion`)
-- `DialogEnhancements` - Close on backdrop click and Escape key
+- `DialogEnhancements` - Adds backdrop-click dismissal to bare `<dialog>`
+  elements. It skips any dialog owned by an [`<hs-dialog>`](#hs-dialog), which
+  configures dismissal natively instead. Escape is the platform's, not this
 - `ClipboardHelper` - Legacy. Not enabled by default (it is commented out of
   `init()`), and it injects a copy button into *every* code block. Use
   [`<hs-copy>`](#hs-copy) instead, which copies what you point it at.
