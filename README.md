@@ -238,6 +238,21 @@ at `dist/custom-elements.json`, declared via the `customElements` field in
 hover documentation for every `<hs-*>` element, its attributes, slots, events,
 CSS parts, and themeable custom properties.
 
+### hs-card and hs-badge
+
+CSS-only elements: no JavaScript, no shadow root. The stylesheet styles the tag
+directly, so they render with scripts disabled and without importing anything.
+
+```html
+<hs-card>
+  <h3>Title</h3>
+  <p>Content. <hs-badge>New</hs-badge></p>
+</hs-card>
+```
+
+They are registered only so editors offer completion for them — rendering never
+depends on it. The `.card` and `.badge` class forms stay supported.
+
 ### hs-alert
 
 Light DOM, so the global stylesheet styles it exactly as `.alert` and it looks

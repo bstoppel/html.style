@@ -677,8 +677,12 @@
     flex-basis: calc((var(--switcher-threshold, 30rem) - 100%) * 999);
   }
 
-  /* Card Component */
-  .card {
+  /* Card Component
+     hs-card is a CSS-only element: no JavaScript, no shadow root. It is styled
+     here so it renders with scripts disabled and without importing anything.
+     The .card class stays supported. */
+  .card,
+  hs-card {
     container-type: inline-size;
     display: flex;
     flex-direction: column;
@@ -690,12 +694,14 @@
     transition: box-shadow 0.2s ease;
   }
 
-  .card:hover {
+  .card:hover,
+  hs-card:hover {
     box-shadow: var(--p-shadow-md);
   }
 
   @container (inline-size > 400px) {
-    .card {
+    .card,
+    hs-card {
       flex-direction: row;
       padding: var(--space-inline);
     }
@@ -729,7 +735,8 @@
   }
 
   /* Badge */
-  .badge {
+  .badge,
+  hs-badge {
     display: inline-flex;
     align-items: center;
     gap: var(--p-space-xs);
