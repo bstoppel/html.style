@@ -677,16 +677,40 @@
           "name": "HsTabs",
           "cssProperties": [
             {
-              "description": "Active tab indicator and text.",
-              "name": "--color-action-primary"
+              "description": "Space between tabs.",
+              "name": "--hs-tabs-gap"
             },
             {
-              "description": "Rule under the tablist.",
-              "name": "--color-border-default"
+              "description": "Vertical padding inside a tab.",
+              "name": "--hs-tabs-tab-padding-block"
+            },
+            {
+              "description": "Horizontal padding inside a tab.",
+              "name": "--hs-tabs-tab-padding-inline"
+            },
+            {
+              "description": "Thickness of the active-tab underline.",
+              "name": "--hs-tabs-indicator-size"
+            },
+            {
+              "description": "Colour of that underline.",
+              "name": "--hs-tabs-indicator-color"
             },
             {
               "description": "Inactive tab text.",
-              "name": "--color-text-secondary"
+              "name": "--hs-tabs-tab-color"
+            },
+            {
+              "description": "Active tab text.",
+              "name": "--hs-tabs-tab-color-active"
+            },
+            {
+              "description": "Rule under the tablist.",
+              "name": "--hs-tabs-border-color"
+            },
+            {
+              "description": "Gap between the tablist and the panel.",
+              "name": "--hs-tabs-panel-spacing"
             }
           ],
           "cssParts": [
@@ -966,20 +990,40 @@
           "name": "HsToggle",
           "cssProperties": [
             {
-              "description": "Track colour when checked.",
-              "name": "--color-action-primary"
+              "description": "Track width. Default 2.5rem.",
+              "name": "--hs-toggle-track-inline-size"
             },
             {
-              "description": "Track colour when unchecked.",
-              "name": "--color-border-emphasis"
+              "description": "Track height. Default 1.5rem.",
+              "name": "--hs-toggle-track-block-size"
+            },
+            {
+              "description": "Inset around the thumb. Default 0.1875rem.",
+              "name": "--hs-toggle-track-padding"
+            },
+            {
+              "description": "Thumb diameter. Default 1.125rem.",
+              "name": "--hs-toggle-thumb-size"
+            },
+            {
+              "description": "Corner radius of track and thumb.",
+              "name": "--hs-toggle-radius"
+            },
+            {
+              "description": "Space between the switch and its label.",
+              "name": "--hs-toggle-gap"
+            },
+            {
+              "description": "Track colour when off.",
+              "name": "--hs-toggle-track-color"
+            },
+            {
+              "description": "Track colour when on.",
+              "name": "--hs-toggle-track-color-checked"
             },
             {
               "description": "Thumb colour.",
-              "name": "--color-surface-elevated"
-            },
-            {
-              "description": "Gap between the switch and its label.",
-              "name": "--space-component"
+              "name": "--hs-toggle-thumb-color"
             }
           ],
           "cssParts": [

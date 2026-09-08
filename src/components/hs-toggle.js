@@ -36,10 +36,15 @@ import { LitElement, html, css } from 'lit';
  * @csspart track - The switch's background rail.
  * @csspart thumb - The moving knob.
  *
- * @cssprop [--color-action-primary] - Track colour when checked.
- * @cssprop [--color-border-emphasis] - Track colour when unchecked.
- * @cssprop [--color-surface-elevated] - Thumb colour.
- * @cssprop [--space-component] - Gap between the switch and its label.
+ * @cssprop [--hs-toggle-track-inline-size] - Track width. Default 2.5rem.
+ * @cssprop [--hs-toggle-track-block-size] - Track height. Default 1.5rem.
+ * @cssprop [--hs-toggle-track-padding] - Inset around the thumb. Default 0.1875rem.
+ * @cssprop [--hs-toggle-thumb-size] - Thumb diameter. Default 1.125rem.
+ * @cssprop [--hs-toggle-radius] - Corner radius of track and thumb.
+ * @cssprop [--hs-toggle-gap] - Space between the switch and its label.
+ * @cssprop [--hs-toggle-track-color] - Track colour when off.
+ * @cssprop [--hs-toggle-track-color-checked] - Track colour when on.
+ * @cssprop [--hs-toggle-thumb-color] - Thumb colour.
  */
 export class HsToggle extends LitElement {
   static formAssociated = true;
@@ -62,10 +67,18 @@ export class HsToggle extends LitElement {
       box-sizing: border-box;
     }
 
+    /* Every dimension and colour is a custom property with a default, so a
+       consumer can resize or recolour the switch without ::part() surgery —
+       which would otherwise lose to the sizes declared in here. */
     :host {
+      --_track-inline: var(--hs-toggle-track-inline-size, 2.5rem);
+      --_track-block: var(--hs-toggle-track-block-size, 1.5rem);
+      --_track-pad: var(--hs-toggle-track-padding, 0.1875rem);
+      --_thumb: var(--hs-toggle-thumb-size, 1.125rem);
+
       display: inline-flex;
       align-items: center;
-      gap: var(--space-component, 0.5rem);
+      gap: var(--hs-toggle-gap, var(--space-component, 0.5rem));
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
@@ -76,8 +89,8 @@ export class HsToggle extends LitElement {
     }
 
     :host(:focus-visible) {
-      outline: 2px solid var(--color-action-primary, currentColor);
-      outline-offset: 2px;
+      outline: var(--focus-ring-width, 2px) solid var(--focus-ring-color, currentColor);
+      outline-offset: var(--focus-ring-offset, 2px);
       border-radius: var(--p-radius-sm, 0.25rem);
     }
 
@@ -88,38 +101,35 @@ export class HsToggle extends LitElement {
       display: flex;
       align-items: center;
       flex-shrink: 0;
-      inline-size: 2.5rem;
-      block-size: 1.5rem;
-      padding: 0.1875rem;
-      border-radius: var(--p-radius-full, 9999px);
-      background: var(--color-border-emphasis, currentColor);
-      transition: background 0.2s ease;
+      inline-size: var(--_track-inline);
+      block-size: var(--_track-block);
+      padding: var(--_track-pad);
+      border-radius: var(--hs-toggle-radius, var(--p-radius-full, 9999px));
+      background: var(--hs-toggle-track-color, var(--color-border-emphasis, currentColor));
+      transition: background var(--motion-duration, 200ms) var(--motion-ease, ease);
     }
 
     :host([checked]) .track {
-      background: var(--color-action-primary, currentColor);
+      background: var(--hs-toggle-track-color-checked, var(--color-action-primary, currentColor));
     }
 
     .thumb {
-      inline-size: 1.125rem;
-      block-size: 1.125rem;
-      border-radius: var(--p-radius-full, 9999px);
-      background: var(--color-surface-elevated, #fff);
-      transition: translate 0.2s ease;
+      inline-size: var(--_thumb);
+      block-size: var(--_thumb);
+      border-radius: var(--hs-toggle-radius, var(--p-radius-full, 9999px));
+      background: var(--hs-toggle-thumb-color, var(--color-surface-elevated, #fff));
+      transition: translate var(--motion-duration, 200ms) var(--motion-ease, ease);
     }
 
+    /* Derived from the sizes above rather than hardcoded, so resizing the track
+       actually moves the thumb the right distance. */
     :host([checked]) .thumb {
-      translate: 1rem 0;
+      translate: calc(var(--_track-inline) - var(--_thumb) - 2 * var(--_track-pad)) 0;
     }
 
-    /* The framework's global reduced-motion rule cannot reach into a shadow
-       root, so each component repeats it for its own internals. */
-    @media (prefers-reduced-motion: reduce) {
-      .track,
-      .thumb {
-        transition-duration: 0.01ms;
-      }
-    }
+    /* No reduced-motion block here. --motion-duration is a custom property, and
+       custom properties inherit THROUGH the shadow boundary, so collapsing it
+       on :root under prefers-reduced-motion reaches this component. */
   `;
 
   #internals;
