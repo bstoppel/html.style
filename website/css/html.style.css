@@ -574,6 +574,10 @@
 
   /* Dialog */
   dialog {
+    /* The reset's `* { margin: 0 }` overrides the UA stylesheet's `margin: auto`,
+       which is what centres a modal dialog in the top layer. Without this every
+       modal renders in the top-left corner. */
+    margin: auto;
     background: var(--color-surface-overlay);
     color: var(--color-text-primary);
     border: 1px solid var(--color-border-default);
@@ -838,6 +842,21 @@
 
   hs-theme-toggle > button:hover {
     background: var(--color-surface-sunken);
+  }
+
+  /* hs-dialog wraps a real <dialog>, which the atoms layer already styles.
+     display:contents keeps the wrapper out of layout entirely so it changes
+     nothing about where the dialog sits. */
+  hs-dialog {
+    display: contents;
+  }
+
+  /* hs-accordion coordinates real <details>, which the atoms layer already
+     styles. It only needs to stack them. */
+  hs-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-component);
   }
 
   hs-alert > [data-hs-dismiss] {

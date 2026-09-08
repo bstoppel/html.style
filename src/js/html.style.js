@@ -209,6 +209,11 @@ const DialogEnhancements = {
   init() {
     // Close dialog on backdrop click
     document.querySelectorAll('dialog').forEach(dialog => {
+      // A dialog owned by <hs-dialog> manages its own dismissal, natively via
+      // closedBy where available. Handling it here too produced two competing
+      // closers and defeated the component's `persistent` opt-out.
+      if (dialog.closest('hs-dialog')) return;
+
       dialog.addEventListener('click', (e) => {
         if (e.target === dialog) {
           dialog.close();
