@@ -275,6 +275,107 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-copy.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsCopy",
+          "members": [
+            {
+              "kind": "field",
+              "name": "#button",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#status",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#label",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#timer",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "text",
+              "description": "The text this element would copy.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "copy"
+            },
+            {
+              "kind": "method",
+              "name": "#confirm",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-copy-error",
+              "type": {
+                "text": "CustomEvent"
+              }
+            },
+            {
+              "name": "hs-copy",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-copy",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsCopy",
+          "declaration": {
+            "name": "HsCopy",
+            "module": "dist/components/hs-copy.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-copy",
+          "declaration": {
+            "name": "HsCopy",
+            "module": "dist/components/hs-copy.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-dialog.js",
       "declarations": [
         {
@@ -397,6 +498,152 @@
           "declaration": {
             "name": "HsDialog",
             "module": "dist/components/hs-dialog.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-field.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsField",
+          "members": [
+            {
+              "kind": "field",
+              "name": "#control",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#label",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#hint",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#error",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#id",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "control",
+              "description": "The wrapped native control.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#ensureLabel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#ensureHint",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#ensureError",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#describe",
+              "privacy": "private",
+              "description": "Keep aria-describedby pointing at whichever of hint and error exist."
+            },
+            {
+              "kind": "method",
+              "name": "#show",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "message"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#clear",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onInvalid",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onInput",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label"
+            },
+            {
+              "name": "hint"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-field",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsField",
+          "declaration": {
+            "name": "HsField",
+            "module": "dist/components/hs-field.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-field",
+          "declaration": {
+            "name": "HsField",
+            "module": "dist/components/hs-field.js"
           }
         }
       ]
@@ -965,10 +1212,26 @@
         },
         {
           "kind": "js",
+          "name": "HsCopy",
+          "declaration": {
+            "name": "HsCopy",
+            "module": "./hs-copy.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "HsDialog",
           "declaration": {
             "name": "HsDialog",
             "module": "./hs-dialog.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsField",
+          "declaration": {
+            "name": "HsField",
+            "module": "./hs-field.js"
           }
         },
         {

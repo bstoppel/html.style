@@ -418,6 +418,32 @@ console.log(greet('World'));</code></pre>
           </hs-tab-panel>
         </hs-tabs>
 
+        <h3>hs-field (light DOM, wiring a native control)</h3>
+        <p>
+          <code>&lt;label for&gt;</code>, the Constraint Validation API and
+          <code>aria-describedby</code> are all platform machinery. This wires
+          them together and shows the browser's own validation message, so the
+          text stays localised.
+        </p>
+        <form class="stack" id="field-demo" novalidate>
+          <hs-field label="Email address" hint="We never share it.">
+            <input type="email" name="email" required>
+          </hs-field>
+          <hs-field label="Age" hint="Must be 18 or over.">
+            <input type="number" name="age" min="18" required>
+          </hs-field>
+          <button type="submit">Validate</button>
+        </form>
+
+        <h3>hs-copy (light DOM, wrapping &lt;button&gt;)</h3>
+        <p>
+          Renders a real button and uses the Clipboard API. Replaces
+          <code>ClipboardHelper</code>, which the docs listed while it sat
+          commented out.
+        </p>
+        <pre id="copy-source"><code>npm install html.style</code></pre>
+        <hs-copy for="copy-source" id="copy-demo">Copy install command</hs-copy>
+
         <h3>hs-dialog (light DOM, wrapping &lt;dialog&gt;)</h3>
         <p>
           The platform already provides the top layer, focus trap, Escape, and
@@ -711,6 +737,15 @@ console.log(greet('World'));</code></pre>
 
   <script type="module" src="js/html.style.components.js"></script>
   <script type="module">
+    // Native validation drives the field components; the form is novalidate so
+    // the browser's own bubbles stay out of the way of the demo.
+    document.querySelector('#field-demo')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      for (const field of event.target.querySelectorAll('hs-field')) {
+        field.control.checkValidity();
+      }
+    });
+
     document.querySelector('#open-dialog')?.addEventListener('click', () => {
       document.querySelector('#dialog-demo').show();
     });
