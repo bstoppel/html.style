@@ -87,8 +87,10 @@ declaration is dead weight. The framework's own stylesheet carries none.
 - Respect Global Privacy Control (GPC)
 - ES modules (`import`/`export`)
 
-**Which DOM?** A component that *arranges content the consumer provides* uses light
-DOM. One that *owns internal structure* uses shadow DOM. When in doubt, light DOM.
+**Which tier?** No behaviour at all means a CSS-only element — styled by the
+global stylesheet, registered only so editors see it. Behaviour over content the
+consumer provides means light DOM. Owning internal structure means shadow DOM.
+When in doubt, reach for the lighter tier.
 
 ### Accessibility
 
@@ -131,8 +133,9 @@ test: add visual regression tests
 1. **Semantic HTML First** - Atoms layer = NO classes
 2. **Container Queries Over Media Queries** - Components adapt to container
 3. **OKLCH Color System** - All colors use OKLCH
-4. **Native Where Native Suffices** - no JavaScript for anything CSS or semantic
-   HTML already does; JavaScript belongs in the component layer
+4. **Build On, Don't Reimplement** - wrap a native element whenever the wrapper
+   adds clarity or a better API, but never recreate platform behavior in
+   JavaScript; no JavaScript for anything CSS or semantic HTML already does
 5. **AI-Friendly** - Predictable, machine-readable patterns
 6. **Delete-Key Friendly** - Only include essentials
 

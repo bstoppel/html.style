@@ -88,6 +88,110 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-badge.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "<hs-badge> — CSS-only element.\n\nNo behaviour, no shadow root. The global stylesheet styles `hs-badge`\ndirectly, so it renders with JavaScript disabled and without this module.\n\nThe class exists only so the element reaches custom-elements.json for editor\ncompletion; rendering never depends on registration. See hs-card.js for the\nreasoning behind this tier.",
+          "name": "HsBadge",
+          "cssProperties": [
+            {
+              "description": "Badge background.",
+              "name": "--color-action-surface"
+            },
+            {
+              "description": "Badge text.",
+              "name": "--color-action-on-surface"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The badge's label.",
+              "name": ""
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-badge",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsBadge",
+          "declaration": {
+            "name": "HsBadge",
+            "module": "dist/components/hs-badge.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-badge",
+          "declaration": {
+            "name": "HsBadge",
+            "module": "dist/components/hs-badge.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-card.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "<hs-card> — CSS-only element.\n\nThere is no behaviour here and no shadow root. The global stylesheet styles\n`hs-card` directly, so the element renders correctly with JavaScript disabled,\nbefore any script loads, and if this module is never imported at all.\n\nThe class below exists ONLY so the element appears in custom-elements.json and\neditors offer completion for it. Nothing about rendering depends on it being\nregistered — delete the import and the card still looks exactly the same.\n\nWhy an element rather than `class=\"card\"`: the tag name carries the meaning,\nwhich is what a machine reads first, and it keeps one authoring vocabulary —\neverything is `<hs-*>` whether or not it has behaviour. The `.card` class\nstays supported.",
+          "name": "HsCard",
+          "cssProperties": [
+            {
+              "description": "Card background.",
+              "name": "--color-surface-elevated"
+            },
+            {
+              "description": "Card border.",
+              "name": "--color-border-default"
+            },
+            {
+              "description": "Internal padding and gap.",
+              "name": "--space-component"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The card's content.",
+              "name": ""
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-card",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsCard",
+          "declaration": {
+            "name": "HsCard",
+            "module": "dist/components/hs-card.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-card",
+          "declaration": {
+            "name": "HsCard",
+            "module": "dist/components/hs-card.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-tabs.js",
       "declarations": [
         {
@@ -622,6 +726,22 @@
           "declaration": {
             "name": "HsAlert",
             "module": "./hs-alert.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsBadge",
+          "declaration": {
+            "name": "HsBadge",
+            "module": "./hs-badge.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsCard",
+          "declaration": {
+            "name": "HsCard",
+            "module": "./hs-card.js"
           }
         },
         {

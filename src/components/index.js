@@ -11,6 +11,8 @@
  */
 
 export { HsAlert } from './hs-alert.js';
+export { HsBadge } from './hs-badge.js';
+export { HsCard } from './hs-card.js';
 export { HsTabs, HsTabPanel } from './hs-tabs.js';
 export { HsThemeToggle } from './hs-theme-toggle.js';
 export { HsToggle } from './hs-toggle.js';

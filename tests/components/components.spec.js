@@ -65,6 +65,66 @@ test.describe('hs-alert (light DOM)', () => {
   });
 });
 
+test.describe('CSS-only elements', () => {
+  // The tier's defining property: these render from the stylesheet alone. If a
+  // test here needs JavaScript to pass, the element has drifted out of the tier.
+
+  test('render identically whether or not their module loads', async ({ page }) => {
+    const styles = async (blockModule) => {
+      const ctx = await page.context().browser().newContext();
+      const p = await ctx.newPage();
+      if (blockModule) await p.route('**/html.style.components*.js', (r) => r.abort());
+      await p.goto('/examples.html');
+      const result = await p.evaluate(() => {
+        const read = (sel) => {
+          const cs = getComputedStyle(document.querySelector(sel));
+          return { display: cs.display, background: cs.backgroundColor, radius: cs.borderRadius };
+        };
+        return { defined: !!customElements.get('hs-card'), card: read('hs-card'), badge: read('hs-badge') };
+      });
+      await ctx.close();
+      return result;
+    };
+
+    const without = await styles(true);
+    const with_ = await styles(false);
+
+    expect(without.defined).toBe(false);
+    expect(with_.defined).toBe(true);
+    // Registration is for tooling only; it must not change a single pixel.
+    expect(without.card).toEqual(with_.card);
+    expect(without.badge).toEqual(with_.badge);
+  });
+
+  test('lay out with JavaScript disabled entirely', async ({ page }) => {
+    const ctx = await page.context().browser().newContext({ javaScriptEnabled: false });
+    const p = await ctx.newPage();
+    await p.goto('/examples.html');
+
+    const box = await p.locator('hs-card').first().boundingBox();
+    await ctx.close();
+
+    // An unstyled custom element is display:inline and would collapse.
+    expect(box.width).toBeGreaterThan(0);
+    expect(box.height).toBeGreaterThan(0);
+  });
+
+  test('the class form stays supported alongside the element', async ({ page }) => {
+    await page.goto('/examples.html');
+    const same = await page.evaluate(() => {
+      const pick = (el) => {
+        const cs = getComputedStyle(el);
+        return { display: cs.display, radius: cs.borderRadius, background: cs.backgroundColor };
+      };
+      return {
+        element: pick(document.querySelector('hs-card')),
+        klass: pick(document.querySelector('.card')),
+      };
+    });
+    expect(same.element).toEqual(same.klass);
+  });
+});
+
 test.describe('hs-toggle (shadow DOM)', () => {
   test('exposes role=switch and reflects checked state to assistive tech', async ({ page }) => {
     await page.goto('/examples.html');

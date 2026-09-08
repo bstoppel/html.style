@@ -352,6 +352,27 @@ console.log(greet('World'));</code></pre>
           them.
         </p>
 
+        <h3>hs-card and hs-badge (CSS-only)</h3>
+        <p>
+          No JavaScript and no shadow root. The stylesheet styles these elements
+          directly, so they render with scripts disabled and without importing
+          anything. Registration exists only so editors can offer completion.
+        </p>
+        <div class="card-grid" id="css-only-demo">
+          <hs-card>
+            <h4 style="margin: 0;">Zero JavaScript</h4>
+            <p style="margin: 0;">
+              This card is an element, not a class. <hs-badge>CSS-only</hs-badge>
+            </p>
+          </hs-card>
+          <hs-card>
+            <h4 style="margin: 0;">Same styling either way</h4>
+            <p style="margin: 0;">
+              <code>.card</code> still works. <hs-badge>Compatible</hs-badge>
+            </p>
+          </hs-card>
+        </div>
+
         <h3>hs-alert (light DOM)</h3>
         <p>
           Styled by the global stylesheet exactly as <code>.alert</code> is, so

@@ -93,9 +93,12 @@ All colors use OKLCH format for:
 
 Three kinds of thing. Deciding which one you are building is the first decision:
 
-- **Atoms** = Semantic HTML elements (NO classes, NO components) - style `<button>`, not `.btn`. Zero JavaScript. Form participation, label association, and default accessibility come free from the platform; do not wrap them to get an attribute API.
-- **Layout primitives** = CSS classes (`.stack`, `.cluster`, `.grid`, `.center`, `.switcher`). Pure arrangement, zero JavaScript. Not components.
-- **Molecules / Organisms** = Web components (`<hs-*>`). Anything with behavior or composed internal structure.
+- **Atoms** = Semantic HTML elements - style `<button>`, not `.btn`. Zero JavaScript. Form participation, label association, and default accessibility come free from the platform.
+- **Layout primitives** = CSS classes (`.stack`, `.cluster`, `.grid`, `.center`, `.switcher`). Pure arrangement, zero JavaScript.
+- **CSS-only elements** = `<hs-*>` with no JavaScript and no shadow root (`<hs-card>`, `<hs-badge>`). The global stylesheet styles the tag directly, so they render with scripts disabled and without importing anything. Register a no-op class ONLY so the element reaches `custom-elements.json` for editor completion - rendering must never depend on it.
+- **Molecules / Organisms** = Web components (`<hs-*>`) with behavior or composed internal structure.
+
+Prefer an element over a class where both would work. The tag name carries the meaning, which is what a machine reads first, and it keeps one authoring vocabulary instead of "sometimes an element, sometimes a class, and you have to know which." Existing class forms stay supported; style `.card, hs-card` together.
 
 Components choose light or shadow DOM by one criterion - does it own structure, or arrange content?
 
@@ -112,9 +115,19 @@ When in doubt, light DOM. It is the cheaper default and the easier one to change
 
 ### JavaScript: Native Where Native Suffices
 
-JavaScript belongs in the component layer and nowhere else.
+**Build on the platform; never reimplement it.** This is the load-bearing rule.
 
-- Atoms and layout primitives use **no JavaScript**. If CSS or semantic HTML can do it, it does not become a component.
+Wrapping a native element is fine - encouraged, when the wrapper adds clarity, a
+better API, or consistent behavior. `<hs-dialog>` containing a real `<dialog>` is
+good. What is forbidden is *replacing* platform behavior: a `<div>` acting as a
+button, a hand-rolled focus ring instead of `:focus-visible`, a hidden input
+instead of `ElementInternals`. That is where accessibility, form participation,
+and the zero-JS baseline get lost.
+
+The test is not "does the platform already do this?" It is "does this build on
+what the platform does, and does it deliver value in understanding or design?"
+
+- Atoms and layout primitives use **no JavaScript**. Neither do CSS-only elements.
 - Components use JavaScript because behavior and composition need it. That is the boundary - not an exception carved out of a no-JS rule.
 - Prefer native APIs inside components: `<dialog>`, `<details>`, Popover API, Anchor Positioning, `ElementInternals`.
 - TypeScript for any JS that IS required.
@@ -208,7 +221,7 @@ Do NOT add extensive @supports blocks or polyfills.
 - Use BEM-style child classes (`.card__title`)
 - Use utility-first/atomic CSS patterns
 - Add JavaScript for things CSS or semantic HTML can handle
-- Wrap a working semantic element in a component (`<hs-button>` around `<button>`) - it costs the zero-JS baseline and the platform's form and label behaviour for no functional gain
+- Reimplement a platform element instead of wrapping one - a `<div>` with `role="button"`, a custom focus ring, a hidden input standing in for `ElementInternals`
 - Name by appearance (`--blue-500`) - name by role (`--color-action-primary`)
 
 ## Files to Understand
