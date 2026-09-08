@@ -10,6 +10,18 @@
           "kind": "class",
           "description": "",
           "name": "HsAccordion",
+          "cssProperties": [
+            {
+              "description": "Space between panels.",
+              "name": "--hs-accordion-gap"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<details>` elements. Anything else is left alone.",
+              "name": ""
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -54,9 +66,19 @@
               "privacy": "private"
             }
           ],
+          "events": [
+            {
+              "description": "Fired when a panel opens or closes. `detail` carries `{ index, open }`.",
+              "name": "hs-accordion-toggle"
+            }
+          ],
           "attributes": [
             {
-              "name": "exclusive"
+              "name": "exclusive",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Only one panel open at a time, via the native `name` grouping."
             }
           ],
           "superclass": {
@@ -93,6 +115,36 @@
           "kind": "class",
           "description": "",
           "name": "HsAlert",
+          "cssProperties": [
+            {
+              "description": "Overrides the variant's background.",
+              "name": "--hs-alert-background"
+            },
+            {
+              "description": "Overrides the variant's text colour.",
+              "name": "--hs-alert-color"
+            },
+            {
+              "description": "Overrides the variant's leading rule.",
+              "name": "--hs-alert-accent-color"
+            },
+            {
+              "description": "Thickness of the leading rule.",
+              "name": "--hs-alert-accent-width"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-alert-padding"
+            },
+            {
+              "description": "Space between content and dismiss button.",
+              "name": "--hs-alert-gap"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-alert-radius"
+            }
+          ],
           "slots": [
             {
               "description": "The alert's content.",
@@ -180,6 +232,30 @@
           "cssProperties": [
             {
               "description": "Badge background.",
+              "name": "--hs-badge-background"
+            },
+            {
+              "description": "Badge text colour.",
+              "name": "--hs-badge-color"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-badge-radius"
+            },
+            {
+              "description": "Vertical padding.",
+              "name": "--hs-badge-padding-block"
+            },
+            {
+              "description": "Horizontal padding.",
+              "name": "--hs-badge-padding-inline"
+            },
+            {
+              "description": "Label size.",
+              "name": "--hs-badge-font-size"
+            },
+            {
+              "description": "Badge background.",
               "name": "--color-action-surface"
             },
             {
@@ -228,6 +304,34 @@
           "description": "<hs-card> — CSS-only element.\n\nThere is no behaviour here and no shadow root. The global stylesheet styles\n`hs-card` directly, so the element renders correctly with JavaScript disabled,\nbefore any script loads, and if this module is never imported at all.\n\nThe class below exists ONLY so the element appears in custom-elements.json and\neditors offer completion for it. Nothing about rendering depends on it being\nregistered — delete the import and the card still looks exactly the same.\n\nWhy an element rather than `class=\"card\"`: the tag name carries the meaning,\nwhich is what a machine reads first, and it keeps one authoring vocabulary —\neverything is `<hs-*>` whether or not it has behaviour. The `.card` class\nstays supported.",
           "name": "HsCard",
           "cssProperties": [
+            {
+              "description": "Card background.",
+              "name": "--hs-card-background"
+            },
+            {
+              "description": "Card border colour.",
+              "name": "--hs-card-border-color"
+            },
+            {
+              "description": "Card border width.",
+              "name": "--hs-card-border-width"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-card-radius"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-card-padding"
+            },
+            {
+              "description": "Space between child elements.",
+              "name": "--hs-card-gap"
+            },
+            {
+              "description": "Shadow applied on hover.",
+              "name": "--hs-card-shadow-hover"
+            },
             {
               "description": "Card background.",
               "name": "--color-surface-elevated"
@@ -281,6 +385,22 @@
           "kind": "class",
           "description": "",
           "name": "HsCopy",
+          "cssProperties": [
+            {
+              "description": "Button background while confirming.",
+              "name": "--hs-copy-copied-background"
+            },
+            {
+              "description": "Button text while confirming.",
+              "name": "--hs-copy-copied-color"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The button's label.",
+              "name": ""
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -339,13 +459,38 @@
               "name": "hs-copy-error",
               "type": {
                 "text": "CustomEvent"
-              }
+              },
+              "description": "Fired when the copy fails, which the Clipboard API does whenever the document is not focused or permission is refused."
             },
             {
               "name": "hs-copy",
               "type": {
                 "text": "CustomEvent"
-              }
+              },
+              "description": "Fired after a successful copy. `detail` carries `{ text }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Id of the element whose text is copied. Without it, the copied text is this element's own `value` attribute.",
+              "name": "for"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Literal text to copy, used when `for` is absent.",
+              "name": "value"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Confirmation text. Defaults to \"Copied\".",
+              "name": "copied-label"
             }
           ],
           "superclass": {
@@ -382,6 +527,28 @@
           "kind": "class",
           "description": "<hs-dialog> — light DOM, wrapping a real <dialog>.\n\nThe platform already does the hard parts: the top layer, the backdrop, the\nfocus trap, inert-ing the page behind, Escape to close, returning focus to\nwhatever opened it, and `<form method=\"dialog\">`. None of that is\nreimplemented here — a native <dialog> does it, and this element wraps one.\n\nWhat it adds is the part the platform leaves to script:\n\n  - `<dialog open>` shows NON-modally. Getting a modal requires calling\n    showModal() from JavaScript, so there is no declarative way to open one.\n    The `open` attribute here means modal.\n  - Backdrop dismissal. Where the browser supports `closedBy` this sets it and\n    the PLATFORM does the dismissing; the JavaScript fallback below only runs\n    on browsers at this project's floor, which predate it.\n\nChildren are moved into the <dialog> once, on connect, so consumers write\ntheir content directly and `<form method=\"dialog\">` still finds its ancestor:\n\n  <hs-dialog id=\"confirm\">\n    <h2>Delete this?</h2>\n    <form method=\"dialog\">\n      <button value=\"cancel\">Cancel</button>\n      <button value=\"delete\">Delete</button>\n    </form>\n  </hs-dialog>",
           "name": "HsDialog",
+          "cssProperties": [
+            {
+              "description": "Maximum dialog width.",
+              "name": "--hs-dialog-max-inline-size"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-dialog-padding"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-dialog-radius"
+            },
+            {
+              "description": "Dialog surface.",
+              "name": "--hs-dialog-background"
+            },
+            {
+              "description": "Backdrop colour.",
+              "name": "--hs-dialog-backdrop"
+            }
+          ],
           "slots": [
             {
               "description": "The dialog's content.",
@@ -510,6 +677,42 @@
           "kind": "class",
           "description": "",
           "name": "HsField",
+          "cssProperties": [
+            {
+              "description": "Space between label, control, hint and error.",
+              "name": "--hs-field-gap"
+            },
+            {
+              "description": "Space below the whole field.",
+              "name": "--hs-field-spacing"
+            },
+            {
+              "description": "Hint text colour.",
+              "name": "--hs-field-hint-color"
+            },
+            {
+              "description": "Hint text size.",
+              "name": "--hs-field-hint-font-size"
+            },
+            {
+              "description": "Error text colour.",
+              "name": "--hs-field-error-color"
+            },
+            {
+              "description": "Error text size.",
+              "name": "--hs-field-error-font-size"
+            },
+            {
+              "description": "Control border when invalid.",
+              "name": "--hs-field-invalid-border-color"
+            }
+          ],
+          "slots": [
+            {
+              "description": "One `<input>`, `<select>` or `<textarea>`, plus anything else you want inside the field.",
+              "name": ""
+            }
+          ],
           "members": [
             {
               "kind": "field",
@@ -614,12 +817,33 @@
               "privacy": "private"
             }
           ],
+          "events": [
+            {
+              "description": "Fired when the control fails validation. `detail` carries `{ message }`, the browser's own text.",
+              "name": "hs-invalid"
+            }
+          ],
           "attributes": [
             {
-              "name": "label"
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label text. Skipped if you supply your own <label>."
             },
             {
-              "name": "hint"
+              "name": "hint",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text shown under the control and referenced by aria-describedby."
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Do not display validation messages. The control still validates; only this element's reporting is suppressed.",
+              "name": "novalidate"
             }
           ],
           "superclass": {
@@ -908,6 +1132,40 @@
           "kind": "class",
           "description": "",
           "name": "HsThemeToggle",
+          "cssProperties": [
+            {
+              "description": "Button background.",
+              "name": "--hs-theme-toggle-background"
+            },
+            {
+              "description": "Button background on hover.",
+              "name": "--hs-theme-toggle-background-hover"
+            },
+            {
+              "description": "Button border colour.",
+              "name": "--hs-theme-toggle-border-color"
+            },
+            {
+              "description": "Icon colour.",
+              "name": "--hs-theme-toggle-color"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-theme-toggle-radius"
+            },
+            {
+              "description": "Vertical padding.",
+              "name": "--hs-theme-toggle-padding-block"
+            },
+            {
+              "description": "Horizontal padding.",
+              "name": "--hs-theme-toggle-padding-inline"
+            },
+            {
+              "description": "Icon size.",
+              "name": "--hs-theme-toggle-font-size"
+            }
+          ],
           "slots": [
             {
               "description": "Not used; the component renders its own button.",

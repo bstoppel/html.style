@@ -18,6 +18,14 @@ const DEFAULT_DISMISS_LABEL = 'Dismiss';
 /**
  * @element hs-alert
  *
+ * @cssprop [--hs-alert-background] - Overrides the variant's background.
+ * @cssprop [--hs-alert-color] - Overrides the variant's text colour.
+ * @cssprop [--hs-alert-accent-color] - Overrides the variant's leading rule.
+ * @cssprop [--hs-alert-accent-width] - Thickness of the leading rule.
+ * @cssprop [--hs-alert-padding] - Internal padding.
+ * @cssprop [--hs-alert-gap] - Space between content and dismiss button.
+ * @cssprop [--hs-alert-radius] - Corner radius.
+ *
  * @attr {'success'|'warning'|'error'|'info'} variant - Feedback tone. Styled by
  *   the global stylesheet, so it applies before this module loads.
  * @attr {boolean} dismissible - Render a dismiss button.

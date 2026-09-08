@@ -729,17 +729,18 @@
     container-type: inline-size;
     display: flex;
     flex-direction: column;
-    gap: var(--space-component);
-    background: var(--color-surface-elevated);
-    border: 1px solid var(--color-border-default);
-    border-radius: var(--p-radius-lg);
-    padding: var(--space-component);
+    gap: var(--hs-card-gap, var(--space-component));
+    background: var(--hs-card-background, var(--color-surface-elevated));
+    border: var(--hs-card-border-width, var(--border-width)) solid
+      var(--hs-card-border-color, var(--color-border-default));
+    border-radius: var(--hs-card-radius, var(--p-radius-lg));
+    padding: var(--hs-card-padding, var(--space-component));
     transition: box-shadow var(--motion-duration) var(--motion-ease);
   }
 
   .card:hover,
   hs-card:hover {
-    box-shadow: var(--p-shadow-md);
+    box-shadow: var(--hs-card-shadow-hover, var(--p-shadow-md));
   }
 
   @container (inline-size > 400px) {
@@ -783,11 +784,12 @@
     display: inline-flex;
     align-items: center;
     gap: var(--p-space-xs);
-    background: var(--color-action-surface);
-    color: var(--color-action-on-surface);
-    border-radius: var(--p-radius-full);
-    padding: var(--p-space-xs) var(--space-component);
-    font-size: var(--text-small);
+    background: var(--hs-badge-background, var(--color-action-surface));
+    color: var(--hs-badge-color, var(--color-action-on-surface));
+    border-radius: var(--hs-badge-radius, var(--p-radius-full));
+    padding: var(--hs-badge-padding-block, var(--p-space-xs))
+      var(--hs-badge-padding-inline, var(--space-component));
+    font-size: var(--hs-badge-font-size, var(--text-small));
     font-variation-settings: "wght" 500;
   }
 
@@ -799,38 +801,44 @@
   hs-alert {
     container-type: inline-size;
     display: flex;
-    gap: var(--space-component);
-    padding: var(--space-component);
-    border-radius: var(--p-radius-md);
-    border-inline-start: 4px solid;
+    gap: var(--hs-alert-gap, var(--space-component));
+    padding: var(--hs-alert-padding, var(--space-component));
+    border-radius: var(--hs-alert-radius, var(--p-radius-md));
+    /* Variants below set the --_alert-* internals. Reading the public property
+       FIRST means an author override beats the variant rather than losing to
+       its higher specificity. */
+    border-inline-start: var(--hs-alert-accent-width, var(--p-border-heavy)) solid
+      var(--hs-alert-accent-color, var(--_alert-accent, currentColor));
+    background: var(--hs-alert-background, var(--_alert-bg, transparent));
+    color: var(--hs-alert-color, var(--_alert-fg, inherit));
   }
 
   .alert--success,
   hs-alert[variant="success"] {
-    background: var(--color-feedback-success-surface);
-    border-color: var(--color-feedback-success);
-    color: var(--color-feedback-success-text);
+    --_alert-bg: var(--color-feedback-success-surface);
+    --_alert-accent: var(--color-feedback-success);
+    --_alert-fg: var(--color-feedback-success-text);
   }
 
   .alert--warning,
   hs-alert[variant="warning"] {
-    background: var(--color-feedback-warning-surface);
-    border-color: var(--color-feedback-warning);
-    color: var(--color-feedback-warning-text);
+    --_alert-bg: var(--color-feedback-warning-surface);
+    --_alert-accent: var(--color-feedback-warning);
+    --_alert-fg: var(--color-feedback-warning-text);
   }
 
   .alert--error,
   hs-alert[variant="error"] {
-    background: var(--color-feedback-error-surface);
-    border-color: var(--color-feedback-error);
-    color: var(--color-feedback-error-text);
+    --_alert-bg: var(--color-feedback-error-surface);
+    --_alert-accent: var(--color-feedback-error);
+    --_alert-fg: var(--color-feedback-error-text);
   }
 
   .alert--info,
   hs-alert[variant="info"] {
-    background: var(--color-feedback-info-surface);
-    border-color: var(--color-feedback-info);
-    color: var(--color-feedback-info-text);
+    --_alert-bg: var(--color-feedback-info-surface);
+    --_alert-accent: var(--color-feedback-info);
+    --_alert-fg: var(--color-feedback-info-text);
   }
 
   /* A shadow-DOM component renders nothing until its module upgrades it.
@@ -871,16 +879,19 @@
   /* Light-DOM component: it renders a real <button>, so it only needs the
      button to look like an icon affordance rather than a primary action. */
   hs-theme-toggle > button {
-    background: none;
-    border: 1px solid var(--color-border-default);
-    color: var(--color-text-primary);
-    padding: var(--p-space-xs) var(--space-component);
-    font-size: var(--text-body);
+    background: var(--hs-theme-toggle-background, none);
+    border: var(--border-width) solid
+      var(--hs-theme-toggle-border-color, var(--color-border-default));
+    border-radius: var(--hs-theme-toggle-radius, var(--p-radius-md));
+    color: var(--hs-theme-toggle-color, var(--color-text-primary));
+    padding: var(--hs-theme-toggle-padding-block, var(--p-space-xs))
+      var(--hs-theme-toggle-padding-inline, var(--space-component));
+    font-size: var(--hs-theme-toggle-font-size, var(--text-body));
     line-height: 1;
   }
 
   hs-theme-toggle > button:hover {
-    background: var(--color-surface-sunken);
+    background: var(--hs-theme-toggle-background-hover, var(--color-surface-sunken));
   }
 
   /* hs-dialog wraps a real <dialog>, which the atoms layer already styles.
@@ -890,12 +901,24 @@
     display: contents;
   }
 
+  /* Scoped to the wrapper so a bare <dialog> keeps the atoms-layer styling. */
+  hs-dialog > dialog {
+    max-inline-size: var(--hs-dialog-max-inline-size, min(90vw, 600px));
+    padding: var(--hs-dialog-padding, var(--space-gutter));
+    border-radius: var(--hs-dialog-radius, var(--p-radius-lg));
+    background: var(--hs-dialog-background, var(--color-surface-overlay));
+  }
+
+  hs-dialog > dialog::backdrop {
+    background: var(--hs-dialog-backdrop, oklch(0 0 0 / 0.5));
+  }
+
   /* hs-accordion coordinates real <details>, which the atoms layer already
      styles. It only needs to stack them. */
   hs-accordion {
     display: flex;
     flex-direction: column;
-    gap: var(--space-component);
+    gap: var(--hs-accordion-gap, var(--space-component));
   }
 
   hs-alert > [data-hs-dismiss] {
@@ -920,29 +943,30 @@
   hs-field {
     display: flex;
     flex-direction: column;
-    gap: var(--p-space-xs);
-    margin-block-end: var(--space-block);
+    gap: var(--hs-field-gap, var(--p-space-xs));
+    margin-block-end: var(--hs-field-spacing, var(--space-block));
   }
 
   hs-field [data-hs-hint] {
     margin: 0;
-    font-size: var(--text-small);
-    color: var(--color-text-secondary);
+    font-size: var(--hs-field-hint-font-size, var(--text-small));
+    color: var(--hs-field-hint-color, var(--color-text-secondary));
   }
 
   hs-field [data-hs-error] {
     margin: 0;
-    font-size: var(--text-small);
-    color: var(--color-feedback-error-text);
+    font-size: var(--hs-field-error-font-size, var(--text-small));
+    color: var(--hs-field-error-color, var(--color-feedback-error-text));
   }
 
   hs-field :is(input, select, textarea)[aria-invalid="true"] {
-    border-color: var(--color-feedback-error);
+    border-color: var(--hs-field-invalid-border-color, var(--color-feedback-error));
   }
 
   /* hs-copy renders a real <button>; only the copied state needs styling. */
   hs-copy[data-copied] > button {
-    background: var(--color-feedback-success);
+    background: var(--hs-copy-copied-background, var(--color-feedback-success));
+    color: var(--hs-copy-copied-color, var(--color-text-inverse));
   }
 
   /* Form Group */

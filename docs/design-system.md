@@ -93,7 +93,21 @@ hs-toggle.large {
 }
 ```
 
-**This matters most for shadow-DOM components.** `::part()` can restyle the
+Light-DOM components use the same convention. A consumer *could* just write
+`hs-alert { padding: 2rem }` — there is no boundary in the way — but the token
+is still the better route: it cascades to descendants, it will not lose a
+specificity fight with a variant rule, and it is a documented, supported surface
+rather than an arbitrary declaration that might move.
+
+Variants set an internal default rather than the public property, so an author
+override wins over the variant despite the variant's higher specificity:
+
+```css
+hs-alert            { background: var(--hs-alert-background, var(--_alert-bg)); }
+hs-alert[variant="error"] { --_alert-bg: var(--color-feedback-error-surface); }
+```
+
+**Overriding matters most for shadow-DOM components.** `::part()` can restyle the
 elements a component exposes, but it loses to sizes declared inside the shadow
 root — so a custom property is the only way in. Sizes that depend on other sizes
 are derived rather than hardcoded: resize `hs-toggle`'s track and the thumb's

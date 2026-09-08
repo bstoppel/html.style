@@ -359,6 +359,42 @@ test.describe('Custom elements manifest', () => {
     }
   });
 
+  test('documents every --hs-* setting the stylesheet defines', async ({ page }) => {
+    await page.goto('/examples.html');
+
+    // The analyzer only associates a JSDoc block that IMMEDIATELY precedes the
+    // class — a module constant in between silently breaks it, and you still
+    // get a manifest, just one missing the properties. That has now happened
+    // four times, so compare the manifest against the stylesheet itself.
+    const css = await (await page.request.get('/css/html.style.css')).text();
+    const manifest = await (await page.request.get('/custom-elements.json')).json();
+    const declarations = manifest.modules.flatMap((m) => m.declarations ?? []);
+
+    // Match against the real tag names, longest first — deriving the tag by
+    // splitting on hyphens turns --hs-theme-toggle-background into "hs-theme".
+    const tags = declarations
+      .filter((d) => d.customElement && d.tagName)
+      .map((d) => d.tagName)
+      .sort((a, b) => b.length - a.length);
+
+    const declared = {};
+    for (const [, name] of css.matchAll(/var\((--hs-[a-z0-9-]+)/g)) {
+      const tag = tags.find((t) => name.startsWith(`--${t}-`));
+      if (!tag) continue;
+      (declared[tag] ??= new Set()).add(name);
+    }
+
+    expect(Object.keys(declared).length).toBeGreaterThan(0);
+    for (const [tag, names] of Object.entries(declared)) {
+      const documented = (declarations.find((d) => d.tagName === tag)?.cssProperties ?? []).map(
+        (prop) => prop.name
+      );
+      for (const name of names) {
+        expect(documented, `${tag} should document ${name}`).toContain(name);
+      }
+    }
+  });
+
   test('records the public API surface, not just tag names', async ({ page }) => {
     const manifest = await (await page.request.get('/custom-elements.json')).json();
     const toggle = manifest.modules

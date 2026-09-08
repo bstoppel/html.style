@@ -28,6 +28,12 @@
  *
  * @element hs-dialog
  *
+ * @cssprop [--hs-dialog-max-inline-size] - Maximum dialog width.
+ * @cssprop [--hs-dialog-padding] - Internal padding.
+ * @cssprop [--hs-dialog-radius] - Corner radius.
+ * @cssprop [--hs-dialog-background] - Dialog surface.
+ * @cssprop [--hs-dialog-backdrop] - Backdrop colour.
+ *
  * @attr {boolean} open - Present means the dialog is open, as a modal.
  * @attr {boolean} persistent - Do not close on backdrop click. Escape still
  *   works; the platform owns that and it is not overridden.

@@ -21,7 +21,20 @@
  *
  * An author-supplied <label> is left alone; the component only fills gaps.
  *
+ */
+
+let fieldCount = 0;
+
+/**
  * @element hs-field
+ *
+ * @cssprop [--hs-field-gap] - Space between label, control, hint and error.
+ * @cssprop [--hs-field-spacing] - Space below the whole field.
+ * @cssprop [--hs-field-hint-color] - Hint text colour.
+ * @cssprop [--hs-field-hint-font-size] - Hint text size.
+ * @cssprop [--hs-field-error-color] - Error text colour.
+ * @cssprop [--hs-field-error-font-size] - Error text size.
+ * @cssprop [--hs-field-invalid-border-color] - Control border when invalid.
  *
  * @attr {string} label - Label text. Skipped if you supply your own <label>.
  * @attr {string} hint - Help text shown under the control and referenced by
@@ -35,9 +48,6 @@
  * @fires hs-invalid - Fired when the control fails validation.
  *   `detail` carries `{ message }`, the browser's own text.
  */
-
-let fieldCount = 0;
-
 export class HsField extends HTMLElement {
   static observedAttributes = ['label', 'hint'];
 
