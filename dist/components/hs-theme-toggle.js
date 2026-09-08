@@ -23,6 +23,15 @@ const DEFAULT_LABEL = 'Toggle colour scheme';
 /**
  * @element hs-theme-toggle
  *
+ * @cssprop [--hs-theme-toggle-background] - Button background.
+ * @cssprop [--hs-theme-toggle-background-hover] - Button background on hover.
+ * @cssprop [--hs-theme-toggle-border-color] - Button border colour.
+ * @cssprop [--hs-theme-toggle-color] - Icon colour.
+ * @cssprop [--hs-theme-toggle-radius] - Corner radius.
+ * @cssprop [--hs-theme-toggle-padding-block] - Vertical padding.
+ * @cssprop [--hs-theme-toggle-padding-inline] - Horizontal padding.
+ * @cssprop [--hs-theme-toggle-font-size] - Icon size.
+ *
  * @attr {string} label - Accessible name for the button. Defaults to
  *   "Toggle colour scheme".
  *

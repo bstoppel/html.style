@@ -19,7 +19,14 @@
  *     <details open><summary>Returns</summary>…</details>
  *   </hs-accordion>
  *
+ */
+
+let groupCount = 0;
+
+/**
  * @element hs-accordion
+ *
+ * @cssprop [--hs-accordion-gap] - Space between panels.
  *
  * @attr {boolean} exclusive - Only one panel open at a time, via the native
  *   `name` grouping.
@@ -29,9 +36,6 @@
  * @fires hs-accordion-toggle - Fired when a panel opens or closes.
  *   `detail` carries `{ index, open }`.
  */
-
-let groupCount = 0;
-
 export class HsAccordion extends HTMLElement {
   static observedAttributes = ['exclusive'];
 

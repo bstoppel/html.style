@@ -10,6 +10,13 @@
  *
  * @element hs-badge
  *
+ * @cssprop [--hs-badge-background] - Badge background.
+ * @cssprop [--hs-badge-color] - Badge text colour.
+ * @cssprop [--hs-badge-radius] - Corner radius.
+ * @cssprop [--hs-badge-padding-block] - Vertical padding.
+ * @cssprop [--hs-badge-padding-inline] - Horizontal padding.
+ * @cssprop [--hs-badge-font-size] - Label size.
+ *
  * @slot - The badge's label.
  *
  * @cssprop [--color-action-surface] - Badge background.

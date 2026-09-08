@@ -14,7 +14,16 @@
  *   <pre id="snippet"><code>npm install html.style</code></pre>
  *   <hs-copy for="snippet">Copy</hs-copy>
  *
+ */
+
+const DEFAULT_COPIED = 'Copied';
+const RESET_AFTER = 2000;
+
+/**
  * @element hs-copy
+ *
+ * @cssprop [--hs-copy-copied-background] - Button background while confirming.
+ * @cssprop [--hs-copy-copied-color] - Button text while confirming.
  *
  * @attr {string} for - Id of the element whose text is copied. Without it, the
  *   copied text is this element's own `value` attribute.
@@ -27,10 +36,6 @@
  * @fires hs-copy-error - Fired when the copy fails, which the Clipboard API
  *   does whenever the document is not focused or permission is refused.
  */
-
-const DEFAULT_COPIED = 'Copied';
-const RESET_AFTER = 2000;
-
 export class HsCopy extends HTMLElement {
   #button = null;
   #status = null;

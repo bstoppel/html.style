@@ -16,6 +16,14 @@
  *
  * @element hs-card
  *
+ * @cssprop [--hs-card-background] - Card background.
+ * @cssprop [--hs-card-border-color] - Card border colour.
+ * @cssprop [--hs-card-border-width] - Card border width.
+ * @cssprop [--hs-card-radius] - Corner radius.
+ * @cssprop [--hs-card-padding] - Internal padding.
+ * @cssprop [--hs-card-gap] - Space between child elements.
+ * @cssprop [--hs-card-shadow-hover] - Shadow applied on hover.
+ *
  * @slot - The card's content.
  *
  * @cssprop [--color-surface-elevated] - Card background.
