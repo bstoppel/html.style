@@ -422,6 +422,9 @@ another framework, its SSR can emit Declarative Shadow DOM for these elements.
 --color-action-hover: oklch(from var(--color-action-primary) calc(l + 0.1) c h);
 ```
 
+Full reference, including the component-level settings and how theming crosses
+the shadow boundary: **[docs/design-system.md](docs/design-system.md)**.
+
 ### Customizing Brand Colors
 
 ```css

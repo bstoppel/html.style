@@ -53,9 +53,15 @@ if (!customElements.get('hs-tab-panel')) {
  * @csspart tab-active - The active tab button, in addition to `tab`.
  * @csspart panel - The active panel wrapper.
  *
- * @cssprop [--color-action-primary] - Active tab indicator and text.
- * @cssprop [--color-border-default] - Rule under the tablist.
- * @cssprop [--color-text-secondary] - Inactive tab text.
+ * @cssprop [--hs-tabs-gap] - Space between tabs.
+ * @cssprop [--hs-tabs-tab-padding-block] - Vertical padding inside a tab.
+ * @cssprop [--hs-tabs-tab-padding-inline] - Horizontal padding inside a tab.
+ * @cssprop [--hs-tabs-indicator-size] - Thickness of the active-tab underline.
+ * @cssprop [--hs-tabs-indicator-color] - Colour of that underline.
+ * @cssprop [--hs-tabs-tab-color] - Inactive tab text.
+ * @cssprop [--hs-tabs-tab-color-active] - Active tab text.
+ * @cssprop [--hs-tabs-border-color] - Rule under the tablist.
+ * @cssprop [--hs-tabs-panel-spacing] - Gap between the tablist and the panel.
  */
 export class HsTabs extends LitElement {
   static properties = {
@@ -78,8 +84,9 @@ export class HsTabs extends LitElement {
 
     [part='tablist'] {
       display: flex;
-      gap: var(--p-space-xs, 0.25rem);
-      border-block-end: 1px solid var(--color-border-default, currentColor);
+      gap: var(--hs-tabs-gap, var(--p-space-xs, 0.25rem));
+      border-block-end: var(--border-width, 1px) solid
+        var(--hs-tabs-border-color, var(--color-border-default, currentColor));
       overflow-x: auto;
     }
 
@@ -87,34 +94,35 @@ export class HsTabs extends LitElement {
       flex-shrink: 0;
       background: none;
       border: none;
-      border-block-end: 2px solid transparent;
-      margin-block-end: -1px;
-      padding: var(--space-component, 0.5rem) var(--space-inline, 1rem);
+      border-block-end: var(--hs-tabs-indicator-size, var(--border-width-emphasis, 2px))
+        solid transparent;
+      margin-block-end: calc(-1 * var(--border-width, 1px));
+      padding: var(--hs-tabs-tab-padding-block, var(--space-component, 0.5rem))
+        var(--hs-tabs-tab-padding-inline, var(--space-inline, 1rem));
       font: inherit;
-      color: var(--color-text-secondary, currentColor);
+      color: var(--hs-tabs-tab-color, var(--color-text-secondary, currentColor));
       cursor: pointer;
-      transition: color 0.2s ease, border-color 0.2s ease;
+      transition: color var(--motion-duration, 200ms) var(--motion-ease, ease),
+        border-color var(--motion-duration, 200ms) var(--motion-ease, ease);
     }
 
     button[aria-selected='true'] {
-      color: var(--color-action-primary, currentColor);
-      border-block-end-color: var(--color-action-primary, currentColor);
+      color: var(--hs-tabs-tab-color-active, var(--color-action-primary, currentColor));
+      border-block-end-color: var(--hs-tabs-indicator-color,
+        var(--color-action-primary, currentColor));
     }
 
     button:focus-visible {
-      outline: 2px solid var(--color-action-primary, currentColor);
-      outline-offset: -2px;
+      outline: var(--focus-ring-width, 2px) solid var(--focus-ring-color, currentColor);
+      outline-offset: calc(-1 * var(--focus-ring-width, 2px));
     }
 
     [part='panel'] {
-      padding-block-start: var(--space-block, 1.5rem);
+      padding-block-start: var(--hs-tabs-panel-spacing, var(--space-block, 1.5rem));
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      button {
-        transition-duration: 0.01ms;
-      }
-    }
+    /* No reduced-motion block: --motion-duration inherits through the shadow
+       boundary, so collapsing it on :root reaches these transitions. */
   `;
 
   #panels = [];
