@@ -305,6 +305,42 @@ useful when switching tabs is expensive. Fires `hs-tab-change` with
 `{ index, label }`, and exposes `::part(tablist)`, `::part(tab)`,
 `::part(tab-active)` and `::part(panel)`.
 
+### hs-field
+
+Light DOM, wiring a native control. `<label for>`, the Constraint Validation
+API, and `aria-describedby` are all platform machinery — the component does the
+wiring people get wrong.
+
+```html
+<hs-field label="Email address" hint="We never share it.">
+  <input type="email" name="email" required>
+</hs-field>
+```
+
+It generates the id, associates the label, points `aria-describedby` at the
+hint, and on failure shows **the browser's own** `validationMessage` — so the
+text stays localised rather than hand-written. An author-supplied `<label>` is
+left alone; the component only fills gaps. Add `novalidate` to suppress
+reporting without disabling validation.
+
+Light DOM is mandatory here rather than preferred: `<label for>` does not cross
+a shadow boundary, and a control inside one does not participate in the
+surrounding form.
+
+### hs-copy
+
+Light DOM, wrapping a real `<button>` and using the Clipboard API.
+
+```html
+<pre id="snippet"><code>npm install html.style</code></pre>
+<hs-copy for="snippet">Copy</hs-copy>
+```
+
+Confirmation is announced through a live region rather than by renaming the
+button, since renaming a control mid-interaction loses voice-control users their
+target. Fires `hs-copy` with the copied text, and `hs-copy-error` when the
+Clipboard API rejects — which it does whenever the document is not focused.
+
 ### hs-dialog
 
 Light DOM, wrapping a real `<dialog>`. The platform supplies the top layer,
@@ -460,7 +496,9 @@ FormEnhancements.init();
 
 - `SmoothScroll` - Smooth scrolling for skip links (respects `prefers-reduced-motion`)
 - `DialogEnhancements` - Close on backdrop click and Escape key
-- `ClipboardHelper` - Copy buttons for code blocks
+- `ClipboardHelper` - Legacy. Not enabled by default (it is commented out of
+  `init()`), and it injects a copy button into *every* code block. Use
+  [`<hs-copy>`](#hs-copy) instead, which copies what you point it at.
 
 ## Accessibility
 

@@ -876,6 +876,36 @@
     opacity: 0.7;
   }
 
+  /* hs-field renders a native label, control, hint and error in light DOM.
+     It only needs stacking plus the two generated regions styled. */
+  hs-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p-space-xs);
+    margin-block-end: var(--space-block);
+  }
+
+  hs-field [data-hs-hint] {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+  }
+
+  hs-field [data-hs-error] {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--color-feedback-error-text);
+  }
+
+  hs-field :is(input, select, textarea)[aria-invalid="true"] {
+    border-color: var(--color-feedback-error);
+  }
+
+  /* hs-copy renders a real <button>; only the copied state needs styling. */
+  hs-copy[data-copied] > button {
+    background: var(--color-feedback-success);
+  }
+
   /* Form Group */
   .form-group {
     display: flex;
