@@ -10,9 +10,11 @@
  * and CSS classes, and work with JavaScript disabled. See CLAUDE.md.
  */
 
+export { HsAccordion } from './hs-accordion.js';
 export { HsAlert } from './hs-alert.js';
 export { HsBadge } from './hs-badge.js';
 export { HsCard } from './hs-card.js';
+export { HsDialog } from './hs-dialog.js';
 export { HsTabs, HsTabPanel } from './hs-tabs.js';
 export { HsThemeToggle } from './hs-theme-toggle.js';
 export { HsToggle } from './hs-toggle.js';

@@ -418,6 +418,45 @@ console.log(greet('World'));</code></pre>
           </hs-tab-panel>
         </hs-tabs>
 
+        <h3>hs-dialog (light DOM, wrapping &lt;dialog&gt;)</h3>
+        <p>
+          The platform already provides the top layer, focus trap, Escape, and
+          <code>&lt;form method="dialog"&gt;</code>. This wraps a real
+          <code>&lt;dialog&gt;</code> and adds only what is left to script: a
+          declarative modal <code>open</code>, and backdrop dismissal.
+        </p>
+        <button type="button" id="open-dialog">Open dialog</button>
+        <hs-dialog id="dialog-demo">
+          <h4 style="margin-block-start: 0;">Delete this item?</h4>
+          <p>This cannot be undone.</p>
+          <form method="dialog" class="cluster">
+            <button value="cancel" class="button--outline">Cancel</button>
+            <button value="delete">Delete</button>
+          </form>
+        </hs-dialog>
+        <p><output id="dialog-result" class="badge" hidden></output></p>
+
+        <h3>hs-accordion (light DOM, coordinating &lt;details&gt;)</h3>
+        <p>
+          Disclosure is native. This assigns the shared <code>name</code> that
+          makes a group exclusive, and reports one event for the whole group
+          instead of a listener per panel.
+        </p>
+        <hs-accordion exclusive id="accordion-demo">
+          <details>
+            <summary>What is a CSS-only element?</summary>
+            <p>An <code>&lt;hs-*&gt;</code> tag with no JavaScript behind it.</p>
+          </details>
+          <details>
+            <summary>Why wrap native elements?</summary>
+            <p>Build on the platform; never reimplement it.</p>
+          </details>
+          <details>
+            <summary>Does this need JavaScript?</summary>
+            <p>The panels do not. The grouping does.</p>
+          </details>
+        </hs-accordion>
+
         <h3>hs-theme-toggle (light DOM)</h3>
         <p>
           Renders a real <code>&lt;button&gt;</code> rather than reimplementing
@@ -672,6 +711,15 @@ console.log(greet('World'));</code></pre>
 
   <script type="module" src="js/html.style.components.js"></script>
   <script type="module">
+    document.querySelector('#open-dialog')?.addEventListener('click', () => {
+      document.querySelector('#dialog-demo').show();
+    });
+    document.querySelector('#dialog-demo')?.addEventListener('hs-close', (event) => {
+      const output = document.querySelector('#dialog-result');
+      output.textContent = `Closed with: ${event.detail.returnValue || '(none)'}`;
+      output.hidden = false;
+    });
+
     import { ThemeManager } from './js/html.style.js';
     window.ThemeManager = ThemeManager;
   </script>

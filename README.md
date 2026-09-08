@@ -305,6 +305,51 @@ useful when switching tabs is expensive. Fires `hs-tab-change` with
 `{ index, label }`, and exposes `::part(tablist)`, `::part(tab)`,
 `::part(tab-active)` and `::part(panel)`.
 
+### hs-dialog
+
+Light DOM, wrapping a real `<dialog>`. The platform supplies the top layer,
+backdrop, focus trap, Escape, focus return, and `<form method="dialog">`. The
+component adds a declarative modal `open` — `<dialog open>` alone is *non*-modal
+— and configures backdrop dismissal.
+
+```html
+<hs-dialog id="confirm">
+  <h2>Delete this?</h2>
+  <form method="dialog">
+    <button value="cancel">Cancel</button>
+    <button value="delete">Delete</button>
+  </form>
+</hs-dialog>
+```
+
+```javascript
+document.querySelector('#confirm').show();
+document.querySelector('#confirm').addEventListener('hs-close', (e) => {
+  console.log(e.detail.returnValue); // "delete"
+});
+```
+
+Add `persistent` to stop backdrop dismissal. Escape always works — a modal the
+keyboard cannot close is a trap. Where the browser supports `closedBy` this is
+configured natively rather than handled in JavaScript.
+
+### hs-accordion
+
+Light DOM, coordinating real `<details>` elements. Disclosure, keyboard and
+accessibility are all native; the component assigns the shared `name` that makes
+a group exclusive and reports one event for the whole group.
+
+```html
+<hs-accordion exclusive>
+  <details><summary>Shipping</summary>…</details>
+  <details open><summary>Returns</summary>…</details>
+</hs-accordion>
+```
+
+Fires `hs-accordion-toggle` with `{ index, open }`. `closeAll()` and `openAll()`
+have no native equivalent; `openAll()` is a deliberate no-op under `exclusive`,
+since the browser would immediately close all but one.
+
 ### hs-theme-toggle
 
 Light DOM. Renders a real `<button>` rather than reimplementing one, so focus,

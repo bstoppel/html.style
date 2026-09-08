@@ -4,6 +4,89 @@
   "modules": [
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-accordion.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsAccordion",
+          "members": [
+            {
+              "kind": "field",
+              "name": "#groupName",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#observer",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "panels",
+              "description": "The `<details>` children, in document order.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "openAll"
+            },
+            {
+              "kind": "method",
+              "name": "closeAll"
+            },
+            {
+              "kind": "method",
+              "name": "#sync",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onToggle",
+              "privacy": "private"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "exclusive"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-accordion",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsAccordion",
+          "declaration": {
+            "name": "HsAccordion",
+            "module": "dist/components/hs-accordion.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-accordion",
+          "declaration": {
+            "name": "HsAccordion",
+            "module": "dist/components/hs-accordion.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-alert.js",
       "declarations": [
         {
@@ -186,6 +269,134 @@
           "declaration": {
             "name": "HsCard",
             "module": "dist/components/hs-card.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-dialog.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "<hs-dialog> — light DOM, wrapping a real <dialog>.\n\nThe platform already does the hard parts: the top layer, the backdrop, the\nfocus trap, inert-ing the page behind, Escape to close, returning focus to\nwhatever opened it, and `<form method=\"dialog\">`. None of that is\nreimplemented here — a native <dialog> does it, and this element wraps one.\n\nWhat it adds is the part the platform leaves to script:\n\n  - `<dialog open>` shows NON-modally. Getting a modal requires calling\n    showModal() from JavaScript, so there is no declarative way to open one.\n    The `open` attribute here means modal.\n  - Backdrop dismissal. Where the browser supports `closedBy` this sets it and\n    the PLATFORM does the dismissing; the JavaScript fallback below only runs\n    on browsers at this project's floor, which predate it.\n\nChildren are moved into the <dialog> once, on connect, so consumers write\ntheir content directly and `<form method=\"dialog\">` still finds its ancestor:\n\n  <hs-dialog id=\"confirm\">\n    <h2>Delete this?</h2>\n    <form method=\"dialog\">\n      <button value=\"cancel\">Cancel</button>\n      <button value=\"delete\">Delete</button>\n    </form>\n  </hs-dialog>",
+          "name": "HsDialog",
+          "slots": [
+            {
+              "description": "The dialog's content.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#supportsClosedBy",
+              "privacy": "private",
+              "static": true,
+              "description": "Whether the browser can do backdrop dismissal itself."
+            },
+            {
+              "kind": "field",
+              "name": "#dialog",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "method",
+              "name": "#syncClosedBy",
+              "privacy": "private",
+              "description": "Hand dismissal to the platform. `any` is light dismiss plus Escape;\n`closerequest` is Escape only, which is what `persistent` means. Escape is\nnever taken away — a modal the keyboard cannot close is a trap."
+            },
+            {
+              "kind": "field",
+              "name": "dialog",
+              "description": "The wrapped native element, for anything this API does not cover.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "open"
+            },
+            {
+              "kind": "method",
+              "name": "show",
+              "description": "Open as a modal. Idempotent."
+            },
+            {
+              "kind": "method",
+              "name": "close",
+              "parameters": [
+                {
+                  "name": "returnValue"
+                }
+              ],
+              "description": "Close, optionally setting the native returnValue."
+            },
+            {
+              "kind": "field",
+              "name": "#onNativeClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onBackdropClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-open",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after the dialog opens."
+            },
+            {
+              "description": "Fired after it closes. `detail` carries `{ returnValue }`.",
+              "name": "hs-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Present means the dialog is open, as a modal."
+            },
+            {
+              "name": "persistent",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Do not close on backdrop click. Escape still works; the platform owns that and it is not overridden."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-dialog",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsDialog",
+          "declaration": {
+            "name": "HsDialog",
+            "module": "dist/components/hs-dialog.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-dialog",
+          "declaration": {
+            "name": "HsDialog",
+            "module": "dist/components/hs-dialog.js"
           }
         }
       ]
@@ -722,6 +933,14 @@
       "exports": [
         {
           "kind": "js",
+          "name": "HsAccordion",
+          "declaration": {
+            "name": "HsAccordion",
+            "module": "./hs-accordion.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "HsAlert",
           "declaration": {
             "name": "HsAlert",
@@ -742,6 +961,14 @@
           "declaration": {
             "name": "HsCard",
             "module": "./hs-card.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsDialog",
+          "declaration": {
+            "name": "HsDialog",
+            "module": "./hs-dialog.js"
           }
         },
         {
