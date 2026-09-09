@@ -104,6 +104,8 @@ When in doubt, reach for the lighter tier.
 
 Before submitting:
 
+- Run `npm run docs:check` — verifies the docs still match the code: file trees,
+  internal links, npm scripts, and that every shipped element is documented
 - Run `npm test` — note this covers **Chromium only**; it is the single project configured
   in `playwright.config.js` (see [tests/README.md](tests/README.md))
 - Manually verify in Firefox and Safari, at or above the supported floors in the

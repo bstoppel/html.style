@@ -33,6 +33,10 @@ jobs:
       - name: Verify build output is in sync
         run: npm run build:check
 
+      # Needs dist/custom-elements.json, so it runs after the build check.
+      - name: Verify documentation is current
+        run: npm run docs:check
+
       - name: Install Playwright browsers
         run: npx playwright install
 

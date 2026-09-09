@@ -60,6 +60,15 @@ sync first, so baselines cannot lock in a stale render. Dispatching it against
 your branch (`--ref`) runs the workflow as defined there, which matters when the
 change being baselined is on that branch.
 
+## Documentation checks
+
+`npm run docs:check` is not a Playwright test — it runs standalone, because the
+Markdown is not served to a browser. It verifies that file trees name real
+files, internal links resolve to real headings, referenced npm scripts exist,
+and every element in `custom-elements.json` is documented in the README.
+
+It runs in CI ahead of the browser tests, since it needs no browser.
+
 ## Test Structure
 
 ```
