@@ -32,6 +32,7 @@
     "test:debug": "playwright test --debug",
     "build": "node build.js",
     "build:check": "node build.js --check",
+    "docs:check": "node check-docs.js",
     "serve": "http-server dist -p 8080",
     "start": "npm run serve"
   },
