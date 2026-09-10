@@ -23,12 +23,16 @@
  * @cssprop [--hs-card-padding] - Internal padding.
  * @cssprop [--hs-card-gap] - Space between child elements.
  * @cssprop [--hs-card-shadow-hover] - Shadow applied on hover.
+ * @cssprop [--hs-card-threshold] - Card width at which children switch from
+ *   stacked to side by side. Approximate: it is compared against the card's
+ *   content box, so padding and gap shift the real switch point outward.
  *
  * @slot - The card's content.
  *
  * @cssprop [--color-surface-elevated] - Card background.
  * @cssprop [--color-border-default] - Card border.
- * @cssprop [--space-component] - Internal padding and gap.
+ * @cssprop [--space-inline] - Internal padding.
+ * @cssprop [--space-component] - Gap between children.
  */
 export class HsCard extends HTMLElement {}
 

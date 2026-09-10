@@ -174,15 +174,39 @@ what the platform does, and does it deliver value in understanding or design?"
 ## CSS Patterns to Follow
 
 ### Container Queries (Not Media Queries)
+
+**An element is never its own query container.** `container-type` makes an
+element a container for its DESCENDANTS. A rule that targets the container
+itself inside `@container` resolves against that element's nearest ANCESTOR
+container instead — so it reads as "when the card is wide" and behaves as "when
+the page is wide". This shipped as a real bug: cards 200px wide laid out
+horizontally because the ancestor was 1200px.
+
+Query from a descendant:
+
 ```css
 .card {
-  container-type: inline-size;
+  container-type: inline-size; /* for descendants to query */
 }
 
 @container (inline-size > 400px) {
-  .card { flex-direction: row; }
+  .card > * { ... } /* the CHILDREN query the card */
 }
 ```
+
+Or skip the query entirely — an intrinsic switch needs no container at all, and
+responds to the element's own width by construction:
+
+```css
+.card > * {
+  flex-grow: 1;
+  flex-basis: calc((400px - 100%) * 999);
+}
+```
+
+Width-based `@media` is not used anywhere in the framework. The only `@media`
+rules are preference queries: `prefers-reduced-motion`, `prefers-contrast`,
+`forced-colors`, `print`.
 
 ### Theme Support with light-dark()
 ```css

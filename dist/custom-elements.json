@@ -333,6 +333,10 @@
               "name": "--hs-card-shadow-hover"
             },
             {
+              "description": "Card width at which children switch from stacked to side by side. Approximate: it is compared against the card's content box, so padding and gap shift the real switch point outward.",
+              "name": "--hs-card-threshold"
+            },
+            {
               "description": "Card background.",
               "name": "--color-surface-elevated"
             },
@@ -341,7 +345,11 @@
               "name": "--color-border-default"
             },
             {
-              "description": "Internal padding and gap.",
+              "description": "Internal padding.",
+              "name": "--space-inline"
+            },
+            {
+              "description": "Gap between children.",
               "name": "--space-component"
             }
           ],
