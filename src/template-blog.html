@@ -9,22 +9,26 @@
 </head>
 <body class="sidebar-layout">
 
-  <aside style="background: var(--color-surface-elevated); padding: var(--space-component); border-radius: var(--p-radius-md);">
+  <aside class="card">
     <nav class="stack">
-      <strong>Categories</strong>
-      <ul style="list-style: none; padding: 0;">
-        <li><a href="#">Web Standards</a></li>
-        <li><a href="#">CSS</a></li>
-        <li><a href="#">Accessibility</a></li>
-        <li><a href="#">Performance</a></li>
-      </ul>
+      <div class="stack">
+        <strong>Categories</strong>
+        <ul role="list">
+          <li><a href="#">Web Standards</a></li>
+          <li><a href="#">CSS</a></li>
+          <li><a href="#">Accessibility</a></li>
+          <li><a href="#">Performance</a></li>
+        </ul>
+      </div>
 
-      <strong style="margin-block-start: var(--space-block);">Recent Posts</strong>
-      <ul style="list-style: none; padding: 0; font-size: var(--text-small);">
-        <li><a href="#" style="color: var(--color-text-secondary);">Container Queries Guide</a></li>
-        <li><a href="#" style="color: var(--color-text-secondary);">OKLCH Color Spaces</a></li>
-        <li><a href="#" style="color: var(--color-text-secondary);">Cascade Layers Explained</a></li>
-      </ul>
+      <div class="stack">
+        <strong>Recent Posts</strong>
+        <ul role="list">
+          <li><a href="#"><small>Container Queries Guide</small></a></li>
+          <li><a href="#"><small>OKLCH Color Spaces</small></a></li>
+          <li><a href="#"><small>Cascade Layers Explained</small></a></li>
+        </ul>
+      </div>
     </nav>
   </aside>
 
@@ -45,9 +49,11 @@
         <h2>What Are Container Queries?</h2>
         <p>Container queries allow you to apply styles based on the size of a containing element rather than the viewport. This is a game-changer for component-based design.</p>
 
-        <pre><code>@container (inline-size > 400px) {
-  .card {
-    flex-direction: row;
+        <pre><code>/* The children query the card — an element
+   is never its own query container. */
+@container (inline-size > 400px) {
+  .card > * {
+    flex-basis: 0;
   }
 }</code></pre>
 

@@ -692,6 +692,7 @@
 
   .cluster {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: var(--space-inline, var(--p-space-md));
     align-items: center;
@@ -711,6 +712,7 @@
 
   .switcher {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: var(--space-gutter, var(--p-space-lg));
   }
@@ -726,29 +728,36 @@
      The .card class stays supported. */
   .card,
   hs-card {
+    /* For the card's DESCENDANTS to query. A card can never query itself:
+       an element is not its own container. */
     container-type: inline-size;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: var(--hs-card-gap, var(--space-component));
     background: var(--hs-card-background, var(--color-surface-elevated));
     border: var(--hs-card-border-width, var(--border-width)) solid
       var(--hs-card-border-color, var(--color-border-default));
     border-radius: var(--hs-card-radius, var(--p-radius-lg));
-    padding: var(--hs-card-padding, var(--space-component));
+    padding: var(--hs-card-padding, var(--space-inline));
     transition: box-shadow var(--motion-duration) var(--motion-ease);
+  }
+
+  /* Children sit side by side once the CARD is wide enough and stack when it
+     is not - the same intrinsic switch as .switcher, and deliberately not a
+     container query. `@container (inline-size > 400px) { .card { ... } }`
+     reads as "when the card is wide", but resolves against the card's nearest
+     ANCESTOR container, so every card responded to the page width instead of
+     its own: cards 200px wide still laid out horizontally. */
+  .card > *,
+  hs-card > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--hs-card-threshold, 400px) - 100%) * 999);
   }
 
   .card:hover,
   hs-card:hover {
     box-shadow: var(--hs-card-shadow-hover, var(--p-shadow-md));
-  }
-
-  @container (inline-size > 400px) {
-    .card,
-    hs-card {
-      flex-direction: row;
-      padding: var(--space-inline);
-    }
   }
 
   /* Button Variants */
@@ -1164,10 +1173,16 @@
     grid-area: footer;
   }
 
-  /* Sidebar Layout */
+  /* Sidebar Layout
+     flex-direction is declared, not assumed. Applied to <body> this competes
+     with `body { flex-direction: column }` in the atoms layer, and a later
+     cascade layer only wins for the properties it actually declares - so
+     omitting it left the sidebar stacked at every width, with flex-basis
+     acting as a HEIGHT and flex-grow stretching the sidebar vertically. */
   .sidebar-layout {
     container-type: inline-size;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: var(--space-gutter);
   }
@@ -1177,7 +1192,11 @@
     flex-grow: 1;
   }
 
-  .sidebar-layout > :last-child {
+  /* Not `> :last-child`: every template ends with a <script>, so the last
+     child is the script rather than the main region, and <main> got none of
+     these. A display:none element is not a flex item, so matching it here is
+     inert. */
+  .sidebar-layout > :not(:first-child) {
     flex-basis: 0;
     flex-grow: 999;
     min-inline-size: var(--sidebar-threshold, 50%);
