@@ -52,9 +52,15 @@ jobs:
   deploy:
     # Push to main only. Pull requests stop after `test`, so a PR is verified
     # without publishing anything.
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: test
+    # One deploy at a time. Two merges in quick succession would otherwise race,
+    # and the loser could land after the winner and publish the older commit.
+    # Never cancel in progress: a half-finished deploy is worse than a queued one.
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
     permissions:
       contents: read
       deployments: write
@@ -72,9 +78,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Install Wrangler
-        run: npm install -g wrangler
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
