@@ -1,6 +1,74 @@
 # html.style
 
-A modern web standards-based CSS framework leveraging OKLCH colors, container queries, and semantic HTML for 2026 and beyond.
+A CSS framework that styles the HTML you already know. Built on OKLCH, container
+queries and cascade layers for 2026 and beyond.
+
+## The Idea
+
+Write plain HTML. It comes out styled.
+
+```html
+<h1>Settings</h1>
+<form>
+  <label for="email">Email</label>
+  <input id="email" type="email" required>
+  <button>Save</button>
+</form>
+<details><summary>Advanced</summary>Nothing to see yet.</details>
+```
+
+No classes, no components, no vocabulary. The stylesheet styles the elements
+themselves, so a document written from nothing but the HTML spec renders themed,
+accessible, and dark-mode aware. The framework targets a web where machines write
+most of the HTML. A model already knows the specification, so the framework needs
+no training and no configuration.
+
+The `<hs-*>` elements extend that baseline rather than replacing it. The
+framework ships ten, each described in a generated
+[custom elements manifest](#editor-and-agent-support), and three properties
+govern all of them.
+
+### The elements are additive
+
+You never have to reach for one. `<article>` is already a styled article, and
+[`<hs-card>`](#hs-card-and-hs-badge) adds container-query padding on top.
+`<div class="alert">` already works, and [`<hs-alert>`](#hs-alert) adds
+dismissal. Every custom element is a step up from something that already
+rendered correctly, so nothing separates plain markup from framework markup.
+
+### The elements are transparent
+
+Where the platform already solves a problem, the component wraps it rather than
+reimplementing it:
+
+| Element | Contains | Platform does |
+|---|---|---|
+| [`<hs-dialog>`](#hs-dialog) | a real `<dialog>` | top layer, backdrop, focus trap, Escape, focus return |
+| [`<hs-accordion>`](#hs-accordion) | real `<details>` | disclosure, keyboard, exclusive grouping via `name` |
+| [`<hs-field>`](#hs-field) | a real `<input>` | `<label for>`, Constraint Validation, localized messages |
+| [`<hs-copy>`](#hs-copy) | a real `<button>` | focus, activation, accessible name |
+
+Platform knowledge keeps applying inside the component. `<form method="dialog">`
+still closes an `<hs-dialog>`, and `::backdrop` still styles its backdrop. Reason
+through the element instead of memorizing it.
+
+Two components are opaque, and both earn it. [`<hs-tabs>`](#hs-tabs) and
+[`<hs-toggle>`](#hs-toggle) use shadow DOM because there is no native tablist and
+no cross-browser native switch.
+
+### They degrade rather than disappear
+
+Guess wrong and the page gets plainer, never broken:
+
+- `<hs-card>` and `<hs-badge>` render from CSS alone. Their scripts are empty
+  registrations that exist only so editors offer completion.
+- Light-DOM components look right before their JavaScript loads, because the
+  global stylesheet styles the tag directly.
+- The two shadow components reserve their box through `hs-*:not(:defined)`, so
+  the layout does not shift when the script arrives.
+
+An unregistered custom element is normally invisible: `display: inline` with no
+styles. None of these vanish.
 
 ## Getting Started
 
@@ -63,7 +131,7 @@ One caveat worth knowing up front: **no build step is not the same as no server.
 - **OKLCH Color System** - Perceptually uniform colors with Display P3 wide gamut support
 - **Browser-Native Theming** - Uses `light-dark()` function and `color-scheme` property
 - **Container Queries** - Components adapt to their container, not the viewport
-- **Semantic HTML First** - Style HTML tags directly, minimal class usage
+- **Semantic HTML First** - Style HTML tags directly; plain markup renders correctly with no classes and no components
 - **Cascade Layers** - Predictable specificity with `@layer` (reset, tokens, atoms, molecules, organisms, templates)
 - **Three-Tier Design Tokens** - Primitives → Semantic → State (derived via Relative Color Syntax)
 - **Layout Primitives** - Intrinsically responsive layouts (stack, cluster, grid, center, switcher)
@@ -71,7 +139,7 @@ One caveat worth knowing up front: **no build step is not the same as no server.
 - **Machine-Readable** - A generated `custom-elements.json` gives editors and agents completion for every element, attribute, slot, event, part and setting
 - **Progressive Enhancement** - Atoms and layout work with no JavaScript at all; components add behaviour on top
 - **Privacy-First** - Global Privacy Control (GPC) detection and compliance
-- **Web Components** - `<hs-*>` custom elements for behaviour the platform doesn't provide
+- **Additive Components** - `<hs-*>` elements extend the styled baseline rather than replacing it; only two of the ten use shadow DOM, so platform behaviour and your own stylesheet keep working inside the rest
 
 ## Basic Usage
 

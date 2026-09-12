@@ -72,9 +72,11 @@ declaration is dead weight. The framework's own stylesheet carries none.
 ### JavaScript Standards
 
 - **Progressive enhancement is scoped.** Atoms and layout primitives work with
-  JavaScript disabled. Components do not - Declarative Shadow DOM renders their
-  markup server-side, but interactivity requires hydration. Do not describe the
-  component layer as working without JS.
+  JavaScript disabled. Components do not — light-DOM components at least look
+  correct before their script runs, because the global stylesheet styles the tag
+  directly; shadow-DOM components render nothing until they upgrade, which is
+  what the `:not(:defined)` rule below covers. Do not describe the component
+  layer as working without JS.
 - Components are custom elements prefixed `hs-`, one per file in `src/components/`
 - Shadow-DOM components extend Lit; light-DOM components may extend
   `HTMLElement` directly
@@ -91,6 +93,37 @@ declaration is dead weight. The framework's own stylesheet carries none.
 global stylesheet, registered only so editors see it. Behaviour over content the
 consumer provides means light DOM. Owning internal structure means shadow DOM.
 When in doubt, reach for the lighter tier.
+
+### Before adding a component
+
+`<hs-*>` elements are **additive**: they extend a baseline of styled semantic
+HTML rather than replacing it, so someone who knows only the HTML spec gets a
+working page. That property is not automatic. It survives only if each new
+component obeys two rules.
+
+**1. Where a native element exists, wrap it. Never shadow it.**
+
+`<hs-dialog>` contains a real `<dialog>`. `<hs-accordion>` coordinates real
+`<details>`. `<hs-field>` wires a real `<input>`. Platform behaviour keeps
+working inside them, so `<form method="dialog">` still closes an `<hs-dialog>`
+and `::backdrop` still styles its backdrop. A contributor can reason through the
+element instead of memorizing it.
+
+This implies a hard rule: **never introduce an `<hs-*>` element that duplicates
+an already-styled atom.** We would reject `<hs-button>`. The plain `<button>`
+already works, and a custom twin forces a choice where none existed while making
+the plain element look wrong. The same goes for `<hs-input>`, `<hs-table>`, and
+`<hs-heading>`.
+
+**2. Reach for shadow DOM only where the platform offers nothing.**
+
+Two components are opaque today and both earn it: `<hs-tabs>` (no native
+tablist) and `<hs-toggle>` (no cross-browser native switch). Shadow DOM costs
+the global stylesheet, `<label for>`, form participation, and slotted content
+styling. Pay that only when no native element exists to build on.
+
+A proposal that fails either rule changes the framework's design. Open a
+discussion and make the case before writing the component.
 
 ### Accessibility
 
@@ -138,8 +171,11 @@ test: add visual regression tests
 4. **Build On, Don't Reimplement** - wrap a native element whenever the wrapper
    adds clarity or a better API, but never recreate platform behavior in
    JavaScript; no JavaScript for anything CSS or semantic HTML already does
-5. **AI-Friendly** - Predictable, machine-readable patterns
-6. **Delete-Key Friendly** - Only include essentials
+5. **Components Are Additive** - `<hs-*>` elements extend the styled baseline
+   rather than replacing it, and never duplicate an atom that already works.
+   See [Before adding a component](#before-adding-a-component)
+6. **AI-Friendly** - Predictable, machine-readable patterns
+7. **Delete-Key Friendly** - Only include essentials
 
 ### What We Accept
 
@@ -154,11 +190,14 @@ test: add visual regression tests
 
 **Lit is the single sanctioned runtime dependency**, for shadow-DOM components only.
 
-Writing reactive attributes, template caching, and Declarative Shadow DOM
-serialisation by hand is several hundred lines of infrastructure before the first
-component ships, and DSD is a hard requirement here rather than an optimisation.
-Lit is ~5KB and `@lit-labs/ssr` covers the serialisation directly. This is a
-deliberate, bounded exception to the no-dependency rule - not a precedent.
+Writing reactive attributes and efficient template updates by hand is several
+hundred lines of infrastructure before the first component ships. Lit is ~5KB,
+and building on it keeps the shadow components Declarative Shadow DOM
+*compatible*, so a consumer who does have a server render (Next, Nuxt, Astro)
+can emit `<template shadowrootmode>` for them. The framework's own no-build path
+never can — nothing exists to do the emitting, which is why the global
+stylesheet reserves each shadow component's box instead. This is a deliberate,
+bounded exception to the no-dependency rule - not a precedent.
 
 Proposals for any other runtime dependency should expect to be rejected.
 
