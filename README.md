@@ -360,6 +360,51 @@ right before its JavaScript loads. JavaScript only adds dismissal.
 `variant` accepts `success`, `warning`, `error`, `info`. A `dismissible` alert
 fires a cancelable `hs-dismiss` event before removing itself.
 
+### hs-toast
+
+Light DOM, and the transient sibling of [`<hs-alert>`](#hs-alert).
+`<hs-toast-region>` is the live region; toasts go into it.
+
+```html
+<hs-toast-region></hs-toast-region>
+```
+
+```javascript
+document.querySelector('hs-toast-region').show('Draft saved', { variant: 'success' });
+```
+
+The region has to be light DOM and has to be in the page first: a live region
+announces what arrives in it, so it has to exist before the message does and has
+to be somewhere a screen reader is already watching. The message could have been
+a shadow component and is not, so the announced text stays in the same tree as
+the region announcing it.
+
+It is `role="status"`, which is polite, plus `aria-atomic="false"` — `status`
+implies atomic `true`, which would re-announce the whole stack every time a toast
+arrived. An `error` toast carries `role="alert"` itself, raising that one message
+to assertive without changing the region's politeness.
+
+Nothing moves focus. A message you have to dismiss before carrying on is a
+dialog, and this is not one — keep toast content to text, since a timeout that
+takes a control away mid-interaction is worse than no control.
+
+`duration` is milliseconds, defaulting to 5000; zero leaves the toast up.
+Hovering it or focusing something inside pauses the countdown, and it resumes
+when both leave. `prefers-reduced-motion` removes the entrance animation and
+deliberately leaves the timeout alone, because the message needs the same time to
+read either way. Dismissal removes the element outright rather than animating
+out: an exit would have to wait on `animationend`, which never fires on a hidden
+page, and a toast that never leaves is the bug this is built to avoid.
+
+`show()` returns the toast. `clear()` dismisses everything showing. Both respect
+a cancelled `hs-dismiss`, the same cancelable event `<hs-alert>` fires.
+
+The region is fixed to the bottom-right corner and takes no pointer events, so it
+never swallows a click meant for the page. It is light DOM, so move it by
+restyling `hs-toast-region` directly. One limit worth knowing: a modal
+`<dialog>` is in the top layer, which paints above any `z-index`, so a toast
+raised while one is open is behind it.
+
 ### hs-toggle
 
 Shadow DOM, because it owns its internal structure. There is no cross-browser

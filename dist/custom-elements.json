@@ -2072,6 +2072,287 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-toast.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsToast",
+          "cssProperties": [
+            {
+              "description": "Overrides the variant's background.",
+              "name": "--hs-toast-background"
+            },
+            {
+              "description": "Overrides the variant's text colour.",
+              "name": "--hs-toast-color"
+            },
+            {
+              "description": "Overrides the variant's leading rule.",
+              "name": "--hs-toast-accent-color"
+            },
+            {
+              "description": "Thickness of that rule.",
+              "name": "--hs-toast-accent-width"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-toast-padding"
+            },
+            {
+              "description": "Space between content and anything beside it.",
+              "name": "--hs-toast-gap"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-toast-radius"
+            },
+            {
+              "description": "Drop shadow.",
+              "name": "--hs-toast-shadow"
+            },
+            {
+              "description": "How far it slides in from.",
+              "name": "--hs-toast-travel"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The message. Keep it to text: a toast that needs a tab stop should be a dialog, since the timeout would take the control away mid-interaction.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#timer",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#remaining",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#startedAt",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#hovered",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "#focused",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "duration",
+              "description": "Milliseconds before self-dismissal. Zero means it stays."
+            },
+            {
+              "kind": "field",
+              "name": "remaining",
+              "description": "Milliseconds left on the clock. Stops falling while paused.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "paused",
+              "description": "Whether the timeout is currently held by a pointer or by focus.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#start",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#stop",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#hold",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#release",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "dismiss",
+              "description": "Remove it. Fires a cancelable `hs-dismiss` first, matching `<hs-alert>`, so\na consumer can keep it in place."
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-dismiss",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Cancelable, fired before the toast removes itself. Call preventDefault() to keep it in place."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "'success'|'warning'|'error'|'info'"
+              },
+              "description": "Feedback tone, styled by the global stylesheet. `error` also makes this toast announce assertively.",
+              "name": "variant"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Milliseconds before it dismisses itself. Defaults to 5000. Zero means it stays until something dismisses it.",
+              "name": "duration"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-toast",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsToastRegion",
+          "cssProperties": [
+            {
+              "description": "Distance from the viewport corner.",
+              "name": "--hs-toast-region-offset"
+            },
+            {
+              "description": "Space between stacked toasts.",
+              "name": "--hs-toast-region-gap"
+            },
+            {
+              "description": "Width of the stack.",
+              "name": "--hs-toast-region-inline-size"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<hs-toast>` elements, newest last.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "toasts",
+              "description": "The toasts currently showing, oldest first.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "show",
+              "parameters": [
+                {
+                  "name": "message",
+                  "description": "The text to announce.",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "{ variant, duration }",
+                  "default": "{}"
+                },
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "@param {'success'|'warning'|'error'|'info'} [options.variant]\n   * @param {number} [options.duration] - Milliseconds; 0 to leave it up.\n   * "
+                  }
+                }
+              ],
+              "description": "Show a toast and return it, so the caller can dismiss it early or listen to\nit. Appending keeps DOM order the same as the order they were shown.",
+              "return": {
+                "type": {
+                  "text": "HsToast"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "clear",
+              "description": "Dismiss everything showing. Respects a cancelled `hs-dismiss`."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-toast-region",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsToast",
+          "declaration": {
+            "name": "HsToast",
+            "module": "dist/components/hs-toast.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-toast",
+          "declaration": {
+            "name": "HsToast",
+            "module": "dist/components/hs-toast.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToastRegion",
+          "declaration": {
+            "name": "HsToastRegion",
+            "module": "dist/components/hs-toast.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-toast-region",
+          "declaration": {
+            "name": "HsToastRegion",
+            "module": "dist/components/hs-toast.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-toggle.js",
       "declarations": [
         {
@@ -2591,6 +2872,22 @@
           "declaration": {
             "name": "HsTabPanel",
             "module": "./hs-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToast",
+          "declaration": {
+            "name": "HsToast",
+            "module": "./hs-toast.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToastRegion",
+          "declaration": {
+            "name": "HsToastRegion",
+            "module": "./hs-toast.js"
           }
         },
         {

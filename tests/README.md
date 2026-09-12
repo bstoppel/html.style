@@ -114,6 +114,9 @@ tests/
 - Anchor positioning on both paths — the declarative one and the script
   fallback the browser floor needs, which must agree on where a box lands,
   centred alignment and its shift back into view included
+- Live-region wiring, timeout pausing and stacking order for transient messages.
+  Whether a screen reader actually speaks them is not automatable here and still
+  needs a human with VoiceOver or NVDA
 
 ### Performance
 - **LCP** (Largest Contentful Paint) < 2.5s
