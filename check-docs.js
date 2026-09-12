@@ -22,6 +22,7 @@ const DOCS = [
   'tests/README.md',
   'docs/frameworks.md',
   'docs/design-system.md',
+  'docs/positioning.md',
   'src/FAVICON_GENERATION.md',
 ];
 
