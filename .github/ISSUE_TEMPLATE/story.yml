@@ -1,0 +1,57 @@
+name: Story
+description: A user-facing change, with Given/When/Then acceptance criteria
+labels: ["type:story"]
+body:
+  - type: textarea
+    id: narrative
+    attributes:
+      label: Narrative
+      description: Who wants this, what they want, and why it is worth doing.
+      value: |
+        **As a**
+        **I want**
+        **So that**
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Design constraints
+      description: >
+        What the platform already provides, and therefore what this must wrap
+        rather than reimplement. Say whether it is light or shadow DOM and why.
+        See CONTRIBUTING, "Before adding a component".
+      placeholder: |
+        - Light DOM, because it arranges content the consumer provides
+        - Wraps <details>, so disclosure and keyboard stay native
+        - Settings exposed as --hs-<element>-* with semantic token defaults
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: One scenario per behaviour. Each must be independently testable.
+      value: |
+        ```gherkin
+        Scenario:
+          Given
+          When
+          Then
+          And
+        ```
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: done
+    attributes:
+      label: Done when
+      options:
+        - label: axe reports no violations in `tests/a11y`
+        - label: Behaviour covered in `tests/components`
+        - label: JSDoc `@element` `@attr` `@slot` `@fires` `@csspart` `@cssprop` on the class
+        - label: Documented in README and added to `src/examples.html`
+        - label: "`npm run docs:check` and `npm test` pass"

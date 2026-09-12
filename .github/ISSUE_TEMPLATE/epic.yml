@@ -1,0 +1,51 @@
+name: Epic
+description: A body of work spanning several stories
+labels: ["type:epic"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What is missing or wrong today, and who it blocks.
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraint
+    attributes:
+      label: The constraint
+      description: >
+        Decisions already settled that the stories must not reopen. Name any
+        element that may NOT be introduced, and why.
+    validations:
+      required: false
+
+  - type: textarea
+    id: sequencing
+    attributes:
+      label: Sequencing
+      description: What blocks what, and what can run in parallel.
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Done when
+      description: End-to-end scenarios. Not a restatement of the stories.
+      value: |
+        ```gherkin
+        Scenario:
+          Given
+          When
+          Then
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+    validations:
+      required: false

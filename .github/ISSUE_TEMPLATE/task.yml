@@ -1,0 +1,28 @@
+name: Task
+description: A unit of work under a story
+labels: ["type:task"]
+body:
+  - type: input
+    id: parent
+    attributes:
+      label: Parent story
+      placeholder: "#29"
+    validations:
+      required: true
+
+  - type: textarea
+    id: work
+    attributes:
+      label: The work
+      description: What this slice covers, and any constraint specific to it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: satisfies
+    attributes:
+      label: Scenarios satisfied
+      description: Which acceptance scenarios on the parent story this closes.
+      placeholder: Satisfies "Typing filters the list" on #29.
+    validations:
+      required: false
