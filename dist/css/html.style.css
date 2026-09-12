@@ -919,6 +919,31 @@
     background: var(--color-surface-elevated);
   }
 
+  /* <hs-menu-item> is data the menu reads, never rendering. Hidden always, so
+     the commands do not flash as a list of bare words before the upgrade. */
+  hs-menu-item {
+    display: none;
+  }
+
+  /* Shadow component: reserve the trigger button, drawn from the same label
+     attribute the component renders, so the row it sits in does not reflow.
+     Matches the button atom, which is what the trigger becomes. */
+  hs-menu:not(:defined) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--p-space-xs);
+    padding: var(--space-component) var(--space-inline);
+    border-radius: var(--p-radius-md);
+    background: var(--color-action-primary);
+    color: var(--color-text-inverse);
+    font-variation-settings: "wght" 500;
+  }
+
+  hs-menu:not(:defined)::before {
+    content: attr(label);
+  }
+
   /* Light-DOM component: it renders a real <button>, so it only needs the
      button to look like an icon affordance rather than a primary action. */
   hs-theme-toggle > button {
