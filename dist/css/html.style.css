@@ -969,6 +969,73 @@
     }
   }
 
+  /* hs-sortable coordinates a table the consumer wrote, so the table keeps its
+     atoms-layer styling untouched. The only new visuals are the header control
+     and the direction indicator.
+
+     Every rule here targets the injected button, which exists only once the
+     script has run. With JavaScript disabled the table is a plain readable
+     table and no affordance promises an interaction that cannot happen. */
+  hs-sortable {
+    display: block;
+  }
+
+  /* Negative margin against the cell's own padding, so the whole header is the
+     hit area rather than just the words in it. */
+  hs-sortable th > button[data-hs-sort] {
+    display: flex;
+    align-items: center;
+    gap: var(--hs-sortable-gap, var(--p-space-xs));
+    inline-size: 100%;
+    margin: calc(-1 * var(--space-component));
+    padding: var(--space-component);
+    border: none;
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-variation-settings: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  hs-sortable th > button[data-hs-sort]:hover {
+    background: var(--hs-sortable-background-hover, var(--color-surface-base));
+  }
+
+  hs-sortable th > button[data-hs-sort]:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+
+  /* Drawn with borders rather than a generated glyph: ::after text is read out
+     by some screen readers, and aria-sort already says which way it points.
+     It is always present and only changes opacity, so sorting never shifts the
+     header's layout. */
+  hs-sortable th > button[data-hs-sort]::after {
+    content: "";
+    display: block;
+    inline-size: 0;
+    block-size: 0;
+    margin-inline-start: auto;
+    border-inline: var(--hs-sortable-indicator-size, 0.3em) solid transparent;
+    border-block-end: var(--hs-sortable-indicator-size, 0.3em) solid currentColor;
+  }
+
+  /* Faint on a sortable column, solid on the sorted one. */
+  hs-sortable th[aria-sort="none"] > button[data-hs-sort]::after {
+    opacity: var(--hs-sortable-indicator-idle-opacity, 0.3);
+  }
+
+  hs-sortable th[aria-sort="ascending"] > button[data-hs-sort]::after {
+    opacity: var(--hs-sortable-indicator-opacity, 1);
+  }
+
+  hs-sortable th[aria-sort="descending"] > button[data-hs-sort]::after {
+    opacity: var(--hs-sortable-indicator-opacity, 1);
+    rotate: 180deg;
+  }
+
   /* A shadow-DOM component renders nothing until its module upgrades it.
      Declarative Shadow DOM would normally cover that gap, but it requires a
      server render, and this framework's primary path is static HTML with no

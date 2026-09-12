@@ -1715,6 +1715,160 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-sortable.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsSortable",
+          "cssProperties": [
+            {
+              "description": "Space between a header's label and its direction indicator.",
+              "name": "--hs-sortable-gap"
+            },
+            {
+              "description": "Header background on hover.",
+              "name": "--hs-sortable-background-hover"
+            },
+            {
+              "description": "Size of the direction triangle.",
+              "name": "--hs-sortable-indicator-size"
+            },
+            {
+              "description": "Opacity of the sorted column's indicator.",
+              "name": "--hs-sortable-indicator-opacity"
+            },
+            {
+              "description": "Opacity of the indicator on a sortable column that is not the sorted one.",
+              "name": "--hs-sortable-indicator-idle-opacity"
+            }
+          ],
+          "slots": [
+            {
+              "description": "One `<table>`. Anything else is left alone.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "table",
+              "description": "The wrapped table, for anything this API does not cover.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "sortedBy",
+              "description": "The header of the sorted column, or null while nothing is sorted.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "description": "Re-read the headers. Call after replacing the table or its `<thead>`."
+            },
+            {
+              "kind": "method",
+              "name": "#sync",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#makeSortable",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "th"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "sort",
+              "parameters": [
+                {
+                  "name": "header",
+                  "description": "The `<th>`, or its column index.",
+                  "type": {
+                    "text": "HTMLTableCellElement|number"
+                  }
+                },
+                {
+                  "name": "direction",
+                  "description": "Defaults to ascending, or to\nthe reverse of the current direction when already sorted by this column.",
+                  "optional": true,
+                  "type": {
+                    "text": "'ascending'|'descending'"
+                  }
+                }
+              ],
+              "description": "Sort by a column."
+            },
+            {
+              "kind": "method",
+              "name": "#columnOf",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "th"
+                }
+              ],
+              "description": "Which column a header starts at, counting any colspans before it."
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-sort",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after a sort. `detail` carries `{ column, direction, header }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "On a `<th>`, not on this element: marks the column sortable. `data-sort=\"number\"` compares as numbers instead of collating.",
+              "name": "data-sort"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "On a `<td>`, not on this element: an explicit sort key for that cell, used instead of its text.",
+              "name": "data-sort-value"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-sortable",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsSortable",
+          "declaration": {
+            "name": "HsSortable",
+            "module": "dist/components/hs-sortable.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-sortable",
+          "declaration": {
+            "name": "HsSortable",
+            "module": "dist/components/hs-sortable.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-tabs.js",
       "declarations": [
         {
@@ -2856,6 +3010,14 @@
           "declaration": {
             "name": "HsMenuItem",
             "module": "./hs-menu.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsSortable",
+          "declaration": {
+            "name": "HsSortable",
+            "module": "./hs-sortable.js"
           }
         },
         {

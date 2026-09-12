@@ -47,6 +47,7 @@ reimplementing it:
 | [`<hs-accordion>`](#hs-accordion) | real `<details>` | disclosure, keyboard, exclusive grouping via `name` |
 | [`<hs-field>`](#hs-field) | a real `<input>` | `<label for>`, Constraint Validation, localized messages |
 | [`<hs-copy>`](#hs-copy) | a real `<button>` | focus, activation, accessible name |
+| [`<hs-sortable>`](#hs-sortable) | a real `<table>` | table semantics, row and column relationships, `aria-sort` |
 
 Platform knowledge keeps applying inside the component. `<form method="dialog">`
 still closes an `<hs-dialog>`, and `::backdrop` still styles its backdrop. Reason
@@ -576,6 +577,60 @@ through the token rather than a per-component media query. Fires `hs-open` and
 `title` is the platform's version of this and is unusable: no touch support, no
 styling, a delay nobody can configure, and screen reader treatment that differs
 by engine.
+
+### hs-sortable
+
+Light DOM, wrapping a real `<table>`. **Not an `<hs-table>`** — CONTRIBUTING
+names that as a rejection example, and `<table>` is already styled and already
+works. Sorting is an enhancement over a table you wrote, so your markup stays
+yours.
+
+```html
+<hs-sortable>
+  <table>
+    <thead>
+      <tr>
+        <th data-sort>Name</th>
+        <th data-sort="number">Size</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>…</tbody>
+  </table>
+</hs-sortable>
+```
+
+`data-sort` on a `<th>` opts that column in; a header without it gets no control,
+which is what keeps an actions column from offering a sort that means nothing.
+
+**The control is the header itself.** Its content is moved into a real
+`<button>`, so nothing is duplicated, the `<th>` keeps its `columnheader` role
+and carries `aria-sort`, and Enter, Space, focus and voice control all come from
+the platform rather than from a keydown handler. Making a `<th>` activatable with
+`tabindex` instead would be a button reimplemented by hand.
+
+That also settles the no-JavaScript case: the button exists only because the
+script ran, so without it you get a plain, readable, document-order table and no
+affordance promising an interaction that cannot happen.
+
+Comparison defaults to `Intl.Collator` with `numeric: true`, which handles text,
+bare integers, ISO dates and "Item 2" before "Item 10" with no configuration. It
+is not a number sort — negatives and decimals collate wrongly — so a numeric
+column says `data-sort="number"`, and values it cannot parse sort last in both
+directions rather than taking the top on the way back. Anything else supplies its
+own key with `data-sort-value` on the cell:
+
+```html
+<td data-sort-value="2026-03-04">4 March 2026</td>
+```
+
+Sorting is stable, so equal keys keep the order you wrote them in, and rows are
+moved rather than recreated, so listeners on them survive. Each `<tbody>` sorts
+within itself, since separate bodies are row groups. Fires `hs-sort` with
+`{ column, direction, header }`.
+
+A `<th>` with `colspan` is skipped: it heads more than one column, so which one
+it would sort is ambiguous.
 
 ### hs-copy
 

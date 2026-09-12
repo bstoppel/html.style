@@ -517,6 +517,57 @@ console.log(greet('World'));</code></pre>
           <button type="button" data-toast="stack">Show two, half a second apart</button>
         </div>
 
+        <h3>hs-sortable (light DOM, wrapping &lt;table&gt;)</h3>
+        <p>
+          Not an <code>&lt;hs-table&gt;</code> &mdash; CONTRIBUTING names that as
+          a rejection example, and <code>&lt;table&gt;</code> is already styled
+          and already works. Sorting is an enhancement over a table you wrote.
+          The header's own text becomes a real button, so it exists only once the
+          script has run: with JavaScript off this is a plain, readable table with
+          no affordance promising something that cannot happen.
+        </p>
+        <div id="sortable-demo">
+          <hs-sortable>
+            <table>
+              <caption>Files in this project</caption>
+              <thead>
+                <tr>
+                  <th data-sort>Name</th>
+                  <th data-sort="number">Size (KB)</th>
+                  <th data-sort>Modified</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>html.style.css</td>
+                  <td data-sort-value="128">128</td>
+                  <td data-sort-value="2026-09-12">12 September 2026</td>
+                  <td><button type="button">Open</button></td>
+                </tr>
+                <tr>
+                  <td>README.md</td>
+                  <td data-sort-value="41">41</td>
+                  <td data-sort-value="2026-03-04">4 March 2026</td>
+                  <td><button type="button">Open</button></td>
+                </tr>
+                <tr>
+                  <td>build.js</td>
+                  <td data-sort-value="9">9</td>
+                  <td data-sort-value="2026-07-21">21 July 2026</td>
+                  <td><button type="button">Open</button></td>
+                </tr>
+                <tr>
+                  <td>package.json</td>
+                  <td>&mdash;</td>
+                  <td data-sort-value="2026-01-30">30 January 2026</td>
+                  <td><button type="button">Open</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </hs-sortable>
+        </div>
+
         <h3>hs-copy (light DOM, wrapping &lt;button&gt;)</h3>
         <p>
           Renders a real button and uses the Clipboard API. Replaces
