@@ -72,9 +72,11 @@ declaration is dead weight. The framework's own stylesheet carries none.
 ### JavaScript Standards
 
 - **Progressive enhancement is scoped.** Atoms and layout primitives work with
-  JavaScript disabled. Components do not - Declarative Shadow DOM renders their
-  markup server-side, but interactivity requires hydration. Do not describe the
-  component layer as working without JS.
+  JavaScript disabled. Components do not — light-DOM components at least look
+  correct before their script runs, because the global stylesheet styles the tag
+  directly; shadow-DOM components render nothing until they upgrade, which is
+  what the `:not(:defined)` rule below covers. Do not describe the component
+  layer as working without JS.
 - Components are custom elements prefixed `hs-`, one per file in `src/components/`
 - Shadow-DOM components extend Lit; light-DOM components may extend
   `HTMLElement` directly
@@ -188,11 +190,14 @@ test: add visual regression tests
 
 **Lit is the single sanctioned runtime dependency**, for shadow-DOM components only.
 
-Writing reactive attributes, template caching, and Declarative Shadow DOM
-serialisation by hand is several hundred lines of infrastructure before the first
-component ships, and DSD is a hard requirement here rather than an optimisation.
-Lit is ~5KB and `@lit-labs/ssr` covers the serialisation directly. This is a
-deliberate, bounded exception to the no-dependency rule - not a precedent.
+Writing reactive attributes and efficient template updates by hand is several
+hundred lines of infrastructure before the first component ships. Lit is ~5KB,
+and building on it keeps the shadow components Declarative Shadow DOM
+*compatible*, so a consumer who does have a server render (Next, Nuxt, Astro)
+can emit `<template shadowrootmode>` for them. The framework's own no-build path
+never can — nothing exists to do the emitting, which is why the global
+stylesheet reserves each shadow component's box instead. This is a deliberate,
+bounded exception to the no-dependency rule - not a precedent.
 
 Proposals for any other runtime dependency should expect to be rejected.
 
