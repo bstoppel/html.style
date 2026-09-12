@@ -92,6 +92,37 @@ global stylesheet, registered only so editors see it. Behaviour over content the
 consumer provides means light DOM. Owning internal structure means shadow DOM.
 When in doubt, reach for the lighter tier.
 
+### Before adding a component
+
+`<hs-*>` elements are **additive**: they extend a baseline of styled semantic
+HTML rather than replacing it, so someone who knows only the HTML spec gets a
+working page. That property is not automatic. It survives only if each new
+component obeys two rules.
+
+**1. Where a native element exists, wrap it. Never shadow it.**
+
+`<hs-dialog>` contains a real `<dialog>`. `<hs-accordion>` coordinates real
+`<details>`. `<hs-field>` wires a real `<input>`. Platform behaviour keeps
+working inside them, so `<form method="dialog">` still closes an `<hs-dialog>`
+and `::backdrop` still styles its backdrop. A contributor can reason through the
+element instead of memorizing it.
+
+This implies a hard rule: **never introduce an `<hs-*>` element that duplicates
+an already-styled atom.** We would reject `<hs-button>`. The plain `<button>`
+already works, and a custom twin forces a choice where none existed while making
+the plain element look wrong. The same goes for `<hs-input>`, `<hs-table>`, and
+`<hs-heading>`.
+
+**2. Reach for shadow DOM only where the platform offers nothing.**
+
+Two components are opaque today and both earn it: `<hs-tabs>` (no native
+tablist) and `<hs-toggle>` (no cross-browser native switch). Shadow DOM costs
+the global stylesheet, `<label for>`, form participation, and slotted content
+styling. Pay that only when no native element exists to build on.
+
+A proposal that fails either rule changes the framework's design. Open a
+discussion and make the case before writing the component.
+
 ### Accessibility
 
 - WCAG AA minimum (4.5:1 contrast for normal text)
@@ -138,8 +169,11 @@ test: add visual regression tests
 4. **Build On, Don't Reimplement** - wrap a native element whenever the wrapper
    adds clarity or a better API, but never recreate platform behavior in
    JavaScript; no JavaScript for anything CSS or semantic HTML already does
-5. **AI-Friendly** - Predictable, machine-readable patterns
-6. **Delete-Key Friendly** - Only include essentials
+5. **Components Are Additive** - `<hs-*>` elements extend the styled baseline
+   rather than replacing it, and never duplicate an atom that already works.
+   See [Before adding a component](#before-adding-a-component)
+6. **AI-Friendly** - Predictable, machine-readable patterns
+7. **Delete-Key Friendly** - Only include essentials
 
 ### What We Accept
 
