@@ -1,0 +1,42 @@
+name: Bug
+description: Something renders or behaves incorrectly
+labels: ["bug"]
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal markup that shows the problem.
+      render: html
+    validations:
+      required: true
+
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Expected against actual
+      value: |
+        ```gherkin
+        Scenario:
+          Given
+          When
+          Then
+          But instead
+        ```
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      description: "The floor is Chrome 131, Firefox 133, Safari 18."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scripts
+    attributes:
+      label: Layer
+      options:
+        - label: Reproduces with JavaScript disabled (so it is CSS, not a component)
