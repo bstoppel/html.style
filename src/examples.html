@@ -479,6 +479,28 @@ console.log(greet('World'));</code></pre>
           <output id="menu-choice" aria-live="polite"></output>
         </div>
 
+        <h3>hs-tooltip (light DOM, on the Popover API)</h3>
+        <p>
+          <code>title</code> is the platform's version and is unusable: no touch
+          support, no styling, a delay nobody can configure, and screen reader
+          treatment that differs by engine. The element <em>is</em> the bubble and
+          it stays in light DOM, because <code>aria-describedby</code> is an IDREF
+          and an IDREF cannot cross a shadow boundary. It appears on hover and on
+          focus, Escape dismisses it, and the fade runs on
+          <code>--motion-duration</code> so reduced motion removes it.
+        </p>
+        <div class="cluster" id="tooltip-demo">
+          <button id="tooltip-archive" type="button">Archive</button>
+          <hs-tooltip for="tooltip-archive">
+            Moves the file out of your inbox without deleting it
+          </hs-tooltip>
+
+          <button id="tooltip-purge" type="button">Purge</button>
+          <hs-tooltip for="tooltip-purge" placement="block-start">
+            Empties the trash, permanently
+          </hs-tooltip>
+        </div>
+
         <h3>hs-copy (light DOM, wrapping &lt;button&gt;)</h3>
         <p>
           Renders a real button and uses the Clipboard API. Replaces

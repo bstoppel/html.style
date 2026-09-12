@@ -58,6 +58,7 @@
  *   --hs-anchor-before  inset-block-end value that sits before it
  *   --hs-anchor-start   inset-inline-start value that lines up the start edges
  *   --hs-anchor-end     inset-inline-end value that lines up the end edges
+ *   --hs-anchor-center  the anchor's midpoint, for align: 'center'
  *
  * Components and consumers set `--hs-anchor-gap` to change the distance from
  * the anchor. It is a token like every other setting, so it themes and scales
@@ -75,6 +76,12 @@
  * RTL is placed correctly, but a vertical writing mode gets the block axis
  * wrong. The declarative path handles every writing mode, and it is the path
  * every browser takes once the floor moves.
+ *
+ * The two paths agree to the sub-pixel for any anchor that is itself on screen.
+ * For one hanging off the viewport edge they clamp differently — the
+ * declarative path against its containing block, this one against the viewport
+ * — and neither answer is more right than the other, because a box centred on
+ * a point nobody can see has no correct position.
  */
 
 /**
@@ -91,12 +98,20 @@ export const hasAnchorPositioning = CSS.supports('position-anchor: --hs');
  * The `position-area` for each placement and alignment. `span-inline-end` reads
  * oddly until you say it out loud: the box starts at the anchor's inline-start
  * edge and runs the other way, which is what lining up their start edges means.
+ *
+ * Centring is `span-all`, not `center`. A position-area cell is also the box's
+ * containing block, so `center` would cap the box at the ANCHOR's width — a
+ * tooltip on an 80px button wrapping into a column four lines tall. `span-all`
+ * gives it the whole inline axis and still centres it on the anchor, which is
+ * what the script path does by measuring.
  */
 const AREA = {
   'block-end start': 'block-end span-inline-end',
   'block-end end': 'block-end span-inline-start',
+  'block-end center': 'block-end span-all',
   'block-start start': 'block-start span-inline-end',
   'block-start end': 'block-start span-inline-start',
+  'block-start center': 'block-start span-all',
 };
 
 const OPPOSITE = {
@@ -152,7 +167,35 @@ anchorStyles.replaceSync(`
   [data-hs-align='end'] {
     inset-inline-end: var(--hs-anchor-end);
   }
+
+  /* Centring is the one case that writes a PHYSICAL inset, and the one that
+     moves the box with translate rather than an inset. Physical because
+     centring has no handedness — the box sits on the anchor's midpoint in
+     either direction, so there is nothing for a logical property to get right.
+     Translate because a percentage there resolves against the element's OWN
+     size: the box goes to the midpoint and then back by half itself, without
+     its layout position changing and without the width feeding back into it. */
+  [data-hs-align='center'] {
+    left: 0;
+    translate: calc(var(--hs-anchor-center) - 50%);
+  }
 `);
+
+/**
+ * Put the anchor stylesheet on a root that needs it.
+ *
+ * A shadow component adds `anchorStyles` to its own `static styles`. A light-DOM
+ * one cannot: its floating element sits in the consumer's document, and that is
+ * the root the rules have to reach. Additive and idempotent, and every rule in
+ * the sheet is scoped to `[data-hs-anchored]`, which nothing but this module
+ * ever sets.
+ *
+ * @param {Document|ShadowRoot} root - Usually `element.getRootNode()`.
+ */
+export function adoptAnchorStyles(root) {
+  if (root.adoptedStyleSheets.includes(anchorStyles)) return;
+  root.adoptedStyleSheets = [...root.adoptedStyleSheets, anchorStyles];
+}
 
 /** Anchor names are idents and every pairing needs its own, so they are generated. */
 let names = 0;
@@ -165,8 +208,9 @@ let names = 0;
  * @param {object} [options]
  * @param {'block-end'|'block-start'} [options.placement] - Preferred side.
  *   Flips to the other one when the box would not fit.
- * @param {'start'|'end'} [options.align] - Preferred inline alignment. Flips
- *   the same way.
+ * @param {'start'|'end'|'center'} [options.align] - Preferred inline alignment.
+ *   `start` and `end` flip the same way; `center` shifts back into view
+ *   instead, having no opposite to flip to.
  * @param {'auto'|'declarative'|'script'} [options.strategy] - Which path to
  *   take. `auto` uses the declarative one wherever the browser has it. Naming
  *   a path is how the fallback stays testable on a browser that would
@@ -202,6 +246,7 @@ const MEASUREMENTS = [
   '--hs-anchor-before',
   '--hs-anchor-start',
   '--hs-anchor-end',
+  '--hs-anchor-center',
 ];
 
 function tetherScript(floating, anchor, placement, align) {
@@ -269,7 +314,38 @@ function place(floating, anchor, placement, align) {
 
   // Block axis first: the alignment is chosen against whichever side won.
   floating.dataset.hsPlacement = fits(floating, 'hsPlacement', placement, 'block');
+
+  if (align === 'center') {
+    floating.dataset.hsAlign = 'center';
+    centreOn(floating, box, view);
+    return;
+  }
+
   floating.dataset.hsAlign = fits(floating, 'hsAlign', align, 'inline');
+}
+
+/**
+ * Put the box's midpoint on the anchor's, then pull it back inside the viewport
+ * if it hangs off an edge.
+ *
+ * Centring has no opposite to flip to, so it shifts instead — which is the
+ * tactic the declarative path uses for the same case. Shifting is safe to do
+ * from a measurement because the box moves by translate, so its width cannot
+ * change underneath the calculation the way an inset-driven one would.
+ */
+function centreOn(floating, anchor, view) {
+  let midpoint = (anchor.left + anchor.right) / 2;
+  floating.style.setProperty('--hs-anchor-center', `${midpoint}px`);
+
+  const box = floating.getBoundingClientRect();
+  const past = box.right - view.clientWidth;
+  const short = -box.left;
+
+  if (past > 0) midpoint -= past;
+  else if (short > 0) midpoint += short;
+  else return;
+
+  floating.style.setProperty('--hs-anchor-center', `${midpoint}px`);
 }
 
 /**

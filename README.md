@@ -494,6 +494,44 @@ Positioning follows [docs/positioning.md](docs/positioning.md): declarative
 anchor positioning where the browser has it, computed in script at the floor.
 Set `--hs-anchor-gap` to change the distance from the trigger.
 
+### hs-tooltip
+
+Light DOM, and mandatory rather than preferred. `aria-describedby` is an IDREF
+and an IDREF cannot cross a shadow boundary — the same fact that forces
+[`<hs-combobox>`](#hs-combobox) to render its options inside its shadow root,
+pointing the other way. The trigger is your element, out in the light DOM, so the
+bubble describing it has to be out there too.
+
+```html
+<button id="delete">Delete</button>
+<hs-tooltip for="delete">Removes the file permanently</hs-tooltip>
+```
+
+The element *is* the bubble. It becomes a popover on upgrade, so the top layer
+comes from the platform, and it is hidden before that because a description is
+not page content.
+
+It appears on hover and on focus, hides on mouseleave and blur, and Escape
+dismisses it without moving focus off the trigger. The bubble never takes the
+pointer, which is also what keeps it from becoming somewhere to put interactive
+content — if your content needs a tab stop it is a popover, not a tooltip. The
+description is added to `aria-describedby` rather than replacing it, so a control
+can keep a hint it already had.
+
+The popover is `manual`, not `auto`. An auto popover closes every other auto
+popover that is not its ancestor, so a tooltip appearing would close an open
+[`<hs-menu>`](#hs-menu). `popover="hint"` exists for exactly this case and is
+above the supported floor, and an unsupported value falls back to `manual`, which
+would mean light dismiss in some supported browsers and not others.
+
+The fade runs on `--motion-duration`, so `prefers-reduced-motion` removes it
+through the token rather than a per-component media query. Fires `hs-open` and
+`hs-close`.
+
+`title` is the platform's version of this and is unusable: no touch support, no
+styling, a delay nobody can configure, and screen reader treatment that differs
+by engine.
+
 ### hs-copy
 
 Light DOM, wrapping a real `<button>` and using the Clipboard API.

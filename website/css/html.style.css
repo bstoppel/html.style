@@ -850,6 +850,53 @@
     --_alert-fg: var(--color-feedback-info-text);
   }
 
+  /* Light-DOM component: the element IS the bubble, and it becomes a popover on
+     upgrade. Position, inset and the gap come from the stylesheet position.js
+     adopts onto the document — everything here is what the bubble looks like.
+
+     The colours are the text pair inverted: dark bubble on a light page and the
+     reverse in dark mode, which is the tooltip convention and reuses a pair
+     already designed to contrast. */
+  hs-tooltip {
+    max-inline-size: var(--hs-tooltip-max-inline-size, 20rem);
+    padding: var(--hs-tooltip-padding-block, var(--p-space-xs))
+      var(--hs-tooltip-padding-inline, var(--space-component));
+    border: none;
+    border-radius: var(--hs-tooltip-radius, var(--p-radius-sm));
+    background: var(--hs-tooltip-background, var(--color-text-primary));
+    color: var(--hs-tooltip-color, var(--color-text-inverse));
+    font-size: var(--hs-tooltip-font-size, var(--text-small));
+    opacity: 0;
+
+    /* A tooltip describes; it never receives the pointer. This is also what
+       keeps it from becoming somewhere to put interactive content. */
+    pointer-events: none;
+
+    /* display and overlay are discrete properties, so the fade needs
+       allow-discrete to survive the popover going display: none. No
+       reduced-motion query: --motion-duration collapses on :root. */
+    transition: opacity var(--motion-duration) var(--motion-ease),
+      display var(--motion-duration) allow-discrete,
+      overlay var(--motion-duration) allow-discrete;
+  }
+
+  hs-tooltip:popover-open {
+    opacity: 1;
+  }
+
+  /* Without this the element has no opacity to animate FROM on first paint. */
+  @starting-style {
+    hs-tooltip:popover-open {
+      opacity: 0;
+    }
+  }
+
+  /* Before upgrade it is neither a popover nor positioned, so it would render
+     as a stray line of prose. A description is not page content. */
+  hs-tooltip:not(:defined) {
+    display: none;
+  }
+
   /* A shadow-DOM component renders nothing until its module upgrades it.
      Declarative Shadow DOM would normally cover that gap, but it requires a
      server render, and this framework's primary path is static HTML with no

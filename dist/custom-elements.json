@@ -2309,6 +2309,183 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-tooltip.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsTooltip",
+          "cssProperties": [
+            {
+              "description": "Bubble background.",
+              "name": "--hs-tooltip-background"
+            },
+            {
+              "description": "Bubble text colour.",
+              "name": "--hs-tooltip-color"
+            },
+            {
+              "description": "Widest the bubble may be.",
+              "name": "--hs-tooltip-max-inline-size"
+            },
+            {
+              "description": "Vertical padding in the bubble.",
+              "name": "--hs-tooltip-padding-block"
+            },
+            {
+              "description": "Horizontal padding in it.",
+              "name": "--hs-tooltip-padding-inline"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-tooltip-radius"
+            },
+            {
+              "description": "Bubble text size.",
+              "name": "--hs-tooltip-font-size"
+            },
+            {
+              "description": "Distance from the trigger. Read by position.js.",
+              "name": "--hs-anchor-gap"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The description. Text, never interactive content — the bubble does not take the pointer and has no tab stop.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#trigger",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#detach",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "trigger",
+              "description": "The element this describes, or null while `for` names nothing.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#attach",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#release",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#describe",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "trigger"
+                }
+              ],
+              "description": "Add to `aria-describedby` rather than replacing it: a control can have more\nthan one description, and `<hs-field>` already writes one."
+            },
+            {
+              "kind": "method",
+              "name": "#undescribe",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "trigger"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "show",
+              "description": "Show it. An arrow field, so it doubles as the listener. Safe to call when\nit is already showing."
+            },
+            {
+              "kind": "field",
+              "name": "hide",
+              "description": "Hide it. Safe to call when it is already hidden."
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired after the tooltip appears.",
+              "name": "hs-open"
+            },
+            {
+              "description": "Fired after it hides.",
+              "name": "hs-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "for",
+              "type": {
+                "text": "string"
+              },
+              "description": "Id of the element this describes. Required: without a trigger there is nothing to attach to and the tooltip stays hidden."
+            },
+            {
+              "type": {
+                "text": "'block-end'|'block-start'"
+              },
+              "description": "Preferred side. Defaults to `block-end`, and flips when there is no room.",
+              "name": "placement"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsTooltip",
+          "declaration": {
+            "name": "HsTooltip",
+            "module": "dist/components/hs-tooltip.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-tooltip",
+          "declaration": {
+            "name": "HsTooltip",
+            "module": "dist/components/hs-tooltip.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/index.js",
       "declarations": [],
       "exports": [
@@ -2418,6 +2595,14 @@
         },
         {
           "kind": "js",
+          "name": "HsTooltip",
+          "declaration": {
+            "name": "HsTooltip",
+            "module": "./hs-tooltip.js"
+          }
+        },
+        {
+          "kind": "js",
           "name": "HsThemeToggle",
           "declaration": {
             "name": "HsThemeToggle",
@@ -2451,6 +2636,20 @@
         },
         {
           "kind": "function",
+          "name": "adoptAnchorStyles",
+          "parameters": [
+            {
+              "name": "root",
+              "description": "Usually `element.getRootNode()`.",
+              "type": {
+                "text": "Document|ShadowRoot"
+              }
+            }
+          ],
+          "description": "Put the anchor stylesheet on a root that needs it.\n\nA shadow component adds `anchorStyles` to its own `static styles`. A light-DOM\none cannot: its floating element sits in the consumer's document, and that is\nthe root the rules have to reach. Additive and idempotent, and every rule in\nthe sheet is scoped to `[data-hs-anchored]`, which nothing but this module\never sets."
+        },
+        {
+          "kind": "function",
           "name": "tether",
           "parameters": [
             {
@@ -2472,7 +2671,7 @@
               "default": "{}",
               "optional": true,
               "type": {
-                "text": "@param {'block-end'|'block-start'} [options.placement] - Preferred side.\n *   Flips to the other one when the box would not fit.\n * @param {'start'|'end'} [options.align] - Preferred inline alignment. Flips\n *   the same way.\n * @param {'auto'|'declarative'|'script'} [options.strategy] - Which path to\n *   take. `auto` uses the declarative one wherever the browser has it. Naming\n *   a path is how the fallback stays testable on a browser that would\n *   otherwise skip it.\n * "
+                "text": "@param {'block-end'|'block-start'} [options.placement] - Preferred side.\n *   Flips to the other one when the box would not fit.\n * @param {'start'|'end'|'center'} [options.align] - Preferred inline alignment.\n *   `start` and `end` flip the same way; `center` shifts back into view\n *   instead, having no opposite to flip to.\n * @param {'auto'|'declarative'|'script'} [options.strategy] - Which path to\n *   take. `auto` uses the declarative one wherever the browser has it. Naming\n *   a path is how the fallback stays testable on a browser that would\n *   otherwise skip it.\n * "
               }
             }
           ],
@@ -2498,6 +2697,14 @@
           "name": "anchorStyles",
           "declaration": {
             "name": "anchorStyles",
+            "module": "dist/components/position.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "adoptAnchorStyles",
+          "declaration": {
+            "name": "adoptAnchorStyles",
             "module": "dist/components/position.js"
           }
         },
