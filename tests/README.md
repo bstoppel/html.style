@@ -111,6 +111,8 @@ tests/
 - axe scan of the component section in both colour schemes
 - The custom elements manifest documents every registered element and its
   public API (parts, attributes, slots)
+- Anchor positioning on both paths — the declarative one and the script
+  fallback the browser floor needs, which must agree on where a box lands
 
 ### Performance
 - **LCP** (Largest Contentful Paint) < 2.5s

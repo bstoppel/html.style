@@ -16,7 +16,7 @@ Safari 18:
 | Feature | Chrome | Firefox | Safari | At floor |
 |---|---|---|---|---|
 | `anchor-name` | 125 | 147 | 26 | No |
-| `position-anchor` | 151 | 151 | 27 | No |
+| `position-anchor` | 125 | 147 | 26 | No |
 | `position-area` | 129 | 147 | 26 | No |
 | `position-try-fallbacks` | 128 | 147 | 26 | No |
 | `anchor()` | 125 | 147 | 26 | No |
@@ -26,29 +26,40 @@ Safari 18:
 | `togglePopover()` | 114 | 125 | 17 | **Yes** |
 | `:popover-open` | 114 | 125 | 17 | **Yes** |
 
+Those are the versions where each feature *places a box correctly*.
+browser-compat-data records `position-anchor` as fully supported only from
+Chrome 151, Firefox 151 and Safari 27, and partial before that. The partial part
+is the property's initial value — `implicit`, then `auto`, then `none`, instead
+of the specified `normal`. Anything that sets `position-anchor` explicitly, as
+both paths in `src/components/position.js` do, is unaffected.
+
 Two things follow.
 
 The Popover API sits comfortably below the floor in every engine. The top layer
 and light dismiss are free, and reimplementing either would break the rule in
 CONTRIBUTING.
 
-Anchor positioning is not a Firefox problem. `position-anchor` needs Chrome 151,
-which is ahead of the floor in the engine that shipped the feature first. The full
-set is new everywhere, and the parts that shipped early are not the parts that
-make it usable.
+Anchor positioning is a Firefox and Safari problem specifically. Chrome has
+placed anchored boxes correctly since 125, which is *below* the floor, so the
+engine most readers test in already has the feature. Firefox needs 147 and
+Safari needs 26. Both are far above the floor, and one engine missing it is
+enough: a component that positions itself only in Chrome is not a component.
 
 ## Decision
 
 Do not make CSS Anchor Positioning a baseline requirement, and do not move the
-floor to reach it. Reaching it means Safari 27 and Chrome 151, which excludes most
-of the installed base to gain one convenience.
+floor to reach it. Reaching it means Firefox 147 and Safari 26, which excludes
+most of the installed base to gain one convenience.
 
 Instead:
 
 1. **The Popover API carries the top layer and light dismiss** in every floating
    component at every supported version. That part the platform already does.
 2. **Position declaratively where anchor positioning exists**, behind a single
-   `@supports (anchor-name: --x)`.
+   `@supports (position-anchor: --x)`. Guard on the property actually relied on
+   rather than on `anchor-name`; both gate at the same versions today, and the
+   one named in the guard is the one that would break if that stopped being
+   true.
 3. **At the floor, compute the position in script.** A popover lives in the top
    layer, so it has no containing block to be `position: absolute` against.
    Script is the only remaining option: measure the anchor, place the box, flip
@@ -81,6 +92,6 @@ no new required feature joins the list.
 
 ## Revisit when
 
-Safari 27 and Firefox 151 both sit at or below the floor. At that point the script
-fallback and its `@supports` guard both delete, and the components keep working
-unchanged.
+Firefox 147 and Safari 26 both sit at or below the floor. At that point the
+script fallback and its `@supports` guard both delete, and the components keep
+working unchanged.

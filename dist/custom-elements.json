@@ -2056,6 +2056,83 @@
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/position.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "hasAnchorPositioning",
+          "description": "Whether the platform can place the box itself.\n\nThe test is `position-anchor` rather than `anchor-name` because that is the\nproperty this module relies on. Chrome 125-150, Firefox 147-150 and Safari 26\nare recorded as partial: the only gap is the property's INITIAL value, and\nboth paths here always set it explicitly, so those versions place correctly."
+        },
+        {
+          "kind": "variable",
+          "name": "anchorStyles",
+          "default": "new CSSStyleSheet()",
+          "description": "Styles for both paths. A component adds this to its own `static styles`; it\nhas to live in the same shadow root as the floating element, because outside\nCSS cannot reach in.\n\nA native `CSSStyleSheet` rather than Lit's `css` tag, so this module imports\nnothing. That keeps it loadable straight from `dist/components/`, which the\nLit-importing component modules are not."
+        },
+        {
+          "kind": "function",
+          "name": "tether",
+          "parameters": [
+            {
+              "name": "floating",
+              "description": "The box being placed. Usually a popover.",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "anchor",
+              "description": "What it is placed against.",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "options",
+              "default": "{}",
+              "optional": true,
+              "type": {
+                "text": "@param {'block-end'|'block-start'} [options.placement] - Preferred side.\n *   Flips to the other one when the box would not fit.\n * @param {'start'|'end'} [options.align] - Preferred inline alignment. Flips\n *   the same way.\n * @param {'auto'|'declarative'|'script'} [options.strategy] - Which path to\n *   take. `auto` uses the declarative one wherever the browser has it. Naming\n *   a path is how the fallback stays testable on a browser that would\n *   otherwise skip it.\n * "
+              }
+            }
+          ],
+          "description": "Place `floating` against `anchor`, and keep it placed.",
+          "return": {
+            "type": {
+              "text": "() => void"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "hasAnchorPositioning",
+          "declaration": {
+            "name": "hasAnchorPositioning",
+            "module": "dist/components/position.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "anchorStyles",
+          "declaration": {
+            "name": "anchorStyles",
+            "module": "dist/components/position.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "tether",
+          "declaration": {
+            "name": "tether",
+            "module": "dist/components/position.js"
+          }
+        }
+      ]
     }
   ]
 }
