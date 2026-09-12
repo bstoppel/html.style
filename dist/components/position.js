@@ -58,8 +58,6 @@
  *   --hs-anchor-before  inset-block-end value that sits before it
  *   --hs-anchor-start   inset-inline-start value that lines up the start edges
  *   --hs-anchor-end     inset-inline-end value that lines up the end edges
- *   --hs-anchor-inline-size   the anchor's inline size, for a menu that wants
- *                             to match the width of its trigger
  *
  * Components and consumers set `--hs-anchor-gap` to change the distance from
  * the anchor. It is a token like every other setting, so it themes and scales
@@ -204,7 +202,6 @@ const MEASUREMENTS = [
   '--hs-anchor-before',
   '--hs-anchor-start',
   '--hs-anchor-end',
-  '--hs-anchor-inline-size',
 ];
 
 function tetherScript(floating, anchor, placement, align) {
@@ -269,7 +266,6 @@ function place(floating, anchor, placement, align) {
   floating.style.setProperty('--hs-anchor-before', `${view.clientHeight - box.top}px`);
   floating.style.setProperty('--hs-anchor-start', `${rtl ? view.clientWidth - box.right : box.left}px`);
   floating.style.setProperty('--hs-anchor-end', `${rtl ? box.left : view.clientWidth - box.right}px`);
-  floating.style.setProperty('--hs-anchor-inline-size', `${box.width}px`);
 
   // Block axis first: the alignment is chosen against whichever side won.
   floating.dataset.hsPlacement = fits(floating, 'hsPlacement', placement, 'block');
