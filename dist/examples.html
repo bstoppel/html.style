@@ -435,6 +435,31 @@ console.log(greet('World'));</code></pre>
           <button type="submit">Validate</button>
         </form>
 
+        <h3>hs-combobox (shadow DOM, no native equivalent)</h3>
+        <p>
+          Not a replacement for <code>&lt;select&gt;</code>, which is already
+          styled and already works. The gap is filtering a long list by typing,
+          which the platform has no element for &mdash;
+          <code>&lt;datalist&gt;</code> does not close it. The listbox is
+          deliberately not a popover: see
+          <a href="https://github.com/bstoppel/html.style/blob/main/docs/positioning.md">docs/positioning.md</a>.
+        </p>
+        <form class="stack" id="combobox-demo">
+          <hs-combobox name="city" label="City" placeholder="Start typing&hellip;">
+            <hs-option value="berlin">Berlin</hs-option>
+            <hs-option value="hamburg">Hamburg</hs-option>
+            <hs-option value="munich">Munich</hs-option>
+            <hs-option value="cologne">Cologne</hs-option>
+            <hs-option value="frankfurt">Frankfurt</hs-option>
+            <hs-option value="stuttgart">Stuttgart</hs-option>
+            <hs-option value="bremen">Bremen</hs-option>
+          </hs-combobox>
+          <div class="cluster">
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+          </div>
+        </form>
+
         <h3>hs-copy (light DOM, wrapping &lt;button&gt;)</h3>
         <p>
           Renders a real button and uses the Clipboard API. Replaces

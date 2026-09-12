@@ -24,7 +24,7 @@ most of the HTML. A model already knows the specification, so the framework need
 no training and no configuration.
 
 The `<hs-*>` elements extend that baseline rather than replacing it. The
-framework ships ten, each described in a generated
+framework ships eleven, each described in a generated
 [custom elements manifest](#editor-and-agent-support), and three properties
 govern all of them.
 
@@ -52,9 +52,10 @@ Platform knowledge keeps applying inside the component. `<form method="dialog">`
 still closes an `<hs-dialog>`, and `::backdrop` still styles its backdrop. Reason
 through the element instead of memorizing it.
 
-Two components are opaque, and both earn it. [`<hs-tabs>`](#hs-tabs) and
-[`<hs-toggle>`](#hs-toggle) use shadow DOM because there is no native tablist and
-no cross-browser native switch.
+Three components are opaque, and each earns it. [`<hs-tabs>`](#hs-tabs),
+[`<hs-toggle>`](#hs-toggle) and [`<hs-combobox>`](#hs-combobox) use shadow DOM
+because the platform has no tablist, no cross-browser switch, and no combobox to
+build on.
 
 ### They degrade rather than disappear
 
@@ -64,8 +65,8 @@ Guess wrong and the page gets plainer, never broken:
   registrations that exist only so editors offer completion.
 - Light-DOM components look right before their JavaScript loads, because the
   global stylesheet styles the tag directly.
-- The two shadow components reserve their box through `hs-*:not(:defined)`, so
-  the layout does not shift when the script arrives.
+- The shadow components reserve their box through `hs-*:not(:defined)`, so the
+  layout does not shift when the script arrives.
 
 An unregistered custom element is normally invisible: `display: inline` with no
 styles. None of these vanish.
@@ -117,7 +118,7 @@ html.style/
 │   ├── css/, js/, components/        # Sources for the above
 │   ├── partials/                     # Build-time HTML partials
 │   └── *.html                        # Page sources
-└── docs/                             # frameworks.md, design-system.md
+└── docs/                             # frameworks.md, design-system.md, positioning.md
 ```
 
 ### Quick Start: Just Open and Edit
@@ -139,7 +140,7 @@ One caveat worth knowing up front: **no build step is not the same as no server.
 - **Machine-Readable** - A generated `custom-elements.json` gives editors and agents completion for every element, attribute, slot, event, part and setting
 - **Progressive Enhancement** - Atoms and layout work with no JavaScript at all; components add behaviour on top
 - **Privacy-First** - Global Privacy Control (GPC) detection and compliance
-- **Additive Components** - `<hs-*>` elements extend the styled baseline rather than replacing it; only two of the ten use shadow DOM, so platform behaviour and your own stylesheet keep working inside the rest
+- **Additive Components** - `<hs-*>` elements extend the styled baseline rather than replacing it; shadow DOM is reserved for the few that own internal structure the platform gives no element for, so platform behaviour and your own stylesheet keep working inside the rest
 
 ## Basic Usage
 
@@ -415,6 +416,44 @@ Light DOM is mandatory here rather than preferred: `<label for>` does not cross
 a shadow boundary, and a control inside one does not participate in the
 surrounding form.
 
+### hs-combobox
+
+Shadow DOM, because it owns an input, a listbox, and the options in it. **Not a
+replacement for `<select>`** — that element is already styled and already works.
+The gap is filtering a long list by typing, which the platform has no element
+for. `<datalist>` is the nearest native thing and does not close it: no custom
+option rendering, no control over matching, and different behaviour in every
+engine.
+
+```html
+<hs-combobox name="city" label="City" placeholder="Start typing…">
+  <hs-option value="berlin">Berlin</hs-option>
+  <hs-option value="hamburg">Hamburg</hs-option>
+  <hs-option value="munich">Munich</hs-option>
+</hs-combobox>
+```
+
+The `<hs-option>` elements are data, not rendering — the options you see are
+built in the shadow root from their value and text. That is the same reason
+[`<hs-tabs>`](#hs-tabs) builds its tablist there: `aria-activedescendant` and
+`aria-controls` are IDREFs, and an IDREF cannot cross a shadow boundary.
+
+Arrow keys move the active option and wrap; Home and End jump to the ends; Enter
+commits; Escape abandons the edit in progress and keeps the last committed value.
+Focus stays on the input throughout, which is what `aria-activedescendant` is
+for. It participates in forms through `ElementInternals`, so it submits, resets,
+and restores on back/forward navigation like a native control.
+
+Fires `change` when the value changes, plus `hs-open` and `hs-close`. Exposes
+`::part(label)`, `::part(input)`, `::part(listbox)`, `::part(option)` and
+`::part(option-active)`.
+
+The listbox is deliberately **not** a popover and not in the top layer. It sits
+directly under its input, so ordinary absolute positioning reaches it, and CSS
+Anchor Positioning is not available at the supported floor — see
+[docs/positioning.md](docs/positioning.md). The trade is that an
+`overflow: hidden` ancestor clips the list; you control that.
+
 ### hs-copy
 
 Light DOM, wrapping a real `<button>` and using the Clipboard API.
@@ -531,15 +570,15 @@ html[data-theme="green"] {
 
 Two pages ship with the framework:
 
-- **[`dist/examples.html`](src/examples.html)** — every pattern, including all ten
+- **[`dist/examples.html`](src/examples.html)** — every pattern, including all eleven
   custom elements
 - **[`dist/example-vanilla.html`](src/example-vanilla.html)** — a minimal page
   using the components with no framework and no build step
 
 The showcase covers:
 
-- Custom elements — cards, badges, alerts, toggles, tabs, fields, copy buttons,
-  dialogs, accordions, theme toggle
+- Custom elements — cards, badges, alerts, toggles, tabs, fields, comboboxes,
+  copy buttons, dialogs, accordions, theme toggle
 - Typography (headings, paragraphs, lists, code)
 - Buttons (primary, secondary, outline, disabled states)
 - Forms (all input types, validation states)

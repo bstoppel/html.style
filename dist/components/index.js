@@ -14,6 +14,7 @@ export { HsAccordion } from './hs-accordion.js';
 export { HsAlert } from './hs-alert.js';
 export { HsBadge } from './hs-badge.js';
 export { HsCard } from './hs-card.js';
+export { HsCombobox, HsOption } from './hs-combobox.js';
 export { HsCopy } from './hs-copy.js';
 export { HsDialog } from './hs-dialog.js';
 export { HsField } from './hs-field.js';

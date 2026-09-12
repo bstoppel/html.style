@@ -387,6 +387,469 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-combobox.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "One choice in an `<hs-combobox>`. Deliberately inert: it carries a value and\nits text, and the combobox does the rest. It never renders — the global\nstylesheet hides it, and once the combobox upgrades it is not slotted at all.",
+          "name": "HsOption",
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value submitted when this option is chosen. Defaults to the element's text content.",
+              "name": "value"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-option",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsCombobox",
+          "cssProperties": [
+            {
+              "description": "Width of the whole control.",
+              "name": "--hs-combobox-inline-size"
+            },
+            {
+              "description": "Space between label and input.",
+              "name": "--hs-combobox-gap"
+            },
+            {
+              "description": "Vertical padding inside the input.",
+              "name": "--hs-combobox-padding-block"
+            },
+            {
+              "description": "Horizontal padding inside the input.",
+              "name": "--hs-combobox-padding-inline"
+            },
+            {
+              "description": "Corner radius of input and listbox.",
+              "name": "--hs-combobox-radius"
+            },
+            {
+              "description": "Input and listbox border colour.",
+              "name": "--hs-combobox-border-color"
+            },
+            {
+              "description": "Input and listbox background.",
+              "name": "--hs-combobox-background"
+            },
+            {
+              "description": "Text colour.",
+              "name": "--hs-combobox-color"
+            },
+            {
+              "description": "Height before the list scrolls. Default 16rem.",
+              "name": "--hs-combobox-listbox-max-block-size"
+            },
+            {
+              "description": "Background of the active option.",
+              "name": "--hs-combobox-option-background-active"
+            },
+            {
+              "description": "Colour of the \"no matches\" text.",
+              "name": "--hs-combobox-empty-color"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The field label.",
+              "name": "label"
+            },
+            {
+              "description": "The text input.",
+              "name": "input"
+            },
+            {
+              "description": "The options container.",
+              "name": "listbox"
+            },
+            {
+              "description": "Every option.",
+              "name": "option"
+            },
+            {
+              "description": "The option under the cursor keys, in addition to `option`.",
+              "name": "option-active"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<hs-option>` elements. Anything else is ignored.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "#internals",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#defaultValue",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#valueOnFocus",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The committed value when the input took focus, so Escape can return to it."
+            },
+            {
+              "kind": "method",
+              "name": "#readOptions",
+              "privacy": "private",
+              "description": "Read the consumer's `<hs-option>` children. They are data: the options the\nuser sees are rendered in the shadow root, because an IDREF cannot cross\nthe boundary and `aria-activedescendant` is an IDREF."
+            },
+            {
+              "kind": "field",
+              "name": "#matches",
+              "privacy": "private",
+              "description": "Options matching what has been typed. Everything, when nothing is typed.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "#displayText",
+              "privacy": "private",
+              "description": "The text shown in the input: what is being typed, else the chosen label.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#show",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#hide",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#settle",
+              "privacy": "private",
+              "description": "Close, keeping whatever is committed, and drop any half-typed query."
+            },
+            {
+              "kind": "method",
+              "name": "#revert",
+              "privacy": "private",
+              "description": "Close and return to the last committed value."
+            },
+            {
+              "kind": "method",
+              "name": "#commit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback"
+            },
+            {
+              "kind": "method",
+              "name": "formStateRestoreCallback",
+              "parameters": [
+                {
+                  "name": "state"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "description": "Re-read the `<hs-option>` children. Call after changing them."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_query",
+              "privacy": "public",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "attribute": "_query"
+            },
+            {
+              "kind": "field",
+              "name": "_active",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "attribute": "_active"
+            },
+            {
+              "kind": "field",
+              "name": "_options",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "attribute": "_options"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "name"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-open",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after the listbox opens."
+            },
+            {
+              "name": "hs-close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after it closes."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired when the chosen value changes, like a native control."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Field name used when the form is submitted.",
+              "name": "name",
+              "fieldName": "name"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value of the chosen option. Reflected.",
+              "name": "value",
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label. Rendered as a real `<label for>` inside the shadow root, where the association works.",
+              "name": "label",
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text for the input.",
+              "name": "placeholder",
+              "default": "''",
+              "fieldName": "placeholder"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Inactive and removed from the tab order.",
+              "name": "disabled",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the listbox is showing. Reflected.",
+              "name": "open",
+              "default": "false",
+              "fieldName": "open"
+            },
+            {
+              "name": "_query",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "fieldName": "_query"
+            },
+            {
+              "name": "_active",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1",
+              "fieldName": "_active"
+            },
+            {
+              "name": "_options",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]",
+              "fieldName": "_options"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-combobox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsOption",
+          "declaration": {
+            "name": "HsOption",
+            "module": "dist/components/hs-combobox.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-option",
+          "declaration": {
+            "name": "HsOption",
+            "module": "dist/components/hs-combobox.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsCombobox",
+          "declaration": {
+            "name": "HsCombobox",
+            "module": "dist/components/hs-combobox.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-combobox",
+          "declaration": {
+            "name": "HsCombobox",
+            "module": "dist/components/hs-combobox.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-copy.js",
       "declarations": [
         {
@@ -1518,6 +1981,22 @@
           "declaration": {
             "name": "HsCard",
             "module": "./hs-card.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsCombobox",
+          "declaration": {
+            "name": "HsCombobox",
+            "module": "./hs-combobox.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsOption",
+          "declaration": {
+            "name": "HsOption",
+            "module": "./hs-combobox.js"
           }
         },
         {
