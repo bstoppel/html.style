@@ -670,8 +670,7 @@
               "type": {
                 "text": "null"
               },
-              "default": "null",
-              "attribute": "_query"
+              "default": "null"
             },
             {
               "kind": "field",
@@ -680,8 +679,7 @@
               "type": {
                 "text": "number"
               },
-              "default": "-1",
-              "attribute": "_active"
+              "default": "-1"
             },
             {
               "kind": "field",
@@ -690,8 +688,7 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]",
-              "attribute": "_options"
+              "default": "[]"
             },
             {
               "kind": "field",
@@ -779,30 +776,6 @@
               "name": "open",
               "default": "false",
               "fieldName": "open"
-            },
-            {
-              "name": "_query",
-              "type": {
-                "text": "null"
-              },
-              "default": "null",
-              "fieldName": "_query"
-            },
-            {
-              "name": "_active",
-              "type": {
-                "text": "number"
-              },
-              "default": "-1",
-              "fieldName": "_active"
-            },
-            {
-              "name": "_options",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]",
-              "fieldName": "_options"
             }
           ],
           "superclass": {
@@ -1908,8 +1881,7 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]",
-              "attribute": "_labels"
+              "default": "[]"
             }
           ],
           "events": [
@@ -1939,14 +1911,6 @@
               "name": "activation",
               "default": "'auto'",
               "fieldName": "activation"
-            },
-            {
-              "name": "_labels",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]",
-              "fieldName": "_labels"
             }
           ],
           "superclass": {

@@ -97,9 +97,9 @@ export class HsCombobox extends LitElement {
     placeholder: { type: String },
     disabled: { type: Boolean, reflect: true },
     open: { type: Boolean, reflect: true },
-    _query: { state: true },
-    _active: { state: true },
-    _options: { state: true },
+    _query: { state: true, attribute: false },
+    _active: { state: true, attribute: false },
+    _options: { state: true, attribute: false },
   };
 
   static styles = css`

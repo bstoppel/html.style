@@ -407,6 +407,23 @@ test.describe('Custom elements manifest', () => {
     expect(toggle.attributes.map((a) => a.name)).toContain('checked');
     expect(toggle.slots.length).toBeGreaterThan(0);
   });
+
+  test('documents no internal state as public API', async ({ page }) => {
+    await page.goto('/examples.html');
+
+    // Lit's `state: true` already means "not an attribute" at runtime, but the
+    // analyzer does not infer that, so every underscore-prefixed reactive
+    // property was published as a settable attribute. An agent reading the
+    // manifest would have taken _options for part of the API.
+    const manifest = await (await page.request.get('/custom-elements.json')).json();
+    const leaked = manifest.modules
+      .flatMap((m) => m.declarations ?? [])
+      .filter((d) => d.tagName)
+      .flatMap((d) => (d.attributes ?? []).map((a) => `${d.tagName}[${a.name}]`))
+      .filter((name) => name.includes('[_'));
+
+    expect(leaked).toEqual([]);
+  });
 });
 
 test.describe('Component accessibility', () => {
