@@ -717,8 +717,8 @@ another framework, its SSR can emit Declarative Shadow DOM for these elements.
 
 ```css
 /* Primitives (--p- prefix) */
---p-brand-hue: 260;
---p-brand-600: oklch(0.6 0.18 var(--p-brand-hue));
+--p-brand-hue: 58;
+--p-brand-600: oklch(0.55 0.18 var(--p-brand-hue));
 
 /* Semantic tokens */
 --color-action-primary: light-dark(var(--p-brand-600), oklch(0.7 0.2 var(--p-brand-hue)));
@@ -734,15 +734,22 @@ the shadow boundary: **[docs/design-system.md](docs/design-system.md)**.
 
 ```css
 :root {
-  /* Change brand hue (0-360) */
-  --p-brand-hue: 200; /* Blue instead of purple */
+  /* Brand hue, 0-360. These are OKLCH angles, not HSL ones: 58 is the burnt
+     orange this ships with, 260 is a royal blue, and violet is nearer 290. */
+  --p-brand-hue: 260;
 }
 
-/* Or use theme variants */
-html[data-theme="green"] {
-  --p-brand-hue: 140;
+/* Or use one of the presets */
+html[data-brand="green"] {
+  --p-brand-hue: 145;
 }
 ```
+
+Only the hue is a token. Lightness and chroma are fixed per ramp step, so a
+brand that is not those values rotated to a new angle — a muted one, or a very
+saturated one — needs the individual `--p-brand-*` steps set rather than just the
+hue. Check the result against WCAG AA before shipping it: `--color-action-primary`
+carries `--color-text-inverse` on top of it.
 
 ## Component Examples
 
