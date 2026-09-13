@@ -29,7 +29,7 @@
     "test:atoms": "playwright test tests/atoms",
     "test:performance": "playwright test tests/performance",
     "test:components": "playwright test tests/components",
-    "test:update-snapshots": "playwright test --update-snapshots",
+    "test:update-snapshots": "playwright test --update-snapshots=all",
     "test:debug": "playwright test --debug",
     "build": "node build.js",
     "build:check": "node build.js --check",

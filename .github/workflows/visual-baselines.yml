@@ -34,8 +34,12 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      # =all, not the default. Playwright's default mode only rewrites snapshots
+      # whose comparison FAILED, so a change small enough to sit under the
+      # per-pixel threshold — a palette shift, say — regenerates nothing and the
+      # artifact silently carries the old images forward.
       - name: Generate baselines
-        run: npx playwright test tests/visual --update-snapshots
+        run: npx playwright test tests/visual --update-snapshots=all
 
       - name: Upload baselines
         uses: actions/upload-artifact@v4
