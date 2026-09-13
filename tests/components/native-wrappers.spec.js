@@ -166,20 +166,41 @@ test.describe('hs-dialog', () => {
 
   test('only one thing closes the dialog', async ({ page }) => {
     await page.goto('/examples.html');
-    await openAndWaitForModal(page);
 
     // DialogEnhancements attaches a backdrop closer to every <dialog> on the
     // page. It must skip ones owned by hs-dialog, or the two race and
     // `persistent` intermittently fails.
-    const closes = await page.evaluate(async () => {
+    //
+    // Opened, counted and closed inside ONE evaluate. Splitting it across
+    // Playwright calls left a window between "it is modal" and "count its close
+    // events" in which the dialog could already be gone, and the assertion then
+    // read as "expected 1, received 0" — indistinguishable from two handlers
+    // firing, which is what this test is actually about. It failed that way
+    // twice on Linux CI, once blocking a deploy, and never once in ~600 local
+    // runs or under 50x CPU throttling. The cause is still unknown; what is
+    // fixed here is that the test no longer depends on state surviving between
+    // two round trips. No pointer is needed either way: the question is whether
+    // ONE close path fires or two, not how the dialog was opened, and the click
+    // path stays covered by every other test through openAndWaitForModal.
+    const result = await page.evaluate(async () => {
+      await customElements.whenDefined('hs-dialog');
       const el = document.querySelector('#dialog-demo');
+      el.show();
+
+      const dialog = el.querySelector('dialog');
+      // Report state rather than a bare count, so the next failure says which
+      // of these very different things went wrong.
+      if (!dialog.matches(':modal')) return 'never opened';
+
       let count = 0;
-      el.querySelector('dialog').addEventListener('close', () => count++);
+      dialog.addEventListener('close', () => count++);
       el.close('once');
       await new Promise((r) => setTimeout(r, 50));
-      return count;
+
+      return dialog.open ? 'still open after close()' : count;
     });
-    expect(closes).toBe(1);
+
+    expect(result).toBe(1);
   });
 
   test('fires hs-open and hs-close', async ({ page }) => {
