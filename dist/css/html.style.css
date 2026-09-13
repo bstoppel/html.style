@@ -430,6 +430,36 @@
     padding: 0;
   }
 
+  /* The reset zeroes every margin, which leaves a quotation rendering exactly
+     like body text. What the UA had is replaced rather than restored: an indent
+     on its own reads as an accident, a rule beside it reads as a quote. */
+  blockquote {
+    margin-block-end: var(--space-block);
+    padding-inline-start: var(--space-inline);
+    border-inline-start: var(--p-border-heavy) solid var(--color-border-default);
+    color: var(--color-text-secondary);
+  }
+
+  blockquote > :last-child {
+    margin-block-end: 0;
+  }
+
+  mark {
+    /* Inherits the text colour rather than taking the UA's black on yellow,
+       which is unreadable once the surface under it goes dark. */
+    background: var(--color-feedback-warning-surface);
+    color: inherit;
+    padding-inline: var(--p-space-xs);
+    border-radius: var(--p-radius-sm);
+  }
+
+  abbr[title] {
+    text-decoration: underline dotted;
+    /* The title is the whole point of the element, and nothing else hints that
+       there is one to reveal. */
+    cursor: help;
+  }
+
   /* Lists */
   ul,
   ol {
@@ -439,6 +469,24 @@
 
   li {
     margin-block-end: var(--p-space-xs);
+  }
+
+  dl {
+    margin-block-end: var(--space-block);
+  }
+
+  dt {
+    font-variation-settings: "wght" 600;
+  }
+
+  dd {
+    padding-inline-start: var(--space-gutter);
+  }
+
+  /* Space between pairs rather than inside them, so a term stays attached to
+     its description. */
+  dd + dt {
+    margin-block-start: var(--space-component);
   }
 
   /* Interactive Elements */
@@ -501,6 +549,30 @@
     color: var(--color-text-tertiary);
   }
 
+  /* accent-color is the platform's own theming hook for widgets a browser draws
+     itself. One declaration reaches checkbox, radio, range and progress without
+     rebuilding any of them and without a vendor pseudo-element. */
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  progress {
+    accent-color: var(--color-action-primary);
+  }
+
+  /* A range is a widget, not a text box. The shared rule above would frame it
+     in the border and padding meant for something you type into. */
+  input[type="range"] {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  progress,
+  meter {
+    inline-size: 100%;
+    block-size: var(--p-space-sm);
+  }
+
   label {
     display: block;
     margin-block-end: var(--p-space-xs);
@@ -537,6 +609,14 @@
   th {
     font-variation-settings: "wght" 600;
     background: var(--color-surface-sunken);
+  }
+
+  /* Start-aligned to match every other cell; the UA centres it, which reads as
+     a title floating above an unrelated table. */
+  caption {
+    padding-block-end: var(--space-component);
+    color: var(--color-text-secondary);
+    text-align: start;
   }
 
   /* Media */

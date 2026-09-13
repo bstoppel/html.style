@@ -25,6 +25,7 @@ npm test
 ```bash
 npm run test:visual        # Visual regression tests
 npm run test:a11y          # Accessibility tests
+npm run test:atoms         # Semantic HTML styled by the atoms layer
 npm run test:performance   # Performance tests
 npm run test:components    # Web component tests
 ```
@@ -77,6 +78,8 @@ tests/
 │   └── components.spec.js      # Visual regression tests
 ├── a11y/
 │   └── accessibility.spec.js   # Accessibility tests (axe-core)
+├── atoms/
+│   └── atoms.spec.js           # Semantic HTML the atoms layer styles
 ├── components/
 │   └── components.spec.js      # Web component behaviour and a11y
 └── performance/
@@ -102,6 +105,13 @@ tests/
 - Semantic HTML validation
 - The accessibility tree Chrome computes for the toast live region, read through
   CDP — see [Manual checks](#manual-checks) for the part this cannot reach
+
+### Atoms
+- Elements the reset strips and the atoms layer has to give something back to,
+  asserted as computed style rather than as the presence of a rule — a
+  `<blockquote>` that renders exactly like a `<p>` is the failure being guarded
+- Native widgets themed through `accent-color` rather than rebuilt, and `<meter>`
+  deliberately keeping its own value-based colouring
 
 ### Components
 - Light-DOM components styled before their JavaScript defines them

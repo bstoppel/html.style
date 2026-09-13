@@ -711,8 +711,63 @@ console.log(greet('World'));</code></pre>
           </div>
 
           <div>
+            <h3>Quotations and inline text</h3>
+            <blockquote>
+              <p>Build on the platform; never reimplement it.</p>
+              <p><small>CONTRIBUTING.md</small></p>
+            </blockquote>
+            <p>
+              The reset zeroes every margin, so a <code>&lt;blockquote&gt;</code>
+              without this would read as <mark>ordinary body text</mark>. An
+              <abbr title="Accessible Rich Internet Applications">ARIA</abbr>
+              abbreviation carries its expansion in a title.
+            </p>
+          </div>
+
+          <div>
+            <h3>Description list</h3>
+            <dl>
+              <dt>Atoms</dt>
+              <dd>Semantic HTML elements, styled directly. No classes.</dd>
+              <dt>Layout primitives</dt>
+              <dd>Classes that arrange content, with no JavaScript.</dd>
+              <dt>Components</dt>
+              <dd>Custom elements, for behaviour the platform has no element for.</dd>
+            </dl>
+          </div>
+
+          <div>
+            <h3>Widgets the browser draws</h3>
+            <p>
+              Themed with <code>accent-color</code> rather than rebuilt, so the
+              native widget and its keyboard behaviour are untouched.
+              <code>&lt;meter&gt;</code> keeps its own value-based colouring,
+              which means something the brand colour does not.
+            </p>
+            <div class="stack">
+              <div>
+                <label for="demo-range">Volume</label>
+                <input type="range" id="demo-range" value="60">
+              </div>
+              <div class="cluster">
+                <label><input type="checkbox" checked> Checkbox</label>
+                <label><input type="radio" name="demo-radio" checked> Radio</label>
+              </div>
+              <div>
+                <label for="demo-progress">Upload progress</label>
+                <progress id="demo-progress" value="0.6"></progress>
+              </div>
+              <div>
+                <label for="demo-meter">Disk usage</label>
+                <meter id="demo-meter" value="0.3" high="0.8"></meter>
+              </div>
+            </div>
+          </div>
+
+          <div>
             <h3>Table</h3>
             <table>
+              <caption>Team members and their current status</caption>
               <thead>
                 <tr>
                   <th>Name</th>
