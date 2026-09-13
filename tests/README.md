@@ -100,7 +100,8 @@ tests/
 - Skip links
 - Color contrast (4.5:1 minimum)
 - Semantic HTML validation
-- Screen reader compatibility
+- The accessibility tree Chrome computes for the toast live region, read through
+  CDP — see [Manual checks](#manual-checks) for the part this cannot reach
 
 ### Components
 - Light-DOM components styled before their JavaScript defines them
@@ -125,6 +126,58 @@ tests/
 - CSS token computation efficiency
 - Cascade layer ordering
 - Resource loading optimization
+
+## Manual checks
+
+Some things a screen reader does cannot be observed from the page. axe checks
+that the markup is well-formed, and the CDP tests in `hs-toast.spec.js` check the
+accessibility tree Chrome computes from it — but neither is speech. Whether a
+message is spoken at all, whether it is spoken twice, and how an assertive
+message interrupts a polite one are decisions the screen reader makes, and they
+differ between VoiceOver and NVDA.
+
+The checks below exist because a design decision in this framework rests on each
+one. Run them against `/examples.html` before releasing a change to the component
+named. VoiceOver toggles with Cmd+F5 on macOS; NVDA starts with Ctrl+Alt+N on
+Windows and quits with Insert+Q.
+
+### hs-toast
+
+Covers the part of [#32](https://github.com/bstoppel/html.style/issues/32) that
+automation cannot.
+
+1. Click **Show a toast** without moving focus. The message should be spoken, and
+   focus should stay on the button.
+2. Click **Show two, half a second apart**. Two announcements, each only its own
+   message. Hearing the first message again with the second means `aria-atomic`
+   is not holding, and every new toast is dragging the whole stack with it.
+3. Click **Fail**. It should interrupt rather than wait its turn, and be spoken
+   **once**. Twice means the `role="alert"` toast and the polite region are both
+   announcing it — the risk in nesting a live region inside another one.
+4. Let a toast expire untouched. Nothing should be spoken when it disappears.
+
+Steps 2 and 3 are the ones worth the time; 1 and 4 confirm the basics.
+
+### hs-tooltip
+
+The component exists because `title` is announced inconsistently, so this is the
+claim it has to make good on.
+
+1. Tab to **Archive**. The button's own name should be read first, then the
+   tooltip text as its description — not instead of the name.
+2. Press Escape. The tooltip hides and focus stays on the button.
+
+### hs-sortable
+
+The header control is a real `<button>` rather than an activatable `<th>`, and
+part of the argument for that was voice control and announcement.
+
+1. Tab to the **Name** header. It should announce as a button, with the column
+   name, and say the column is sortable or unsorted.
+2. Activate it. The new sort direction should be announced — that is `aria-sort`
+   being read.
+3. With voice control on, say "click Name". A focusable `<th>` would not respond
+   to this; the button should.
 
 ## Cross-Browser Testing
 
