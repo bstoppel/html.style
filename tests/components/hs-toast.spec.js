@@ -209,3 +209,94 @@ test.describe('hs-toast', () => {
     expect(stacked.violations).toEqual([]);
   });
 });
+
+/**
+ * What Chrome actually computes, rather than what the markup says.
+ *
+ * The tests above assert attributes. These assert the accessibility tree those
+ * attributes produce, which is what a screen reader is handed — and the two can
+ * differ. `role="status"` IMPLIES `aria-atomic="true"`, so the explicit
+ * `aria-atomic="false"` either survives into the tree or every new toast
+ * re-announces the whole stack, and nothing in the markup tells you which.
+ *
+ * Read through the Chrome DevTools Protocol because Playwright's own
+ * accessibility snapshot exposes role and name but not `live` or `atomic`. That
+ * makes this block Chromium-only; it skips elsewhere rather than failing.
+ *
+ * This still is not a screen reader. Tree shape is not speech, and whether
+ * NVDA or VoiceOver announces an inserted subtree, and how an assertive message
+ * interrupts a queued polite one, is not observable from here. #32 asks for a
+ * real screen reader as well, and that part remains a human's job.
+ */
+test.describe('hs-toast accessibility tree', () => {
+  test.skip(({ browserName }) => browserName !== 'chromium', 'CDP is Chromium-only');
+
+  /** Computed role and live-region properties for every match of a selector. */
+  async function axProperties(cdp, selector) {
+    // Node ids are invalidated by document changes, so re-resolve every time.
+    const { root } = await cdp.send('DOM.getDocument', { depth: -1, pierce: true });
+    const { nodeIds } = await cdp.send('DOM.querySelectorAll', {
+      nodeId: root.nodeId,
+      selector,
+    });
+
+    const found = [];
+    for (const nodeId of nodeIds) {
+      const { node } = await cdp.send('DOM.describeNode', { nodeId });
+      const { nodes } = await cdp.send('Accessibility.getPartialAXTree', { nodeId });
+      // getPartialAXTree returns ancestors too; take the one for this element.
+      const self = nodes.find((n) => n.backendDOMNodeId === node.backendNodeId);
+      if (!self) continue;
+
+      const props = Object.fromEntries(
+        (self.properties ?? []).map((p) => [p.name, p.value?.value])
+      );
+      found.push({ role: self.role?.value, live: props.live, atomic: props.atomic });
+    }
+    return found;
+  }
+
+  async function session(page) {
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Accessibility.enable');
+    await cdp.send('DOM.enable');
+    return cdp;
+  }
+
+  test('the region is polite and NOT atomic', async ({ page }) => {
+    await page.goto('/examples.html');
+    const cdp = await session(page);
+
+    const [node] = await axProperties(cdp, region);
+    expect(node.role).toBe('status');
+    expect(node.live).toBe('polite');
+    // The load-bearing one: status implies atomic true, and leaving it that way
+    // means every arriving toast re-announces the ones already on screen.
+    expect(node.atomic).toBe(false);
+  });
+
+  test('an error toast is assertive, and the region stays polite', async ({ page }) => {
+    await page.goto('/examples.html');
+    const cdp = await session(page);
+
+    await page.locator(region).evaluate((el) => {
+      el.clear();
+      el.show('Draft saved', { variant: 'success', duration: 0 });
+      el.show('Could not save', { variant: 'error', duration: 0 });
+    });
+
+    const toasts = await axProperties(cdp, `${region} hs-toast`);
+    expect(toasts).toHaveLength(2);
+
+    // A plain toast carries no live semantics of its own — the region's cover
+    // it. One with aria-live on it as well would be announced twice.
+    expect(toasts[0].live).toBeUndefined();
+
+    // The error toast raises itself, and only itself.
+    expect(toasts[1].role).toBe('alert');
+    expect(toasts[1].live).toBe('assertive');
+
+    const [node] = await axProperties(cdp, region);
+    expect(node.live).toBe('polite');
+  });
+});
