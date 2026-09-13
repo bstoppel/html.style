@@ -19,6 +19,7 @@ export { HsCopy } from './hs-copy.js';
 export { HsDialog } from './hs-dialog.js';
 export { HsField } from './hs-field.js';
 export { HsMenu, HsMenuItem } from './hs-menu.js';
+export { HsSortable } from './hs-sortable.js';
 export { HsTabs, HsTabPanel } from './hs-tabs.js';
 export { HsToast, HsToastRegion } from './hs-toast.js';
 export { HsTooltip } from './hs-tooltip.js';
