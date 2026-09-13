@@ -460,6 +460,25 @@ console.log(greet('World'));</code></pre>
           </div>
         </form>
 
+        <h3>hs-menu (shadow DOM, no native equivalent)</h3>
+        <p>
+          <code>&lt;menu&gt;</code> is a list element, not a menu widget, so
+          nothing in the platform pairs a button with a list of commands. The box
+          is a popover &mdash; the top layer, light dismiss and Escape are the
+          platform's. Arrow keys move a roving tabindex, typing jumps to a
+          matching item, and Tab closes the menu and carries on rather than
+          trapping the keyboard.
+        </p>
+        <div class="cluster" id="menu-demo">
+          <hs-menu label="Actions">
+            <hs-menu-item value="duplicate">Duplicate</hs-menu-item>
+            <hs-menu-item value="rename">Rename</hs-menu-item>
+            <hs-menu-item value="download">Download</hs-menu-item>
+            <hs-menu-item value="delete">Delete</hs-menu-item>
+          </hs-menu>
+          <output id="menu-choice" aria-live="polite"></output>
+        </div>
+
         <h3>hs-copy (light DOM, wrapping &lt;button&gt;)</h3>
         <p>
           Renders a real button and uses the Clipboard API. Replaces
@@ -778,6 +797,10 @@ console.log(greet('World'));</code></pre>
       const output = document.querySelector('#dialog-result');
       output.textContent = `Closed with: ${event.detail.returnValue || '(none)'}`;
       output.hidden = false;
+    });
+
+    document.querySelector('#menu-demo')?.addEventListener('hs-menu-select', (event) => {
+      document.querySelector('#menu-choice').textContent = `Chose: ${event.detail.label}`;
     });
 
     import { ThemeManager } from './js/html.style.js';

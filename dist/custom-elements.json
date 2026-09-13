@@ -670,8 +670,7 @@
               "type": {
                 "text": "null"
               },
-              "default": "null",
-              "attribute": "_query"
+              "default": "null"
             },
             {
               "kind": "field",
@@ -680,8 +679,7 @@
               "type": {
                 "text": "number"
               },
-              "default": "-1",
-              "attribute": "_active"
+              "default": "-1"
             },
             {
               "kind": "field",
@@ -690,8 +688,7 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]",
-              "attribute": "_options"
+              "default": "[]"
             },
             {
               "kind": "field",
@@ -779,30 +776,6 @@
               "name": "open",
               "default": "false",
               "fieldName": "open"
-            },
-            {
-              "name": "_query",
-              "type": {
-                "text": "null"
-              },
-              "default": "null",
-              "fieldName": "_query"
-            },
-            {
-              "name": "_active",
-              "type": {
-                "text": "number"
-              },
-              "default": "-1",
-              "fieldName": "_active"
-            },
-            {
-              "name": "_options",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]",
-              "fieldName": "_options"
             }
           ],
           "superclass": {
@@ -1345,6 +1318,403 @@
     },
     {
       "kind": "javascript-module",
+      "path": "dist/components/hs-menu.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "One command in an `<hs-menu>`. Deliberately inert: it carries a value and its\ntext, and the menu does the rest. It never renders — the global stylesheet\nhides it, and once the menu upgrades it is not slotted at all.",
+          "name": "HsMenuItem",
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value reported when this item is chosen. Defaults to the element's text content.",
+              "name": "value"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-menu-item",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsMenu",
+          "cssProperties": [
+            {
+              "description": "Trigger background.",
+              "name": "--hs-menu-trigger-background"
+            },
+            {
+              "description": "Trigger background on hover.",
+              "name": "--hs-menu-trigger-background-hover"
+            },
+            {
+              "description": "Trigger text colour.",
+              "name": "--hs-menu-trigger-color"
+            },
+            {
+              "description": "Vertical padding on the trigger.",
+              "name": "--hs-menu-trigger-padding-block"
+            },
+            {
+              "description": "Horizontal padding on it.",
+              "name": "--hs-menu-trigger-padding-inline"
+            },
+            {
+              "description": "Corner radius of trigger and menu box.",
+              "name": "--hs-menu-radius"
+            },
+            {
+              "description": "Narrowest the menu box may be.",
+              "name": "--hs-menu-min-inline-size"
+            },
+            {
+              "description": "Padding inside the menu box.",
+              "name": "--hs-menu-padding"
+            },
+            {
+              "description": "Menu box border.",
+              "name": "--hs-menu-border-color"
+            },
+            {
+              "description": "Menu box surface.",
+              "name": "--hs-menu-background"
+            },
+            {
+              "description": "Menu text colour.",
+              "name": "--hs-menu-color"
+            },
+            {
+              "description": "Menu box shadow.",
+              "name": "--hs-menu-shadow"
+            },
+            {
+              "description": "Vertical padding in an item.",
+              "name": "--hs-menu-item-padding-block"
+            },
+            {
+              "description": "Horizontal padding in an item.",
+              "name": "--hs-menu-item-padding-inline"
+            },
+            {
+              "description": "Corner radius of an item.",
+              "name": "--hs-menu-item-radius"
+            },
+            {
+              "description": "Background of the item under the pointer or the keyboard.",
+              "name": "--hs-menu-item-background-active"
+            },
+            {
+              "description": "Distance from the trigger. Read by position.js.",
+              "name": "--hs-anchor-gap"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The trigger button.",
+              "name": "trigger"
+            },
+            {
+              "description": "The menu box.",
+              "name": "menu"
+            },
+            {
+              "description": "Every menu item.",
+              "name": "item"
+            }
+          ],
+          "slots": [
+            {
+              "description": "Replaces the trigger's text, for a trigger that needs an icon or markup. Falls back to `label`.",
+              "name": "trigger"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#detach",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "description": "Undoes the positioning. Null whenever the menu is closed."
+            },
+            {
+              "kind": "field",
+              "name": "#focusOnOpen",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Which item to focus when the menu next opens. ArrowUp asks for the last."
+            },
+            {
+              "kind": "field",
+              "name": "#popoverState",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "What the popover last reported. See `updated` for why this is tracked."
+            },
+            {
+              "kind": "field",
+              "name": "#typeaheadBuffer",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#typeaheadTimer",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#menu",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "#trigger",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#readItems",
+              "privacy": "private",
+              "description": "Read the consumer's `<hs-menu-item>` children. They are data: the buttons\nthe user sees are rendered in the shadow root."
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "description": "Re-read the `<hs-menu-item>` children. Call after changing them."
+            },
+            {
+              "kind": "field",
+              "name": "#onBeforeToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#opened",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#closed",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#focusItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ],
+              "description": "Move the roving tabindex, wrapping at both ends, and follow with focus."
+            },
+            {
+              "kind": "field",
+              "name": "#onTriggerKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onMenuKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#typeahead",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "key"
+                }
+              ],
+              "description": "Jump to the first item whose label starts with what has been typed.\n\nA single letter searches from the item AFTER the active one, so pressing it\nrepeatedly walks through the items that share it. Anything longer searches\nfrom the active item, so extending the run refines it rather than skipping\nthe match already found."
+            },
+            {
+              "kind": "method",
+              "name": "#select",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_items",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "_active",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-open",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after the menu opens."
+            },
+            {
+              "name": "hs-close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after it closes."
+            },
+            {
+              "name": "hs-menu-select",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when an item is chosen. `detail` carries `{ value, label, index }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Text on the trigger button. Also what the pre-upgrade rule in the global stylesheet draws, so the box is reserved at the right width.",
+              "name": "label",
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Inactive and removed from the tab order.",
+              "name": "disabled",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the menu is showing. Reflected. Setting it opens or closes the menu.",
+              "name": "open",
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-menu",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsMenuItem",
+          "declaration": {
+            "name": "HsMenuItem",
+            "module": "dist/components/hs-menu.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-menu-item",
+          "declaration": {
+            "name": "HsMenuItem",
+            "module": "dist/components/hs-menu.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsMenu",
+          "declaration": {
+            "name": "HsMenu",
+            "module": "dist/components/hs-menu.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-menu",
+          "declaration": {
+            "name": "HsMenu",
+            "module": "dist/components/hs-menu.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "dist/components/hs-tabs.js",
       "declarations": [
         {
@@ -1511,8 +1881,7 @@
               "type": {
                 "text": "array"
               },
-              "default": "[]",
-              "attribute": "_labels"
+              "default": "[]"
             }
           ],
           "events": [
@@ -1542,14 +1911,6 @@
               "name": "activation",
               "default": "'auto'",
               "fieldName": "activation"
-            },
-            {
-              "name": "_labels",
-              "type": {
-                "text": "array"
-              },
-              "default": "[]",
-              "fieldName": "_labels"
             }
           ],
           "superclass": {
@@ -2021,6 +2382,22 @@
           "declaration": {
             "name": "HsField",
             "module": "./hs-field.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsMenu",
+          "declaration": {
+            "name": "HsMenu",
+            "module": "./hs-menu.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsMenuItem",
+          "declaration": {
+            "name": "HsMenuItem",
+            "module": "./hs-menu.js"
           }
         },
         {

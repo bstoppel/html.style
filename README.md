@@ -52,10 +52,12 @@ Platform knowledge keeps applying inside the component. `<form method="dialog">`
 still closes an `<hs-dialog>`, and `::backdrop` still styles its backdrop. Reason
 through the element instead of memorizing it.
 
-Three components are opaque, and each earns it. [`<hs-tabs>`](#hs-tabs),
-[`<hs-toggle>`](#hs-toggle) and [`<hs-combobox>`](#hs-combobox) use shadow DOM
-because the platform has no tablist, no cross-browser switch, and no combobox to
-build on.
+The opaque components are the ones with nothing to wrap. [`<hs-tabs>`](#hs-tabs),
+[`<hs-toggle>`](#hs-toggle), [`<hs-combobox>`](#hs-combobox) and
+[`<hs-menu>`](#hs-menu) use shadow DOM because the platform has no tablist, no
+cross-browser switch, no combobox and no menu widget. Opaque is not the same as
+self-built: `<hs-menu>` still takes its top layer, light dismiss and Escape from
+the Popover API.
 
 ### They degrade rather than disappear
 
@@ -453,6 +455,44 @@ directly under its input, so ordinary absolute positioning reaches it, and CSS
 Anchor Positioning is not available at the supported floor — see
 [docs/positioning.md](docs/positioning.md). The trade is that an
 `overflow: hidden` ancestor clips the list; you control that.
+
+### hs-menu
+
+Shadow DOM, because it owns the trigger, the menu box and the items. `<menu>` is
+a list element, not a menu widget, so nothing in the platform pairs a button with
+a list of commands.
+
+```html
+<hs-menu label="Actions">
+  <hs-menu-item value="duplicate">Duplicate</hs-menu-item>
+  <hs-menu-item value="rename">Rename</hs-menu-item>
+  <hs-menu-item value="delete">Delete</hs-menu-item>
+</hs-menu>
+```
+
+The `<hs-menu-item>` elements are data, not rendering, the same way
+[`<hs-combobox>`](#hs-combobox) treats `<hs-option>`. The items you see are real
+`<button>` elements built in the shadow root, because a menu item has to be a
+button and roving tabindex means the component has to own the tab order.
+
+The box is a popover, so the top layer, light dismiss and Escape are the
+platform's. `popovertarget` on the trigger handles the case that is awkward to
+hand-roll: clicking the trigger while the menu is open closes it, instead of the
+dismissal closing it and the same click reopening it.
+
+Arrow keys move focus and wrap; Home and End jump to the ends; ArrowDown and
+ArrowUp on the trigger open the menu at the first or last item; typing jumps to a
+matching item. **Tab closes the menu and moves on** rather than cycling inside
+it — a menu is not a dialog and must not trap the keyboard. Focus returns to the
+trigger on dismissal, which the component does itself because a dismissed popover
+drops focus to `<body>`.
+
+Fires `hs-menu-select` with `{ value, label, index }`, plus `hs-open` and
+`hs-close`. Exposes `::part(trigger)`, `::part(menu)` and `::part(item)`.
+
+Positioning follows [docs/positioning.md](docs/positioning.md): declarative
+anchor positioning where the browser has it, computed in script at the floor.
+Set `--hs-anchor-gap` to change the distance from the trigger.
 
 ### hs-copy
 

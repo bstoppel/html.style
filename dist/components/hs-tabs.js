@@ -67,7 +67,7 @@ export class HsTabs extends LitElement {
   static properties = {
     selected: { type: Number, reflect: true },
     activation: { type: String, reflect: true },
-    _labels: { state: true },
+    _labels: { state: true, attribute: false },
   };
 
   static styles = css`
