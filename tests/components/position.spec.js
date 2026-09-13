@@ -142,6 +142,56 @@ test.describe('anchor positioning', () => {
     expect(panel.bottom).toBeLessThan(anchor.top);
   });
 
+  test('centring agrees on both paths, including the shift back into view', async ({ page }) => {
+    // Centring has no opposite to flip to, so it shifts instead. The declarative
+    // path gets that from the containing block and the script path computes it,
+    // which is exactly the kind of divergence worth pinning down.
+    for (const anchorCss of [
+      'position: fixed; top: 200px; left: 360px;',
+      'position: fixed; top: 200px; left: 10px;',
+      // Fully on screen, but a centred 200px box would hang 10px off the end.
+      'position: fixed; top: 200px; left: 650px;',
+    ]) {
+      await mount(page, { anchorCss, align: 'center', strategy: 'declarative' });
+      const declarative = await measure(page);
+
+      await mount(page, { anchorCss, align: 'center', strategy: 'script' });
+      const script = await measure(page);
+
+      expect(script.panel.left, anchorCss).toBeCloseTo(declarative.panel.left, 0);
+      expect(script.panel.right, anchorCss).toBeCloseTo(declarative.panel.right, 0);
+      // Never off screen, whichever path ran.
+      expect(script.panel.left).toBeGreaterThanOrEqual(0);
+      expect(script.panel.right).toBeLessThanOrEqual(VIEWPORT.width);
+    }
+  });
+
+  test('a centred box sits on the anchor midpoint when there is room', async ({ page }) => {
+    await mount(page, {
+      anchorCss: 'position: fixed; top: 200px; left: 360px;',
+      align: 'center',
+      strategy: 'script',
+    });
+    const { align, anchor, panel } = await measure(page);
+
+    expect(align).toBe('center');
+    expect((panel.left + panel.right) / 2).toBeCloseTo((anchor.left + anchor.right) / 2, 0);
+  });
+
+  test('a centred box near the edge is not wrapped into a column', async ({ page }) => {
+    // position-area cells are containing blocks, so `center` capped the box at
+    // the anchor's width and a tooltip on a small button became four lines of
+    // one word. `span-all` is what keeps the two paths the same shape.
+    await mount(page, {
+      anchorCss: 'position: fixed; top: 200px; left: 360px;',
+      align: 'center',
+      strategy: 'declarative',
+    });
+    const { anchor, panel } = await measure(page);
+
+    expect(panel.right - panel.left).toBeGreaterThan(anchor.right - anchor.left);
+  });
+
   test('the box follows the anchor when the page scrolls', async ({ page }) => {
     await mount(page, { anchorCss: 'position: absolute; top: 400px; left: 200px;', strategy: 'script' });
     const before = await measure(page);
