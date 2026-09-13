@@ -501,6 +501,22 @@ console.log(greet('World'));</code></pre>
           </hs-tooltip>
         </div>
 
+        <h3>hs-toast (light DOM, live region)</h3>
+        <p>
+          <code>&lt;hs-alert&gt;</code> covers the persistent, in-flow case; this
+          is the transient, stacked one. The region is the live region, so it has
+          to be in the page before the message is &mdash; a screen reader
+          announces what arrives in a region it is already watching. Nothing here
+          moves focus. Hover or focus a toast and its timeout pauses; leave and it
+          resumes.
+        </p>
+        <div class="cluster" id="toast-demo">
+          <button type="button" data-toast="info">Show a toast</button>
+          <button type="button" data-toast="success">Save</button>
+          <button type="button" data-toast="error">Fail</button>
+          <button type="button" data-toast="stack">Show two, half a second apart</button>
+        </div>
+
         <h3>hs-copy (light DOM, wrapping &lt;button&gt;)</h3>
         <p>
           Renders a real button and uses the Clipboard API. Replaces
@@ -801,6 +817,10 @@ console.log(greet('World'));</code></pre>
     </div>
   </footer>
 
+  <!-- Fixed to a viewport corner and outside the content flow, which is where a
+       toast region belongs: it is not part of the document's reading order. -->
+  <hs-toast-region id="toast-region"></hs-toast-region>
+
   <script type="module" src="js/html.style.components.js"></script>
   <script type="module">
     // Native validation drives the field components; the form is novalidate so
@@ -823,6 +843,26 @@ console.log(greet('World'));</code></pre>
 
     document.querySelector('#menu-demo')?.addEventListener('hs-menu-select', (event) => {
       document.querySelector('#menu-choice').textContent = `Chose: ${event.detail.label}`;
+    });
+
+    const TOAST_MESSAGES = {
+      info: 'Your export is being prepared.',
+      success: 'Draft saved.',
+      error: 'Could not reach the server.',
+    };
+
+    document.querySelector('#toast-demo')?.addEventListener('click', (event) => {
+      const kind = event.target.dataset.toast;
+      const region = document.querySelector('#toast-region');
+      if (!kind || !region) return;
+
+      if (kind === 'stack') {
+        region.show('First message.', { variant: 'info' });
+        setTimeout(() => region.show('Second message.', { variant: 'success' }), 500);
+        return;
+      }
+
+      region.show(TOAST_MESSAGES[kind], { variant: kind });
     });
 
     import { ThemeManager } from './js/html.style.js';

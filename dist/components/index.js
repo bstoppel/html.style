@@ -20,6 +20,7 @@ export { HsDialog } from './hs-dialog.js';
 export { HsField } from './hs-field.js';
 export { HsMenu, HsMenuItem } from './hs-menu.js';
 export { HsTabs, HsTabPanel } from './hs-tabs.js';
+export { HsToast, HsToastRegion } from './hs-toast.js';
 export { HsTooltip } from './hs-tooltip.js';
 export { HsThemeToggle } from './hs-theme-toggle.js';
 export { HsToggle } from './hs-toggle.js';

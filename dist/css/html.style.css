@@ -897,6 +897,78 @@
     display: none;
   }
 
+  /* hs-toast-region is light DOM because it IS the live region: it has to sit in
+     the page a screen reader is already watching, and somewhere the consumer can
+     position. Fixed to a corner and never in the way — the region takes no
+     pointer events, only the toasts inside it do.
+
+     Known limit: a modal <dialog> sits in the top layer, which paints above any
+     z-index, so a toast raised while one is open is behind it. */
+  hs-toast-region {
+    position: fixed;
+    z-index: var(--p-layer-overlay);
+    inset-block-end: var(--hs-toast-region-offset, var(--space-block));
+    inset-inline-end: var(--hs-toast-region-offset, var(--space-block));
+    display: flex;
+    flex-direction: column;
+    gap: var(--hs-toast-region-gap, var(--space-component));
+    inline-size: min(
+      var(--hs-toast-region-inline-size, 24rem),
+      calc(100dvw - 2 * var(--hs-toast-region-offset, var(--space-block)))
+    );
+    pointer-events: none;
+  }
+
+  /* Reads as hs-alert's transient sibling — same leading rule, same variant
+     tokens on it. The surface is opaque rather than the alert's 10% tint,
+     because a toast floats over whatever content happens to be under it, and
+     the text stays --color-text-primary so contrast does not depend on what a
+     variant does to it. */
+  hs-toast {
+    display: flex;
+    align-items: center;
+    gap: var(--hs-toast-gap, var(--space-component));
+    padding: var(--hs-toast-padding, var(--space-component));
+    border-radius: var(--hs-toast-radius, var(--p-radius-md));
+    border-inline-start: var(--hs-toast-accent-width, var(--p-border-heavy)) solid
+      var(--hs-toast-accent-color, var(--_toast-accent, transparent));
+    background: var(--hs-toast-background, var(--color-surface-elevated));
+    color: var(--hs-toast-color, var(--color-text-primary));
+    box-shadow: var(--hs-toast-shadow, var(--p-shadow-md));
+    pointer-events: auto;
+    animation: hs-toast-in var(--motion-duration) var(--motion-ease);
+  }
+
+  hs-toast[variant="success"] {
+    --_toast-accent: var(--color-feedback-success);
+  }
+
+  hs-toast[variant="warning"] {
+    --_toast-accent: var(--color-feedback-warning);
+  }
+
+  hs-toast[variant="error"] {
+    --_toast-accent: var(--color-feedback-error);
+  }
+
+  hs-toast[variant="info"] {
+    --_toast-accent: var(--color-feedback-info);
+  }
+
+  /* Entrance only: dismissal removes the element outright, because an exit
+     animation would have to wait on animationend, which does not fire on a
+     hidden page — and a toast that never leaves is the bug this avoids.
+
+     No reduced-motion query. --motion-duration collapses on :root, which
+     removes the slide and leaves the timeout alone: the message needs the same
+     time to read either way. */
+  @keyframes hs-toast-in {
+    from {
+      opacity: 0;
+      translate: 0 var(--hs-toast-travel, 0.5rem);
+    }
+  }
+
   /* A shadow-DOM component renders nothing until its module upgrades it.
      Declarative Shadow DOM would normally cover that gap, but it requires a
      server render, and this framework's primary path is static HTML with no
