@@ -83,7 +83,7 @@
        ================================ */
 
     /* Color Primitives: Brand */
-    --p-brand-hue: 260;
+    --p-brand-hue: 58;
     --p-brand-50: oklch(0.95 0.02 var(--p-brand-hue));
     --p-brand-100: oklch(0.9 0.04 var(--p-brand-hue));
     --p-brand-200: oklch(0.8 0.08 var(--p-brand-hue));
