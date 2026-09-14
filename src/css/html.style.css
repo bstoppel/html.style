@@ -95,17 +95,27 @@
     --p-brand-800: oklch(0.35 0.14 var(--p-brand-hue));
     --p-brand-900: oklch(0.2 0.1 var(--p-brand-hue));
 
-    /* Color Primitives: Neutral */
-    --p-neutral-50: oklch(0.98 0 0);
-    --p-neutral-100: oklch(0.95 0 0);
-    --p-neutral-200: oklch(0.9 0 0);
-    --p-neutral-300: oklch(0.85 0 0);
-    --p-neutral-400: oklch(0.7 0 0);
-    --p-neutral-500: oklch(0.5 0 0);
-    --p-neutral-600: oklch(0.4 0 0);
-    --p-neutral-700: oklch(0.3 0 0);
-    --p-neutral-800: oklch(0.2 0 0);
-    --p-neutral-900: oklch(0.15 0 0);
+    /* Color Primitives: Neutral
+       Carries a trace of the brand hue, which is what stops a surface reading
+       as a slab of grey next to a coloured button. Set --p-neutral-chroma to 0
+       for a strictly achromatic ramp. This default is a deliberate cast rather
+       than a trace: at hue 58 the base surface lands on a cream, and anything
+       much beyond it reads as a colour that happens to be pale. Contrast barely
+       moves either way — text on surface shifts by about 0.4:1 from 0 to here,
+       which is why the test guarding this asserts the ratio and not the value. */
+    --p-neutral-chroma: 0.03;
+    --p-neutral-0: oklch(0.99 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-50: oklch(0.98 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-100: oklch(0.95 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-200: oklch(0.9 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-300: oklch(0.85 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-400: oklch(0.7 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-500: oklch(0.5 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-600: oklch(0.4 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-700: oklch(0.3 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-800: oklch(0.2 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-900: oklch(0.15 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-950: oklch(0.1 var(--p-neutral-chroma) var(--p-brand-hue));
 
     /* Spacing Primitives */
     --p-space-xs: 0.25rem;   /* 4px */
@@ -165,11 +175,17 @@
        TIER 2: SEMANTIC TOKENS
        ================================ */
 
-    /* Surface Colors - Theme-aware via light-dark() */
+    /* Surface Colors - Theme-aware via light-dark()
+       Every one of these runs through the neutral ramp now. Half of them used
+       to be literal oklch() values, which meant a tint applied to the ramp
+       would have moved some surfaces and left the others grey beside them. */
     --color-surface-base: light-dark(var(--p-neutral-50), var(--p-neutral-900));
-    --color-surface-elevated: light-dark(oklch(1 0 0), oklch(0.2 0 0));
-    --color-surface-sunken: light-dark(var(--p-neutral-100), oklch(0.1 0 0));
-    --color-surface-overlay: light-dark(oklch(1 0 0 / 0.95), oklch(0.15 0 0 / 0.95));
+    --color-surface-elevated: light-dark(var(--p-neutral-0), var(--p-neutral-800));
+    --color-surface-sunken: light-dark(var(--p-neutral-100), var(--p-neutral-950));
+    --color-surface-overlay: light-dark(
+      oklch(from var(--p-neutral-0) l c h / 0.95),
+      oklch(from var(--p-neutral-900) l c h / 0.95)
+    );
 
     /* Text Colors */
     --color-text-primary: light-dark(var(--p-neutral-900), var(--p-neutral-50));

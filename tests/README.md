@@ -43,6 +43,12 @@ Baselines are per-platform: Playwright names them `…-chromium-darwin.png` and
 `…-chromium-linux.png`, and each platform only ever reads its own. CI runs on
 Linux, so a macOS-only regeneration leaves CI comparing against stale images.
 
+Both commands below regenerate with `--update-snapshots=all` rather than
+Playwright's default. The default only rewrites snapshots whose comparison
+failed, so a change small enough to sit under the per-pixel threshold — a
+palette shift, say — regenerates nothing and leaves the baselines depicting the
+previous render.
+
 After an intentional visual change, regenerate **both**:
 
 ```bash

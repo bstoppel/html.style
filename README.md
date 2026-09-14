@@ -751,6 +751,20 @@ saturated one — needs the individual `--p-brand-*` steps set rather than just 
 hue. Check the result against WCAG AA before shipping it: `--color-action-primary`
 carries `--color-text-inverse` on top of it.
 
+The hue reaches the greys as well. Every surface, border and text colour comes
+from a neutral ramp carrying a trace of it, which is what stops a surface reading
+as a slab of grey beside a coloured button:
+
+```css
+:root {
+  /* 0 for a strictly achromatic ramp. The default is a deliberate cast rather
+     than a trace: at hue 58 the base surface lands on a cream. Contrast barely
+     moves across the range — body text on the base surface shifts by roughly
+     0.4:1 from 0 to 0.03 — so this is a question of taste, not of safety. */
+  --p-neutral-chroma: 0.03;
+}
+```
+
 ## Component Examples
 
 Two pages ship with the framework:

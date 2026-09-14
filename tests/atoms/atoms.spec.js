@@ -116,3 +116,104 @@ test.describe('atoms', () => {
     expect(meter['accent-color']).toBe('auto');
   });
 });
+
+/**
+ * The neutral ramp carries a trace of the brand hue, which is what stops a
+ * surface reading as a slab of grey next to a coloured button.
+ *
+ * The visual snapshots do not cover this: a palette shift this subtle falls
+ * under Playwright's per-pixel threshold and the screenshots pass unchanged.
+ * Asserting the channels directly is what catches it.
+ */
+test.describe('surface tint', () => {
+  /** Resolve a token to its rendered channels. */
+  const channels = (page, token) =>
+    page.evaluate((name) => {
+      const probe = document.createElement('span');
+      probe.style.color = `var(${name})`;
+      document.body.append(probe);
+      const value = getComputedStyle(probe).color;
+      probe.remove();
+
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = 1;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      ctx.fillStyle = value;
+      ctx.fillRect(0, 0, 1, 1);
+      const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+      return { r, g, b };
+    }, token);
+
+  const surfaces = [
+    '--color-surface-base',
+    '--color-surface-elevated',
+    '--color-surface-sunken',
+  ];
+
+  for (const colorScheme of ['light', 'dark']) {
+    test(`every surface carries the brand hue in ${colorScheme} mode`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme });
+      await page.goto('/examples.html');
+
+      for (const token of surfaces) {
+        const { r, g, b } = await channels(page, token);
+        // Achromatic means all three channels are equal. Any tint at all breaks
+        // that, which is a cheap and exact test for "not grey".
+        expect(r === g && g === b, `${token} in ${colorScheme}`).toBe(false);
+      }
+    });
+  }
+
+  test('setting the chroma to zero returns a strictly grey ramp', async ({ page }) => {
+    await page.goto('/examples.html');
+    await page.evaluate(() =>
+      document.documentElement.style.setProperty('--p-neutral-chroma', '0')
+    );
+
+    // The tint is one dial, and turning it off has to actually turn it off.
+    for (const token of surfaces) {
+      const { r, g, b } = await channels(page, token);
+      expect(r === g && g === b, token).toBe(true);
+    }
+  });
+
+  test('the tint does not cost text contrast', async ({ page }) => {
+    for (const colorScheme of ['light', 'dark']) {
+      await page.emulateMedia({ colorScheme });
+      await page.goto('/examples.html');
+
+      const ratio = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 1;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const luminance = (css) => {
+          ctx.clearRect(0, 0, 1, 1);
+          ctx.fillStyle = css;
+          ctx.fillRect(0, 0, 1, 1);
+          const [r, g, b] = [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3).map((v) => {
+            const channel = v / 255;
+            return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+          });
+          return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        };
+        const resolve = (name) => {
+          const probe = document.createElement('span');
+          probe.style.color = `var(${name})`;
+          document.body.append(probe);
+          const value = getComputedStyle(probe).color;
+          probe.remove();
+          return value;
+        };
+
+        const text = luminance(resolve('--color-text-primary'));
+        const surface = luminance(resolve('--color-surface-base'));
+        const [high, low] = text > surface ? [text, surface] : [surface, text];
+        return (high + 0.05) / (low + 0.05);
+      });
+
+      // Guards the dial being turned up far enough to matter. Body text sits
+      // near 18:1 either way; AA needs 4.5:1.
+      expect(ratio, colorScheme).toBeGreaterThan(7);
+    }
+  });
+});
