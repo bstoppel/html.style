@@ -7,9 +7,15 @@
   "exports": {
     ".": "./dist/css/html.style.css",
     "./css": "./dist/css/html.style.css",
-    "./components": "./dist/components/index.js",
+    "./components": {
+      "types": "./dist/custom-elements.d.ts",
+      "default": "./dist/components/index.js"
+    },
     "./components/*": "./dist/components/*",
-    "./bundle": "./dist/js/html.style.components.js",
+    "./bundle": {
+      "types": "./dist/custom-elements.d.ts",
+      "default": "./dist/js/html.style.components.js"
+    },
     "./dist/*": "./dist/*",
     "./package.json": "./package.json",
     "./custom-elements.json": "./dist/custom-elements.json"
@@ -34,6 +40,7 @@
     "build": "node build.js",
     "build:check": "node build.js --check",
     "docs:check": "node check-docs.js",
+    "types:check": "tsc -p tests/types/tsconfig.json",
     "serve": "http-server dist -p 8080",
     "start": "npm run serve"
   },
@@ -79,9 +86,11 @@
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@playwright/test": "^1.58.0",
     "esbuild": "^0.28.2",
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "lit": "^3.3.3"
-  }
+  },
+  "types": "./dist/custom-elements.d.ts"
 }

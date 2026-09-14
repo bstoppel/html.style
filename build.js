@@ -51,6 +51,7 @@ const COMPONENT_BUNDLE_CLASSIC = 'js/html.style.components.classic.js';
  * actually has.
  */
 const MANIFEST = 'custom-elements.json';
+const TYPES = 'custom-elements.d.ts';
 /**
  * Analysed into a scratch directory rather than straight into dist/, so
  * `--check` can compare what the analyzer produced against what is committed.
@@ -202,6 +203,158 @@ function generateManifest() {
   }
 }
 
+/**
+ * TypeScript declarations, generated from the manifest rather than hand-written,
+ * so they cannot drift from what the components actually expose.
+ *
+ * This is deliberately not a set of framework wrappers. What a wrapper mostly
+ * buys is autocomplete and type errors, and those come from declaring the
+ * elements once: HTMLElementTagNameMap makes every DOM lookup typed, in vanilla
+ * TypeScript and inside React, Vue or Svelte alike.
+ */
+function generateTypes() {
+  const manifestPath = path.join(DIST, MANIFEST);
+  if (!fs.existsSync(manifestPath)) return 0;
+
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const elements = manifest.modules
+    .flatMap((m) => m.declarations ?? [])
+    .filter((d) => d.customElement && d.tagName)
+    .sort((a, b) => a.tagName.localeCompare(b.tagName));
+
+  /** Underscore and hash names are internal state, whatever the manifest says. */
+  const isPublic = (member) =>
+    member.privacy !== 'private' && !/^[_#]/.test(member.name);
+
+  const comment = (text, indent) => {
+    if (!text) return '';
+    const body = text.replace(/\s+/g, ' ').trim();
+    return `${indent}/** ${body} */\n`;
+  };
+
+  /** A name that is not a plain identifier has to be quoted to be legal TS. */
+  const key = (name) => (/^[A-Za-z_$][\w$]*$/.test(name) ? name : `'${name}'`);
+
+  const identifier = (name) => /^[A-Za-z_$][\w$]*$/.test(name);
+
+  /**
+   * A JSDoc type the analyzer could not parse arrives as raw JSDoc text, which
+   * is not a type at all. Anything carrying a newline or an @ is discarded
+   * rather than written out — it stopped the whole file parsing once.
+   */
+  const typeText = (text, fallback = 'unknown') =>
+    text && !/[@\n]/.test(text) ? text : fallback;
+
+  const interfaceName = (tag) =>
+    tag.split('-').map((part) => part[0].toUpperCase() + part.slice(1)).join('') + 'Element';
+
+  /**
+   * `@returns {HsToast}` names the component CLASS, which this file does not
+   * declare — it declares HsToastElement. Without this the return type is a
+   * dangling reference that only shows up when someone compiles against it.
+   */
+  const classToInterface = new Map(
+    elements.filter((e) => e.name).map((e) => [e.name, interfaceName(e.tagName)])
+  );
+  const resolveType = (text, fallback) => {
+    const resolved = typeText(text, fallback);
+    return classToInterface.get(resolved) ?? resolved;
+  };
+
+  const blocks = elements.map((element) => {
+    const name = interfaceName(element.tagName);
+    const members = (element.members ?? []).filter(isPublic);
+    const fields = members.filter((m) => m.kind === 'field');
+    const methods = members.filter((m) => m.kind === 'method');
+    const events = element.events ?? [];
+
+    const eventMap = events.length
+      ? `export interface ${name}EventMap {\n` +
+        events
+          .map(
+            (event) =>
+              comment(event.description, '  ') +
+              `  ${key(event.name)}: ${event.type?.text || 'Event'};\n`
+          )
+          .join('') +
+        `}\n\n`
+      : '';
+
+    const listeners = events.length
+      ? `\n` +
+        ['addEventListener', 'removeEventListener']
+          .map(
+            (method) =>
+              `  ${method}<K extends keyof ${name}EventMap>(\n` +
+              `    type: K,\n` +
+              `    listener: (this: ${name}, event: ${name}EventMap[K]) => unknown,\n` +
+              `    options?: boolean | ${method === 'addEventListener' ? 'AddEventListenerOptions' : 'EventListenerOptions'}\n` +
+              `  ): void;\n` +
+              `  ${method}(\n` +
+              `    type: string,\n` +
+              `    listener: EventListenerOrEventListenerObject,\n` +
+              `    options?: boolean | ${method === 'addEventListener' ? 'AddEventListenerOptions' : 'EventListenerOptions'}\n` +
+              `  ): void;\n`
+          )
+          .join('')
+      : '';
+
+    const body =
+      fields
+        .map(
+          (field) =>
+            comment(field.description, '  ') +
+            // `unknown` rather than a guess. The analyzer cannot infer a getter's
+            // type, and declaring `panels` a string because that was a
+            // convenient default would be worse than declaring nothing.
+            `  ${key(field.name)}: ${resolveType(field.type?.text, 'unknown')};\n`
+        )
+        .join('') +
+      methods
+        .map((method) => {
+          const declared = method.parameters ?? [];
+          // One unusable parameter name poisons the whole signature, so the
+          // list is taken as a unit rather than patched element by element.
+          const usable = declared.every((p) => identifier(p.name));
+          const params = usable
+            ? declared
+                .map(
+                  (p) =>
+                    `${p.name}${p.optional ? '?' : ''}: ${resolveType(p.type?.text, 'unknown')}`
+                )
+                .join(', ')
+            : '...args: unknown[]';
+          return (
+            comment(method.description, '  ') +
+            `  ${key(method.name)}(${params}): ${resolveType(method.return?.type?.text, 'void')};\n`
+          );
+        })
+        .join('');
+
+    return (
+      eventMap +
+      comment(element.description, '') +
+      `export interface ${name} extends HTMLElement {\n${body}${listeners}}\n`
+    );
+  });
+
+  const tagMap = elements
+    .map((element) => `    ${key(element.tagName)}: ${interfaceName(element.tagName)};`)
+    .join('\n');
+
+  const output =
+    `// Generated by build.js from ${MANIFEST}. Do not edit.\n` +
+    `//\n` +
+    `// Declaring the elements once is what a framework wrapper would mostly have\n` +
+    `// bought: HTMLElementTagNameMap types every document.querySelector and\n` +
+    `// createElement call, in plain TypeScript and inside any framework.\n` +
+    `\n` +
+    blocks.join('\n') +
+    `\ndeclare global {\n  interface HTMLElementTagNameMap {\n${tagMap}\n  }\n}\n`;
+
+  return sync(path.join(DIST, TYPES), Buffer.from(output)) ? 1 : 0;
+}
+
 function buildHtml(partials) {
   let changed = 0;
 
@@ -230,6 +383,8 @@ for (const dir of ASSET_DIRS) changed += copyDir(path.join(SRC, dir), path.join(
 changed += copyFiles(STATIC_FILES, SRC, DIST);
 // After the component copy above, so the manifest describes what dist/ holds.
 changed += generateManifest();
+// After the manifest, which it is generated from.
+changed += generateTypes();
 
 if (fs.existsSync(WEBSITE)) {
   for (const dir of WEBSITE_ASSET_DIRS) changed += copyDir(path.join(SRC, dir), path.join(WEBSITE, dir));

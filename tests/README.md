@@ -26,6 +26,7 @@ npm test
 npm run test:visual        # Visual regression tests
 npm run test:a11y          # Accessibility tests
 npm run test:atoms         # Semantic HTML styled by the atoms layer
+npm run types:check        # Generated .d.ts compiles against a consumer fixture
 npm run test:performance   # Performance tests
 npm run test:components    # Web component tests
 ```
@@ -76,6 +77,23 @@ and every element in `custom-elements.json` is documented in the README.
 
 It runs in CI ahead of the browser tests, since it needs no browser.
 
+## Type checks
+
+`npm run types:check` is not a Playwright test either. It compiles
+`tests/types/usage.ts` against `dist/custom-elements.d.ts` under `strict`, so the
+generated declarations are verified to describe the real API rather than merely
+to exist.
+
+They are generated from `dist/custom-elements.json` by `build.js`, which means
+they cannot drift from the components — but they can be generated *wrong*. The
+first version did not parse at all: a `@param options.variant` JSDoc block was
+mis-read into a parameter named `{ variant, duration }` and a type containing raw
+JSDoc, and nothing reported it, because nothing compiled them. That is what this
+check exists to catch.
+
+The fixture is written the way a consumer would write it, not the way a test
+would. It runs in CI after the build and before the browser download.
+
 ## Test Structure
 
 ```
@@ -86,6 +104,8 @@ tests/
 │   └── accessibility.spec.js   # Accessibility tests (axe-core)
 ├── atoms/
 │   └── atoms.spec.js           # Semantic HTML the atoms layer styles
+├── types/
+│   └── usage.ts                # Consumer-style fixture for the generated .d.ts
 ├── components/
 │   └── components.spec.js      # Web component behaviour and a11y
 └── performance/

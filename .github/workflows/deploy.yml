@@ -43,6 +43,13 @@ jobs:
       - name: Verify documentation is current
         run: npm run docs:check
 
+      # Generated declarations are the kind of thing that rots silently: nothing
+      # errors when they are wrong, consumers just get bad autocomplete. This
+      # compiles a consumer-style fixture against them. Needs the build above,
+      # and no browser, so it runs before the download.
+      - name: Verify the generated type declarations compile
+        run: npm run types:check
+
       - name: Install Playwright browsers
         run: npx playwright install
 

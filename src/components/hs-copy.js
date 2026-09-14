@@ -66,7 +66,10 @@ export class HsCopy extends HTMLElement {
     clearTimeout(this.#timer);
   }
 
-  /** The text this element would copy. */
+  /**
+   * The text this element would copy.
+   * @type {string}
+   */
   get text() {
     const id = this.getAttribute('for');
     if (id) return document.getElementById(id)?.textContent ?? '';

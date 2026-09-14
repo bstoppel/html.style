@@ -88,12 +88,18 @@ export class HsSortable extends HTMLElement {
     this.#sync();
   }
 
-  /** The wrapped table, for anything this API does not cover. */
+  /**
+   * The wrapped table, for anything this API does not cover.
+   * @type {HTMLTableElement | null}
+   */
   get table() {
     return this.querySelector(':scope > table');
   }
 
-  /** The header of the sorted column, or null while nothing is sorted. */
+  /**
+   * The header of the sorted column, or null while nothing is sorted.
+   * @type {HTMLTableCellElement | null}
+   */
   get sortedBy() {
     return (
       this.table?.querySelector(

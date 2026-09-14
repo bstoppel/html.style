@@ -45,6 +45,9 @@
               "kind": "field",
               "name": "panels",
               "description": "The `<details>` children, in document order.",
+              "type": {
+                "text": "HTMLDetailsElement[]"
+              },
               "readonly": true
             },
             {
@@ -886,6 +889,9 @@
               "kind": "field",
               "name": "text",
               "description": "The text this element would copy.",
+              "type": {
+                "text": "string"
+              },
               "readonly": true
             },
             {
@@ -1026,11 +1032,17 @@
               "kind": "field",
               "name": "dialog",
               "description": "The wrapped native element, for anything this API does not cover.",
+              "type": {
+                "text": "HTMLDialogElement | null"
+              },
               "readonly": true
             },
             {
               "kind": "field",
-              "name": "open"
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              }
             },
             {
               "kind": "method",
@@ -1207,6 +1219,9 @@
               "kind": "field",
               "name": "control",
               "description": "The wrapped native control.",
+              "type": {
+                "text": "HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null"
+              },
               "readonly": true
             },
             {
@@ -1754,12 +1769,18 @@
               "kind": "field",
               "name": "table",
               "description": "The wrapped table, for anything this API does not cover.",
+              "type": {
+                "text": "HTMLTableElement | null"
+              },
               "readonly": true
             },
             {
               "kind": "field",
               "name": "sortedBy",
               "description": "The header of the sorted column, or null while nothing is sorted.",
+              "type": {
+                "text": "HTMLTableCellElement | null"
+              },
               "readonly": true
             },
             {
@@ -1970,6 +1991,9 @@
               "kind": "field",
               "name": "panels",
               "description": "The `<hs-tab-panel>` children, in document order.",
+              "type": {
+                "text": "HTMLElement[]"
+              },
               "readonly": true
             },
             {
@@ -2171,7 +2195,10 @@
             {
               "kind": "field",
               "name": "scheme",
-              "description": "The scheme in effect: an explicit choice, else the system preference."
+              "description": "The scheme in effect: an explicit choice, else the system preference.",
+              "type": {
+                "text": "'light' | 'dark'"
+              }
             },
             {
               "kind": "method",
@@ -2325,18 +2352,27 @@
             {
               "kind": "field",
               "name": "duration",
-              "description": "Milliseconds before self-dismissal. Zero means it stays."
+              "description": "Milliseconds before self-dismissal. Zero means it stays.",
+              "type": {
+                "text": "number"
+              }
             },
             {
               "kind": "field",
               "name": "remaining",
               "description": "Milliseconds left on the clock. Stops falling while paused.",
+              "type": {
+                "text": "number"
+              },
               "readonly": true
             },
             {
               "kind": "field",
               "name": "paused",
               "description": "Whether the timeout is currently held by a pointer or by focus.",
+              "type": {
+                "text": "boolean"
+              },
               "readonly": true
             },
             {
@@ -2425,6 +2461,9 @@
               "kind": "field",
               "name": "toasts",
               "description": "The toasts currently showing, oldest first.",
+              "type": {
+                "text": "HTMLElement[]"
+              },
               "readonly": true
             },
             {
@@ -2439,18 +2478,15 @@
                   }
                 },
                 {
-                  "name": "{ variant, duration }",
-                  "default": "{}"
-                },
-                {
                   "name": "options",
+                  "default": "{}",
                   "optional": true,
                   "type": {
-                    "text": "@param {'success'|'warning'|'error'|'info'} [options.variant]\n   * @param {number} [options.duration] - Milliseconds; 0 to leave it up.\n   * "
+                    "text": "{ variant?: 'success'|'warning'|'error'|'info', duration?: number }"
                   }
                 }
               ],
-              "description": "Show a toast and return it, so the caller can dismiss it early or listen to\nit. Appending keeps DOM order the same as the order they were shown.",
+              "description": "Show a toast and return it, so the caller can dismiss it early or listen to\nit. Appending keeps DOM order the same as the order they were shown.\n\nThe options are one inline type rather than `@param options.variant`\nentries. The analyzer mis-parses those against a destructured parameter:\nit emitted a parameter literally named `{ variant, duration }` and wrote\nraw JSDoc into the manifest as a type, which then reached the generated\ndeclarations and stopped them parsing.",
               "return": {
                 "type": {
                   "text": "HsToast"
@@ -2813,6 +2849,9 @@
               "kind": "field",
               "name": "trigger",
               "description": "The element this describes, or null while `for` names nothing.",
+              "type": {
+                "text": "HTMLElement | null"
+              },
               "readonly": true
             },
             {
@@ -2849,12 +2888,18 @@
             {
               "kind": "field",
               "name": "show",
-              "description": "Show it. An arrow field, so it doubles as the listener. Safe to call when\nit is already showing."
+              "description": "Show it. An arrow field, so it doubles as the listener. Safe to call when\nit is already showing.",
+              "type": {
+                "text": "() => void"
+              }
             },
             {
               "kind": "field",
               "name": "hide",
-              "description": "Hide it. Safe to call when it is already hidden."
+              "description": "Hide it. Safe to call when it is already hidden.",
+              "type": {
+                "text": "() => void"
+              }
             },
             {
               "kind": "field",

@@ -95,7 +95,10 @@ export class HsTooltip extends HTMLElement {
     this.#attach();
   }
 
-  /** The element this describes, or null while `for` names nothing. */
+  /**
+   * The element this describes, or null while `for` names nothing.
+   * @type {HTMLElement | null}
+   */
   get trigger() {
     return this.#trigger;
   }
@@ -144,13 +147,19 @@ export class HsTooltip extends HTMLElement {
     else trigger.removeAttribute('aria-describedby');
   }
 
-  /** Show it. An arrow field, so it doubles as the listener. Safe to call when
-   *  it is already showing. */
+  /**
+   * Show it. An arrow field, so it doubles as the listener. Safe to call when
+   * it is already showing.
+   * @type {() => void}
+   */
   show = () => {
     if (this.#trigger && !this.matches(':popover-open')) this.showPopover();
   };
 
-  /** Hide it. Safe to call when it is already hidden. */
+  /**
+   * Hide it. Safe to call when it is already hidden.
+   * @type {() => void}
+   */
   hide = () => {
     if (this.matches(':popover-open')) this.hidePopover();
   };

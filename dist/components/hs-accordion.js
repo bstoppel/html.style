@@ -63,7 +63,10 @@ export class HsAccordion extends HTMLElement {
     if (this.isConnected) this.#sync();
   }
 
-  /** The `<details>` children, in document order. */
+  /**
+   * The `<details>` children, in document order.
+   * @type {HTMLDetailsElement[]}
+   */
   get panels() {
     return [...this.querySelectorAll(':scope > details')];
   }

@@ -134,7 +134,10 @@ export class HsTabs extends LitElement {
     this._labels = [];
   }
 
-  /** The `<hs-tab-panel>` children, in document order. */
+  /**
+   * The `<hs-tab-panel>` children, in document order.
+   * @type {HTMLElement[]}
+   */
   get panels() {
     return this.#panels;
   }
