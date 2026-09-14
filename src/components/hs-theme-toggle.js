@@ -59,7 +59,10 @@ export class HsThemeToggle extends HTMLElement {
     if (this.isConnected) this.#render();
   }
 
-  /** The scheme in effect: an explicit choice, else the system preference. */
+  /**
+   * The scheme in effect: an explicit choice, else the system preference.
+   * @type {'light' | 'dark'}
+   */
   get scheme() {
     const explicit = document.documentElement.style.colorScheme;
     if (explicit === 'light' || explicit === 'dark') return explicit;

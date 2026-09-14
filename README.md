@@ -839,6 +839,35 @@ FormEnhancements.init();
   `init()`), and it injects a copy button into *every* code block. Use
   [`<hs-copy>`](#hs-copy) instead, which copies what you point it at.
 
+## TypeScript
+
+Type declarations ship at `dist/custom-elements.d.ts` and are wired up through
+`package.json`, so nothing needs importing:
+
+```ts
+// Typed, with no cast: the declarations augment HTMLElementTagNameMap.
+const menu = document.querySelector('hs-menu');
+menu?.addEventListener('hs-menu-select', (event) => {
+  // event is narrowed by name, from the element's own event map
+});
+```
+
+They are **generated from `custom-elements.json` by the build**, not written by
+hand, so they cannot describe an API the components do not have. Every public
+field, method and event comes from the same manifest that drives editor
+completion.
+
+This is deliberately not a set of framework wrappers. What a wrapper mostly buys
+is autocomplete and type errors, and declaring the elements once delivers that in
+plain TypeScript and inside React, Vue or Svelte alike — without a package per
+framework, each needing its own build, release and tests. See
+[docs/frameworks.md](docs/frameworks.md) for the per-framework setup that is
+actually required.
+
+One gap worth knowing: JSX does not pick these up. `<hs-menu>` in a `.tsx` file
+still needs a `JSX.IntrinsicElements` augmentation, which is not generated yet.
+DOM lookups, `createElement` and event listeners are all typed today.
+
 ## Accessibility
 
 html.style is built with accessibility as a core principle:

@@ -89,6 +89,7 @@ export class HsField extends HTMLElement {
   }
 
   /** The wrapped native control. */
+  /** @type {HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null} */
   get control() {
     return this.#control;
   }

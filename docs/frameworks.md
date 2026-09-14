@@ -16,6 +16,7 @@ layout classes are plain CSS — link the stylesheet and you are done. Only the
 | `dist/js/html.style.components.classic.js` | Classic script, Lit inlined | Opening a page from `file://`, or anywhere you cannot use modules |
 | `dist/components/*.js` | Unbundled ES modules | You have a bundler (Vite, webpack, Next, Rollup) |
 | `dist/custom-elements.json` | Manifest | Editor completion; picked up automatically via `package.json` |
+| `dist/custom-elements.d.ts` | Type declarations | TypeScript; wired through `package.json`, so nothing to import |
 
 The unbundled modules `import { LitElement } from 'lit'` — a bare specifier a
 browser cannot resolve on its own. **Do not point a `<script>` at

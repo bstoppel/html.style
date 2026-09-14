@@ -112,7 +112,10 @@ export class HsToast extends HTMLElement {
     this.removeEventListener('focusout', this.#release);
   }
 
-  /** Milliseconds before self-dismissal. Zero means it stays. */
+  /**
+   * Milliseconds before self-dismissal. Zero means it stays.
+   * @type {number}
+   */
   get duration() {
     if (!this.hasAttribute('duration')) return DEFAULT_DURATION;
     const value = Number(this.getAttribute('duration'));
@@ -124,13 +127,19 @@ export class HsToast extends HTMLElement {
     this.setAttribute('duration', String(value));
   }
 
-  /** Milliseconds left on the clock. Stops falling while paused. */
+  /**
+   * Milliseconds left on the clock. Stops falling while paused.
+   * @type {number}
+   */
   get remaining() {
     if (!this.#timer) return Math.max(0, this.#remaining);
     return Math.max(0, this.#remaining - (performance.now() - this.#startedAt));
   }
 
-  /** Whether the timeout is currently held by a pointer or by focus. */
+  /**
+   * Whether the timeout is currently held by a pointer or by focus.
+   * @type {boolean}
+   */
   get paused() {
     return this.#hovered || this.#focused;
   }
@@ -199,7 +208,10 @@ export class HsToastRegion extends HTMLElement {
     if (!this.hasAttribute('aria-atomic')) this.setAttribute('aria-atomic', 'false');
   }
 
-  /** The toasts currently showing, oldest first. */
+  /**
+   * The toasts currently showing, oldest first.
+   * @type {HTMLElement[]}
+   */
   get toasts() {
     return [...this.querySelectorAll(':scope > hs-toast')];
   }
@@ -208,13 +220,18 @@ export class HsToastRegion extends HTMLElement {
    * Show a toast and return it, so the caller can dismiss it early or listen to
    * it. Appending keeps DOM order the same as the order they were shown.
    *
+   * The options are one inline type rather than `@param options.variant`
+   * entries. The analyzer mis-parses those against a destructured parameter:
+   * it emitted a parameter literally named `{ variant, duration }` and wrote
+   * raw JSDoc into the manifest as a type, which then reached the generated
+   * declarations and stopped them parsing.
+   *
    * @param {string} message - The text to announce.
-   * @param {object} [options]
-   * @param {'success'|'warning'|'error'|'info'} [options.variant]
-   * @param {number} [options.duration] - Milliseconds; 0 to leave it up.
+   * @param {{ variant?: 'success'|'warning'|'error'|'info', duration?: number }} [options]
    * @returns {HsToast}
    */
-  show(message, { variant, duration } = {}) {
+  show(message, options = {}) {
+    const { variant, duration } = options;
     const toast = document.createElement('hs-toast');
     if (variant) toast.setAttribute('variant', variant);
     if (duration !== undefined) toast.setAttribute('duration', String(duration));

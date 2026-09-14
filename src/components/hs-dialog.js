@@ -91,11 +91,15 @@ export class HsDialog extends HTMLElement {
     this.#dialog.closedBy = this.hasAttribute('persistent') ? 'closerequest' : 'any';
   }
 
-  /** The wrapped native element, for anything this API does not cover. */
+  /**
+   * The wrapped native element, for anything this API does not cover.
+   * @type {HTMLDialogElement | null}
+   */
   get dialog() {
     return this.#dialog;
   }
 
+  /** @type {boolean} */
   get open() {
     return this.hasAttribute('open');
   }
