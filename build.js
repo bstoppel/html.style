@@ -51,6 +51,17 @@ const COMPONENT_BUNDLE_CLASSIC = 'js/html.style.components.classic.js';
  * actually has.
  */
 const MANIFEST = 'custom-elements.json';
+/**
+ * Analysed into a scratch directory rather than straight into dist/, so
+ * `--check` can compare what the analyzer produced against what is committed.
+ * Writing directly would overwrite the file first and make the two
+ * indistinguishable.
+ *
+ * The analyzer also writes its outdir into package.json's `customElements`
+ * field by default, which pointed every consumer at this gitignored, deleted
+ * directory. custom-elements-manifest.config.mjs turns that off; the field is
+ * declared by hand and names the manifest that actually ships.
+ */
 const MANIFEST_TMP = '.cem-tmp';
 const STATIC_FILES = ['favicon.svg', 'site.webmanifest', 'robots.txt'];
 
@@ -178,7 +189,11 @@ function generateManifest() {
     execFileSync(
       process.execPath,
       [cli, 'analyze', '--globs', `${components}/*.js`, '--litelement', '--outdir', tmp],
-      { stdio: 'pipe' }
+      // stderr is inherited rather than piped. The analyzer reports a bad
+      // config by logging and carrying on, so piping it swallowed the one
+      // message that would have explained why custom-elements-manifest.config
+      // was being ignored. stdout stays piped; it is only a summary.
+      { stdio: ['ignore', 'pipe', 'inherit'] }
     );
     const generated = fs.readFileSync(path.join(tmp, MANIFEST));
     return sync(path.join(DIST, MANIFEST), generated) ? 1 : 0;

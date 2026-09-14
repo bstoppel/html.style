@@ -408,6 +408,30 @@ test.describe('Custom elements manifest', () => {
     expect(toggle.slots.length).toBeGreaterThan(0);
   });
 
+  test('the package points at a manifest that actually ships', async () => {
+    // This failed silently: the field named .cem-tmp/custom-elements.json, the
+    // scratch directory build.js creates and deletes in a finally, which is
+    // also gitignored and outside files[]. Nothing errors — every consumer's
+    // editor just gets no <hs-*> completion, which is the concrete form of the
+    // machine-readable claim.
+    const { readFileSync, existsSync } = await import('node:fs');
+    const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
+
+    expect(pkg.customElements, 'package.json must name a manifest').toBeTruthy();
+    expect(existsSync(pkg.customElements), `${pkg.customElements} must exist`).toBe(true);
+
+    // Existing on the author's disk is not enough — it has to be published.
+    const shipped = pkg.files.some((pattern) => pkg.customElements.startsWith(pattern.split('*')[0]));
+    expect(shipped, `${pkg.customElements} must be covered by files[]`).toBe(true);
+
+    // And it has to be the real thing rather than an empty placeholder.
+    const manifest = JSON.parse(readFileSync(pkg.customElements, 'utf8'));
+    const tags = manifest.modules
+      .flatMap((m) => m.declarations ?? [])
+      .filter((d) => d.customElement && d.tagName);
+    expect(tags.length).toBeGreaterThan(0);
+  });
+
   test('documents no internal state as public API', async ({ page }) => {
     await page.goto('/examples.html');
 
