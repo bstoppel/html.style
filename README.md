@@ -757,10 +757,11 @@ as a slab of grey beside a coloured button:
 
 ```css
 :root {
-  /* 0 for a strictly achromatic ramp; past about 0.015 these stop reading as
-     neutral. Contrast barely moves across that range — body text on the base
-     surface shifts by roughly 0.4:1 from one end to the other. */
-  --p-neutral-chroma: 0.008;
+  /* 0 for a strictly achromatic ramp. The default is a deliberate cast rather
+     than a trace: at hue 58 the base surface lands on a cream. Contrast barely
+     moves across the range — body text on the base surface shifts by roughly
+     0.4:1 from 0 to 0.03 — so this is a question of taste, not of safety. */
+  --p-neutral-chroma: 0.03;
 }
 ```
 

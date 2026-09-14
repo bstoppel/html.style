@@ -98,10 +98,12 @@
     /* Color Primitives: Neutral
        Carries a trace of the brand hue, which is what stops a surface reading
        as a slab of grey next to a coloured button. Set --p-neutral-chroma to 0
-       for a strictly achromatic ramp; much past 0.015 and these stop reading as
-       neutral at all. Contrast is barely moved either way — text on surface
-       shifts by about 0.4:1 across the whole usable range. */
-    --p-neutral-chroma: 0.008;
+       for a strictly achromatic ramp. This default is a deliberate cast rather
+       than a trace: at hue 58 the base surface lands on a cream, and anything
+       much beyond it reads as a colour that happens to be pale. Contrast barely
+       moves either way — text on surface shifts by about 0.4:1 from 0 to here,
+       which is why the test guarding this asserts the ratio and not the value. */
+    --p-neutral-chroma: 0.03;
     --p-neutral-0: oklch(0.99 var(--p-neutral-chroma) var(--p-brand-hue));
     --p-neutral-50: oklch(0.98 var(--p-neutral-chroma) var(--p-brand-hue));
     --p-neutral-100: oklch(0.95 var(--p-neutral-chroma) var(--p-brand-hue));
