@@ -23,6 +23,13 @@ const DOCS = [
   'docs/frameworks.md',
   'docs/design-system.md',
   'docs/positioning.md',
+  'docs/adr/README.md',
+  'docs/adr/0001-use-architecture-decision-records.md',
+  'docs/adr/0002-web-components-as-delivery-mechanism.md',
+  'docs/adr/0003-overridable-design-system.md',
+  'docs/adr/0004-yearly-standards-snapshot.md',
+  'docs/adr/0006-nav-collapse-mechanism.md',
+  'docs/adr/0007-convenience-component-test.md',
   'src/FAVICON_GENERATION.md',
 ];
 
