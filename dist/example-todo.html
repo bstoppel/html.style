@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="A localStorage todo list built only from html.style elements — the reference implementation for #59.">
+  <link rel="stylesheet" href="css/html.style.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Todo Example - html.style</title>
+
+  <!-- Classic script, not the module bundle, for the same file:// reason as
+       example-vanilla.html: ES modules are blocked from file:// by CORS. -->
+  <script src="js/html.style.components.classic.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <main id="main-content" tabindex="-1">
+    <div class="center">
+      <div class="stack">
+        <h1>Todo</h1>
+        <p>
+          A real app, not a showcase: state, persistence, and every
+          interaction backed by an <code>hs-*</code> element rather than a
+          hand-rolled equivalent. View source — this page is the whole
+          example. Stored in <code>localStorage</code>, so it survives a
+          reload and never leaves this browser.
+        </p>
+
+        <div class="cluster" style="justify-content: space-between">
+          <form id="add-form" class="cluster">
+            <hs-field label="New task">
+              <input type="text" name="task" required autocomplete="off">
+            </hs-field>
+            <button type="submit">Add</button>
+          </form>
+          <button type="button" id="undo" class="button--outline" disabled>Undo delete</button>
+        </div>
+
+        <!-- hs-sortable enhances a real <table>; without JS it is still a
+             table, ordered by insertion. -->
+        <hs-sortable>
+          <table>
+            <thead>
+              <tr>
+                <th data-sort>Task</th>
+                <th data-sort="number">Added</th>
+                <th>Done</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="todo-body"></tbody>
+          </table>
+        </hs-sortable>
+
+        <p id="empty-state" class="muted" hidden>Nothing here yet. Add a task above.</p>
+      </div>
+    </div>
+
+    <!-- Shared by every row: one dialog, told which task it is confirming
+         against, rather than one dialog per row. -->
+    <hs-dialog id="confirm-delete">
+      <h2>Delete this task?</h2>
+      <p id="confirm-delete-text"></p>
+      <form method="dialog" class="cluster">
+        <button value="cancel" class="button--outline">Cancel</button>
+        <button value="delete">Delete</button>
+      </form>
+    </hs-dialog>
+  </main>
+
+  <!-- The live region has to exist before anything is announced into it,
+       and has to be light DOM so the announced text stays in the tree a
+       screen reader is already watching. -->
+  <hs-toast-region></hs-toast-region>
+
+  <script>
+    // Classic script, not a module, for the same file:// reason as above.
+    // Plain DOM APIs throughout — custom elements are elements.
+
+    const STORAGE_KEY = 'html.style:example-todo';
+
+    const body = document.querySelector('#todo-body');
+    const emptyState = document.querySelector('#empty-state');
+    const toastRegion = document.querySelector('hs-toast-region');
+    const confirmDialog = document.querySelector('#confirm-delete');
+    const confirmText = document.querySelector('#confirm-delete-text');
+    const undoButton = document.querySelector('#undo');
+
+    /** @type {{ id: string, task: string, addedAt: number, done: boolean }[]} */
+    let todos = load();
+
+    /** What Undo restores, until the next delete replaces it or it's used. */
+    let lastDeleted = null;
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        // Corrupt or inaccessible storage is not a reason to crash the page.
+        return [];
+      }
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    }
+
+    function render() {
+      body.replaceChildren(...todos.map(rowFor));
+      emptyState.hidden = todos.length > 0;
+      // A shorter list can leave hs-sortable's cached header state pointing
+      // past the end; re-reading the table it wraps keeps it in sync.
+      document.querySelector('hs-sortable').refresh?.();
+    }
+
+    function rowFor(todo) {
+      const tr = document.createElement('tr');
+      tr.dataset.id = todo.id;
+
+      const task = document.createElement('td');
+      task.textContent = todo.task;
+
+      const added = document.createElement('td');
+      added.dataset.sortValue = String(todo.addedAt);
+      added.textContent = new Date(todo.addedAt).toLocaleDateString();
+
+      const done = document.createElement('td');
+      const toggle = document.createElement('hs-toggle');
+      toggle.setAttribute('name', `done-${todo.id}`);
+      if (todo.done) toggle.setAttribute('checked', '');
+      toggle.addEventListener('change', () => {
+        todo.done = toggle.checked;
+        save();
+        tr.classList.toggle('todo-done', todo.done);
+      });
+      done.append(toggle);
+
+      const actions = document.createElement('td');
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'button--outline';
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => requestDelete(todo.id));
+      actions.append(deleteButton);
+
+      tr.classList.toggle('todo-done', todo.done);
+      tr.append(task, added, done, actions);
+      return tr;
+    }
+
+    function requestDelete(id) {
+      const todo = todos.find((t) => t.id === id);
+      if (!todo) return;
+      confirmDialog.dataset.pendingId = id;
+      confirmText.textContent = `“${todo.task}” will be removed.`;
+      confirmDialog.show();
+    }
+
+    confirmDialog.addEventListener('hs-close', (event) => {
+      const id = confirmDialog.dataset.pendingId;
+      delete confirmDialog.dataset.pendingId;
+      if (event.detail.returnValue !== 'delete' || !id) return;
+
+      const index = todos.findIndex((t) => t.id === id);
+      if (index === -1) return;
+
+      const [removed] = todos.splice(index, 1);
+      save();
+      render();
+
+      lastDeleted = { todo: removed, index };
+      undoButton.disabled = false;
+      toastRegion.show(`Deleted “${removed.task}”.`, { variant: 'info' });
+    });
+
+    undoButton.addEventListener('click', () => {
+      if (!lastDeleted) return;
+      todos.splice(Math.min(lastDeleted.index, todos.length), 0, lastDeleted.todo);
+      save();
+      render();
+      toastRegion.show(`Restored “${lastDeleted.todo.task}”.`, { variant: 'success' });
+      lastDeleted = null;
+      undoButton.disabled = true;
+    });
+
+    document.querySelector('#add-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const input = event.target.elements.task;
+      const task = input.value.trim();
+      if (!task) return;
+
+      todos.push({
+        id: crypto.randomUUID(),
+        task,
+        addedAt: Date.now(),
+        done: false,
+      });
+      save();
+      render();
+      input.value = '';
+      input.focus();
+    });
+
+    render();
+  </script>
+</body>
+</html>
