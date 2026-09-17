@@ -91,6 +91,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=html-style
+          command: pages deploy website --project-name=html-style
           workingDirectory: .
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

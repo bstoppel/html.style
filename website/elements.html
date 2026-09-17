@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#b45309">
+  <meta name="description" content="Fifteen additive hs-* elements. Wrap the platform instead of replacing it.">
+  <title>Elements · html.style</title>
+  <link rel="canonical" href="https://html.style/elements.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://html.style/elements.html">
+  <meta property="og:title" content="Elements · html.style">
+  <meta property="og:description" content="Fifteen additive hs-* elements. Wrap the platform instead of replacing it.">
+  <meta property="og:image" content="https://html.style/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="css/html.style.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script>
+    (() => {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.style.colorScheme = t;
+    })();
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="page-layout">
+    <header class="site-header">
+      <div class="center center--wide">
+        <div class="cluster header-bar">
+          <a href="index.html" class="brand"><svg width="32" height="32" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+  <rect fill="var(--color-action-primary)" width="100" height="100" rx="18"/>
+  <text x="12" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">h</text>
+  <circle cx="48" cy="62" r="6" fill="var(--color-text-inverse)"/>
+  <text x="58" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">s</text>
+</svg> html.style</a>
+          <button type="button" class="nav-toggle" popovertarget="nav-links">Menu</button>
+          <nav class="site-nav" aria-label="Primary">
+            <ul id="nav-links" popover>
+              <li><a href="getting-started.html">Get started</a></li><li><a href="style.html">Style</a></li><li><a href="elements.html" aria-current="page">Elements</a></li><li><a href="compare.html">Compare</a></li><li><a href="agents.html">Agents</a></li>
+              <li><a href="https://github.com/bstoppel/html.style" rel="noreferrer">GitHub</a></li>
+            </ul>
+          </nav>
+          <hs-theme-toggle></hs-theme-toggle>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+<article class="band"><div class="center center--page prose-block">
+    <p class="kicker">hs-*</p>
+    <h1>Elements</h1>
+    <p class="lede">Additive. You never have to reach for one. Where the platform already solves a problem, the component wraps it rather than reimplementing it.</p>
+    <hs-tabs>
+      <hs-tab-panel label="Catalog">
+        <div class="card-grid" style="margin-block-start:var(--p-space-lg)">
+          <article class="card"><p class="muted"><hs-badge>CSS-only</hs-badge></p><h3><code>&lt;hs-card&gt;</code></h3><p>Container-query padding on top of a styled article.</p></article><article class="card"><p class="muted"><hs-badge>CSS-only</hs-badge></p><h3><code>&lt;hs-badge&gt;</code></h3><p>Inline status mark. Same as .badge.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-alert&gt;</code></h3><p>Looks like .alert before JS; dismissal is the upgrade.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-toast&gt;</code></h3><p>Transient sibling of alert. Lives in hs-toast-region.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-field&gt;</code></h3><p>Wires label, hint, and the browser’s own validationMessage.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-copy&gt;</code></h3><p>A real button plus the Clipboard API.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-dialog&gt;</code></h3><p>A real &lt;dialog&gt;: top layer, backdrop, focus trap, Escape.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-accordion&gt;</code></h3><p>Coordinates real &lt;details&gt; with exclusive grouping.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-theme-toggle&gt;</code></h3><p>A real button that flips color-scheme.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-tooltip&gt;</code></h3><p>aria-describedby cannot cross shadow, so the bubble stays light.</p></article><article class="card"><p class="muted"><hs-badge>Light DOM</hs-badge></p><h3><code>&lt;hs-sortable&gt;</code></h3><p>Enhances a real &lt;table&gt;. Without JS it is still a table.</p></article><article class="card"><p class="muted"><hs-badge>Shadow</hs-badge></p><h3><code>&lt;hs-tabs&gt;</code></h3><p>No platform widget. Roving tabindex and ARIA from the panels.</p></article><article class="card"><p class="muted"><hs-badge>Shadow</hs-badge></p><h3><code>&lt;hs-toggle&gt;</code></h3><p>No cross-browser switch. Form-associated via ElementInternals.</p></article><article class="card"><p class="muted"><hs-badge>Shadow</hs-badge></p><h3><code>&lt;hs-combobox&gt;</code></h3><p>Not a &lt;select&gt;. Filtering a long list by typing.</p></article><article class="card"><p class="muted"><hs-badge>Shadow</hs-badge></p><h3><code>&lt;hs-menu&gt;</code></h3><p>&lt;menu&gt; is a list, not a widget. Popover + commands.</p></article>
+        </div>
+      </hs-tab-panel>
+      <hs-tab-panel label="Live">
+        <div class="stack" style="margin-block-start:var(--p-space-lg)">
+          <hs-card><div><h3>Invoice <hs-badge>Due</hs-badge></h3><p>CSS-only card. Container queries, not viewport media.</p></div></hs-card>
+          <hs-field label="Email" hint="We never share it."><input type="email" name="email" required></hs-field>
+          <hs-combobox name="city" label="City" placeholder="Start typing…">
+            <hs-option value="berlin">Berlin</hs-option>
+            <hs-option value="hamburg">Hamburg</hs-option>
+            <hs-option value="munich">Munich</hs-option>
+          </hs-combobox>
+          <form class="cluster"><hs-toggle name="notifications" checked>Email notifications</hs-toggle></form>
+          <hs-menu label="Actions">
+            <hs-menu-item value="duplicate">Duplicate</hs-menu-item>
+            <hs-menu-item value="rename">Rename</hs-menu-item>
+            <hs-menu-item value="delete">Delete</hs-menu-item>
+          </hs-menu>
+          <p class="alert alert--info" role="status">Same tokens on <code>&lt;p&gt;</code> and <code>&lt;hs-combobox&gt;</code>.</p>
+          <div>
+            <button type="button" class="button--secondary" id="open-el-dialog">Open a real dialog</button>
+            <hs-dialog id="el-dialog">
+              <h2>A platform dialog</h2>
+              <p>Top layer, backdrop, focus trap, Escape. <code>&lt;form method=&quot;dialog&quot;&gt;</code> still closes it.</p>
+              <form method="dialog" class="cluster">
+                <button value="ok">OK</button>
+              </form>
+            </hs-dialog>
+          </div>
+          <hs-accordion exclusive>
+            <details><summary>What if JavaScript is off?</summary><p>Light-DOM elements look right before they upgrade.</p></details>
+            <details><summary>Do I need a class?</summary><p>No. Tags are styled. Classes are opt-in atoms and variants.</p></details>
+          </hs-accordion>
+          <hs-sortable>
+            <table>
+              <thead><tr><th data-sort>Name</th><th data-sort="number">Size</th></tr></thead>
+              <tbody>
+                <tr><td>Report</td><td>12</td></tr>
+                <tr><td>Archive</td><td>128</td></tr>
+                <tr><td>Notes</td><td>3</td></tr>
+              </tbody>
+            </table>
+          </hs-sortable>
+        </div>
+      </hs-tab-panel>
+    </hs-tabs>
+    <p>Full attributes, events, and parts: the <a href="https://github.com/bstoppel/html.style/blob/main/README.md">README</a> and <code>custom-elements.json</code> on this site. <a href="extend.html">Use these tokens on markup you invented →</a> · <a href="agents.html">Wire the manifest into an agent →</a></p>
+  </div></article>
+    </main>
+    <footer class="site-footer">
+      <div class="center center--wide">
+        <div class="footer-grid">
+          <div>
+            <p><strong>html.style</strong></p>
+            <p class="muted">Semantic HTML is the API. Tokens theme it. Fifteen elements extend it. Version 2026.1.</p>
+          </div>
+          <nav aria-label="Footer">
+            <ul role="list" class="stack">
+              <li><a href="getting-started.html">Get started</a></li><li><a href="extend.html">Extend</a></li><li><a href="cookbook.html">Cookbook</a></li><li><a href="support.html">Support floor</a></li><li><a href="agents.html">For agents</a></li>
+            </ul>
+          </nav>
+          <div>
+            <p class="muted">MIT License. No tracking. No polyfills.</p>
+            <p><a href="https://github.com/bstoppel/html.style">github.com/bstoppel/html.style</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="js/html.style.js"></script>
+  <script type="module" src="js/html.style.components.js"></script>
+  <script type="module" src="js/site.js"></script>
+</body>
+</html>

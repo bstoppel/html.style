@@ -2,355 +2,211 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Modern web standards CSS framework with OKLCH colors, container queries, and semantic HTML">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#6b46c1" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#8b5cf6" media="(prefers-color-scheme: dark)">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="html.style - Modern Web Standards Framework">
-  <meta property="og:description" content="Build modern websites with OKLCH colors, container queries, and semantic HTML">
+  <meta name="theme-color" content="#b45309">
+  <meta name="description" content="A CSS framework that styles the HTML you already know, plus additive hs-* elements. OKLCH, container queries, cascade layers. No build step. No polyfills.">
+  <title>html.style</title>
+  <link rel="canonical" href="https://html.style/">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://html.style/">
-
-  <!-- Favicons -->
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:title" content="html.style">
+  <meta property="og:description" content="A CSS framework that styles the HTML you already know, plus additive hs-* elements. OKLCH, container queries, cascade layers. No build step. No polyfills.">
+  <meta property="og:image" content="https://html.style/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="manifest" href="site.webmanifest">
-
-  <!-- Prevent Flash of Wrong Theme -->
+  <link rel="stylesheet" href="css/html.style.css">
+  <link rel="stylesheet" href="css/site.css">
   <script>
-    (function() {
-      const theme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (theme) {
-        document.documentElement.style.colorScheme = theme;
-      } else if (prefersDark) {
-        document.documentElement.style.colorScheme = 'dark';
-      }
+    (() => {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.style.colorScheme = t;
     })();
   </script>
-
-  <link rel="stylesheet" href="css/html.style.css">
-  <title>html.style - Modern Web Standards Framework</title>
 </head>
-<body class="page-layout">
-
-  <!-- Skip Link -->
+<body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="site-header">
-    <div class="center">
-      <div class="cluster" style="justify-content: space-between; align-items: center;">
-        <div class="cluster" style="--space-inline: var(--p-space-sm); align-items: center;">
-          <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-            <rect fill="var(--color-action-primary)" width="100" height="100" rx="18"/>
-            <text x="12" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">h</text>
-            <circle cx="48" cy="62" r="6" fill="var(--color-text-inverse)"/>
-            <text x="58" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">s</text>
-          </svg>
-          <strong style="font-size: var(--text-heading-md);">html.style</strong>
-        </div>
-        <nav class="site-nav">
-          <ul>
-            <li><a href="#features">Features</a></li>
-            <li><a href="docs.html">Docs</a></li>
-            <li><a href="components.html">Components</a></li>
-            <li><a href="https://github.com/bstoppel/html.style">GitHub</a></li>
-          </ul>
-        </nav>
-        <button onclick="ThemeManager.toggle()" style="font-size: var(--text-small); padding: var(--p-space-xs) var(--space-component);">
-          Toggle Theme
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main id="main-content">
-
-    <!-- Hero -->
-    <section class="hero" style="background: var(--color-surface-elevated); min-block-size: 60vh; display: flex; align-items: center;">
-      <div class="center" style="text-align: center;">
-        <div class="stack" style="align-items: center;">
-          <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); margin: 0; max-inline-size: 20ch;">
-            Modern Web Standards for 2026
-          </h1>
-          <p style="font-size: var(--text-heading-lg); color: var(--color-text-secondary); max-inline-size: 60ch;">
-            A CSS framework leveraging OKLCH colors, container queries, and semantic HTML. Built for the AI-native web.
-          </p>
-          <div class="cluster">
-            <a href="getting-started.html"><button>Get Started</button></a>
-            <a href="https://github.com/bstoppel/html.style/releases"><button class="button--outline">Download</button></a>
-          </div>
-          <p style="font-size: var(--text-small); color: var(--color-text-tertiary);">
-            v2026.1.0 · MIT License · No build required
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Features -->
-    <section id="features" style="padding-block: var(--p-space-3xl);">
-      <div class="center">
-        <h2 style="text-align: center; font-size: var(--text-heading-2xl);">Built for the Future</h2>
-        <p style="text-align: center; color: var(--color-text-secondary); max-inline-size: 60ch; margin-inline: auto;">
-          html.style uses cutting-edge web standards that work today in modern browsers.
-        </p>
-
-        <div class="feature-grid" style="margin-block-start: var(--p-space-2xl);">
-          <article class="card">
-            <div class="stack">
-              <h3>OKLCH Colors</h3>
-              <p style="color: var(--color-text-secondary);">
-                Perceptually uniform color space with Display P3 wide gamut support. Better accessibility and consistency.
-              </p>
-              <code style="font-size: var(--text-small);">oklch(0.6 0.18 260)</code>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="stack">
-              <h3>Container Queries</h3>
-              <p style="color: var(--color-text-secondary);">
-                Components adapt to their container, not the viewport. True component portability and reusability.
-              </p>
-              <code style="font-size: var(--text-small);">@container (inline-size > 400px)</code>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="stack">
-              <h3>Semantic HTML</h3>
-              <p style="color: var(--color-text-secondary);">
-                Atoms layer styles HTML tags directly. No class soup. Maximum accessibility and SEO out of the box.
-              </p>
-              <code style="font-size: var(--text-small);">&lt;button&gt;Just Works&lt;/button&gt;</code>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="stack">
-              <h3>Cascade Layers</h3>
-              <p style="color: var(--color-text-secondary);">
-                Predictable specificity with @layer. Organized architecture following Atomic Design methodology.
-              </p>
-              <code style="font-size: var(--text-small);">@layer reset, tokens, atoms...</code>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="stack">
-              <h3>Native Theming</h3>
-              <p style="color: var(--color-text-secondary);">
-                Browser-native dark mode using light-dark() function. Single stylesheet, automatic theming.
-              </p>
-              <code style="font-size: var(--text-small);">light-dark(#fff, #000)</code>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="stack">
-              <h3>No Build Required</h3>
-              <p style="color: var(--color-text-secondary);">
-                Works directly in browsers. Download, open index.html, start building. Modern standards, zero complexity.
-              </p>
-              <code style="font-size: var(--text-small);">No webpack, no compile</code>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Live Demo -->
-    <section style="background: var(--color-surface-elevated); padding-block: var(--p-space-3xl);">
-      <div class="center">
-        <h2 style="text-align: center;">See It In Action</h2>
-        <p style="text-align: center; color: var(--color-text-secondary); margin-block-end: var(--space-gutter);">
-          This entire website is built with html.style. Resize, toggle themes, explore.
-        </p>
-
-        <div class="card-grid">
-          <article class="card">
-            <div class="stack">
-              <strong>Design Tokens</strong>
-              <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-small);">
-                Three-tier system: Primitives → Semantic → State
-              </p>
-              <div class="cluster" style="--space-inline: var(--p-space-xs);">
-                <div style="width: 3rem; height: 3rem; background: var(--color-action-primary); border-radius: var(--p-radius-sm);"></div>
-                <div style="width: 3rem; height: 3rem; background: var(--color-feedback-success); border-radius: var(--p-radius-sm);"></div>
-                <div style="width: 3rem; height: 3rem; background: var(--color-feedback-warning); border-radius: var(--p-radius-sm);"></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="stack">
-              <strong>Layout Primitives</strong>
-              <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-small);">
-                Intrinsically responsive layouts with no media queries
-              </p>
-              <div class="cluster" style="--space-inline: var(--p-space-xs); font-size: var(--text-small);">
-                <code>.stack</code>
-                <code>.cluster</code>
-                <code>.grid</code>
-                <code>.center</code>
-              </div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="stack">
-              <strong>Components</strong>
-              <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-small);">
-                Beautiful components that work out of the box
-              </p>
-              <div class="cluster">
-                <button style="font-size: var(--text-small); padding: var(--p-space-xs) var(--space-component);">Button</button>
-                <div class="alert alert--success" style="padding: var(--p-space-xs); font-size: var(--text-small);">
-                  Success!
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Getting Started -->
-    <section style="padding-block: var(--p-space-3xl);">
-      <div class="center">
-        <h2 style="text-align: center;">Get Started in Seconds</h2>
-
-        <div class="hero--split" style="container-type: inline-size; margin-block-start: var(--space-gutter); gap: var(--space-gutter);">
-          <div class="stack">
-            <h3>1. Download</h3>
-            <p style="color: var(--color-text-secondary);">
-              Get the latest release from GitHub or install via npm.
-            </p>
-            <pre><code>npm install html.style</code></pre>
-          </div>
-
-          <div class="stack">
-            <h3>2. Include</h3>
-            <p style="color: var(--color-text-secondary);">
-              Link the stylesheet in your HTML. That's it.
-            </p>
-            <pre><code>&lt;link rel="stylesheet"
-  href="css/html.style.css"&gt;</code></pre>
-          </div>
-        </div>
-
-        <div class="stack" style="margin-block-start: var(--space-gutter); align-items: center;">
-          <h3>3. Build</h3>
-          <p style="color: var(--color-text-secondary); text-align: center; max-inline-size: 60ch;">
-            Write semantic HTML and start building. No configuration, no build process, no complexity.
-          </p>
-          <a href="getting-started.html"><button>View Full Guide</button></a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Built for AI -->
-    <section style="background: var(--color-surface-elevated); padding-block: var(--p-space-3xl);">
-      <div class="center">
-        <div class="stack" style="align-items: center; text-align: center;">
-          <h2>Built for the AI-Native Web</h2>
-          <p style="color: var(--color-text-secondary); max-inline-size: 60ch;">
-            html.style is designed with predictable, machine-readable patterns. By 2026, AI agents are the primary "users" of design systems. Every architectural decision prioritizes clarity and consistency.
-          </p>
-          <div class="card-grid" style="margin-block-start: var(--space-gutter);">
-            <article class="card">
-              <div class="stack" style="align-items: center; text-align: center;">
-                <strong>Predictable</strong>
-                <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-small);">
-                  Consistent naming conventions and patterns
-                </p>
-              </div>
-            </article>
-            <article class="card">
-              <div class="stack" style="align-items: center; text-align: center;">
-                <strong>Semantic</strong>
-                <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-small);">
-                  Meaningful HTML that machines understand
-                </p>
-              </div>
-            </article>
-            <article class="card">
-              <div class="stack" style="align-items: center; text-align: center;">
-                <strong>Standards-Based</strong>
-                <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-small);">
-                  Built on W3C specifications, not proprietary APIs
-                </p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer CTA -->
-    <section style="padding-block: var(--p-space-3xl);">
-      <div class="center">
-        <div class="stack" style="align-items: center; text-align: center;">
-          <h2>Ready to Build?</h2>
-          <p style="color: var(--color-text-secondary); max-inline-size: 50ch;">
-            Join developers building modern websites with web standards.
-          </p>
-          <div class="cluster">
-            <a href="getting-started.html"><button>Get Started</button></a>
-            <a href="components.html"><button class="button--secondary">Browse Components</button></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="center">
-      <div class="footer-grid">
-        <div class="stack" style="--space-block: var(--p-space-sm);">
-          <strong>html.style</strong>
-          <p style="margin: 0; color: var(--color-text-secondary); font-size: var(--text-small);">
-            Modern web standards framework for 2026 and beyond.
-          </p>
-        </div>
-
-        <div class="stack" style="--space-block: var(--p-space-sm);">
-          <strong>Documentation</strong>
-          <nav>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li><a href="getting-started.html" style="color: var(--color-text-secondary);">Getting Started</a></li>
-              <li><a href="components.html" style="color: var(--color-text-secondary);">Components</a></li>
-              <li><a href="docs.html" style="color: var(--color-text-secondary);">Documentation</a></li>
+  <div class="page-layout">
+    <header class="site-header">
+      <div class="center center--wide">
+        <div class="cluster header-bar">
+          <a href="index.html" class="brand"><svg width="32" height="32" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+  <rect fill="var(--color-action-primary)" width="100" height="100" rx="18"/>
+  <text x="12" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">h</text>
+  <circle cx="48" cy="62" r="6" fill="var(--color-text-inverse)"/>
+  <text x="58" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">s</text>
+</svg> html.style</a>
+          <button type="button" class="nav-toggle" popovertarget="nav-links">Menu</button>
+          <nav class="site-nav" aria-label="Primary">
+            <ul id="nav-links" popover>
+              <li><a href="getting-started.html">Get started</a></li><li><a href="style.html">Style</a></li><li><a href="elements.html">Elements</a></li><li><a href="compare.html">Compare</a></li><li><a href="agents.html">Agents</a></li>
+              <li><a href="https://github.com/bstoppel/html.style" rel="noreferrer">GitHub</a></li>
             </ul>
           </nav>
+          <hs-theme-toggle></hs-theme-toggle>
         </div>
+      </div>
+    </header>
+    <main id="main-content">
 
-        <div class="stack" style="--space-block: var(--p-space-sm);">
-          <strong>Resources</strong>
-          <nav>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              <li><a href="https://github.com/bstoppel/html.style" style="color: var(--color-text-secondary);">GitHub</a></li>
-              <li><a href="https://github.com/bstoppel/html.style/releases" style="color: var(--color-text-secondary);">Download</a></li>
-              <li><a href="https://github.com/bstoppel/html.style/blob/main/LICENSE" style="color: var(--color-text-secondary);">License</a></li>
+      <section class="hero" style="background:var(--color-surface-elevated)">
+        <div class="center center--page">
+          <div class="switcher" style="align-items:center">
+            <div>
+              <p class="eyebrow">v2026.1 · OKLCH · no polyfills</p>
+              <h1>Semantic HTML is the API.</h1>
+              <p class="lede">Write the HTML spec. It comes out styled, dark-mode aware, and accessible. Reach for <code>hs-*</code> only when the platform is missing a verb.</p>
+              <div class="cluster" style="margin-block:var(--p-space-lg)">
+                <a class="action" href="getting-started.html">Get started</a>
+                <a class="action action--outline" href="elements.html">See the elements</a>
+              </div>
+            </div>
+            <div class="compare-pane compare-pane--hot">
+              <form>
+                <h3>Settings</h3>
+                <p>
+                  <label for="hero-email">Email</label>
+                  <input id="hero-email" type="email" value="you@example.com" required>
+                </p>
+                <button type="submit">Save</button>
+              </form>
+              <p class="muted" style="margin-block-start:var(--p-space-sm)">No classes. The stylesheet styles the tags.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="band" id="install">
+        <div class="center center--page">
+          <p class="kicker">Zero build</p>
+          <h2>Two tags. Done.</h2>
+          <p>A build step is only needed inside another framework, which already has one. ES modules need HTTP, not a bundler — any static server works. Opening from <code>file://</code>? Use the classic script build.</p>
+          <div class="snippet"><pre><code id="install-hero">&lt;link rel=&quot;stylesheet&quot; href=&quot;css/html.style.css&quot;&gt;
+&lt;script type=&quot;module&quot; src=&quot;js/html.style.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;module&quot; src=&quot;js/html.style.components.js&quot;&gt;&lt;/script&gt;</code></pre><hs-copy for="install-hero">Copy</hs-copy></div>
+        </div>
+      </section>
+      <section class="band band--alt">
+        <div class="center center--page">
+          <p class="kicker">Against utility soup</p>
+          <h2>The HTML is the design system.</h2>
+          <div class="switcher">
+            <div class="compare-pane compare-pane--hot">
+              <p><strong>html.style</strong></p>
+              <pre><code>&lt;h1&gt;Settings&lt;/h1&gt;
+&lt;form&gt;
+  &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+  &lt;input id=&quot;email&quot; type=&quot;email&quot; required&gt;
+  &lt;button&gt;Save&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            </div>
+            <div class="compare-pane">
+              <p><strong>Utility CSS</strong></p>
+              <pre><code>&lt;div class=&quot;mx-auto max-w-lg p-8&quot;&gt;
+  &lt;h1 class=&quot;text-3xl font-bold tracking-tight&quot;&gt;Settings&lt;/h1&gt;
+  &lt;form class=&quot;mt-6 flex flex-col gap-4&quot;&gt;
+    &lt;label class=&quot;text-sm font-medium text-zinc-600&quot;&gt;Email&lt;/label&gt;
+    &lt;input class=&quot;rounded-md border border-zinc-300 px-3 py-2&quot; /&gt;
+    &lt;button class=&quot;rounded-md bg-zinc-900 px-4 py-2 text-white&quot;&gt;Save&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="band">
+        <div class="center center--page">
+          <p class="kicker">Additive, not a second vocabulary</p>
+          <h2>Elements wrap the platform.</h2>
+          <p><code>&lt;article&gt;</code> is already a styled article. <code>&lt;hs-card&gt;</code> adds container-query padding. <code>&lt;hs-dialog&gt;</code> is a real <code>&lt;dialog&gt;</code> — top layer, backdrop, focus trap, Escape, <code>&lt;form method=&quot;dialog&quot;&gt;</code> still close it.</p>
+          <div class="switcher" style="margin-block-start:var(--p-space-xl)">
+            <div class="stack">
+              <hs-tabs>
+                <hs-tab-panel label="Overview">Panels you wrote. The tablist is derived.</hs-tab-panel>
+                <hs-tab-panel label="Details">Arrow keys, Home, End. Optional manual activation.</hs-tab-panel>
+              </hs-tabs>
+              <hs-accordion exclusive>
+                <details>
+                  <summary>What if JavaScript is off?</summary>
+                  <p>Atoms and layout still work. Light-DOM elements look right before they upgrade. Shadow widgets reserve their box so the layout does not jump.</p>
+                </details>
+                <details>
+                  <summary>Do I need a class?</summary>
+                  <p>No. Tags are styled. Classes are opt-in atoms and variants.</p>
+                </details>
+              </hs-accordion>
+            </div>
+            <div class="stack">
+              <div>
+                <button type="button" class="button--secondary" id="open-confirm">Open a real dialog</button>
+                <hs-dialog id="confirm-demo">
+                  <h2>Delete this?</h2>
+                  <p>The platform does the hard part. This component only opens modal.</p>
+                  <form method="dialog" class="cluster">
+                    <button value="cancel" class="button--outline">Cancel</button>
+                    <button value="delete">Delete</button>
+                  </form>
+                </hs-dialog>
+              </div>
+              <p class="alert alert--info" role="status">Same tokens on <code>&lt;p&gt;</code> and <code>&lt;hs-combobox&gt;</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="band band--alt">
+        <div class="center center--page">
+          <p class="kicker">Theme without a rebuild</p>
+          <h2>One hue. The whole page follows.</h2>
+          <div class="stack">
+  <div class="cluster">
+    <label for="hue">Brand hue <output for="hue">58</output></label>
+    <input id="hue" type="range" min="0" max="360" value="58" class="hue-range">
+  </div>
+  <div class="cluster">
+    <button type="button" class="button--outline" data-hue="58">Default</button>
+    <button type="button" class="button--outline" data-hue="145">Green</button>
+    <button type="button" class="button--outline" data-hue="210">Blue</button>
+    <button type="button" class="button--outline" data-hue="260">Royal</button>
+    <button type="button" class="button--outline" data-hue="290">Violet</button>
+  </div>
+  <p class="muted">One custom property. Surfaces, borders, and text pick up a trace of the same hue. Nothing to rebuild.</p>
+</div>
+        </div>
+      </section>
+      <section class="band">
+        <div class="center center--page">
+          <div class="feature-grid">
+            <article class="card"><h3>Modern CSS</h3><p>OKLCH, container queries, cascade layers, <code>light-dark()</code>, relative color. Locked to the 2026 snapshot. No polyfills.</p></article>
+            <article class="card"><h3>For agents</h3><p>A generated <code>custom-elements.json</code>, predictable <code>hs-*</code> names, docs written so a coding agent can use the library without extra guidance.</p></article>
+            <article class="card"><h3>Extend, don’t fork</h3><p>Override tokens on <code>:root</code> or a subtree. Compose layout atoms. Write your own component that still drinks <code>--p-*</code>.</p></article>
+          </div>
+          <p style="margin-block-start:var(--p-space-xl)"><a href="extend.html">How to extend html.style →</a></p>
+        </div>
+      </section>
+    
+    </main>
+    <footer class="site-footer">
+      <div class="center center--wide">
+        <div class="footer-grid">
+          <div>
+            <p><strong>html.style</strong></p>
+            <p class="muted">Semantic HTML is the API. Tokens theme it. Fifteen elements extend it. Version 2026.1.</p>
+          </div>
+          <nav aria-label="Footer">
+            <ul role="list" class="stack">
+              <li><a href="getting-started.html">Get started</a></li><li><a href="extend.html">Extend</a></li><li><a href="cookbook.html">Cookbook</a></li><li><a href="support.html">Support floor</a></li><li><a href="agents.html">For agents</a></li>
             </ul>
           </nav>
+          <div>
+            <p class="muted">MIT License. No tracking. No polyfills.</p>
+            <p><a href="https://github.com/bstoppel/html.style">github.com/bstoppel/html.style</a></p>
+          </div>
         </div>
       </div>
-
-      <div style="border-block-start: 1px solid var(--color-border-default); margin-block-start: var(--space-gutter); padding-block-start: var(--space-component);">
-        <p style="text-align: center; margin: 0; color: var(--color-text-tertiary); font-size: var(--text-small);">
-          © 2026 html.style contributors · MIT License · Built with html.style
-        </p>
-      </div>
-    </div>
-  </footer>
-
+    </footer>
+  </div>
   <script type="module" src="js/html.style.js"></script>
+  <script type="module" src="js/html.style.components.js"></script>
+  <script type="module" src="js/site.js"></script>
 </body>
 </html>
