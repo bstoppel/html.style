@@ -274,6 +274,7 @@ Do NOT add extensive @supports blocks or polyfills.
 
 ## Files to Understand
 
+- [docs/adr/](docs/adr/README.md) - Architecture Decision Records. The foundational knowledge mechanism for why the project is built the way it is, not just how. Start here before assuming a stated rule has no rationale behind it.
 - [README.md](README.md) - Public documentation, usage examples, and the design token chain
 - [src/css/](src/css/) - CSS source files
 - [src/examples.html](src/examples.html) - Component showcase covering every pattern
