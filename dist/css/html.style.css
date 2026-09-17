@@ -1376,6 +1376,8 @@
     margin: 0;
     position: static;
     inset: auto;
+    width: auto;
+    height: auto;
     border: none;
     background: none;
     color: inherit;

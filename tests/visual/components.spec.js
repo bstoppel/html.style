@@ -7,7 +7,9 @@ import { test, expect } from '@playwright/test';
 test.describe('Visual Regression - Components', () => {
   test('buttons render correctly', async ({ page }) => {
     await page.goto('/');
-    const button = page.locator('button').first();
+    // Plain `button` alone grabs the nav's own toggle - a real <button>,
+    // first in the DOM, hidden above the mobile breakpoint.
+    const button = page.locator('button:visible').first();
     await expect(button).toHaveScreenshot('button-primary.png');
   });
 
