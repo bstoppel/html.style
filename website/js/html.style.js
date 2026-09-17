@@ -1,5 +1,5 @@
 /**
- * html.style v2026.1.0
+ * html.style v2026.1789615030.0
  * Optional JavaScript enhancements
  * Native-first, progressive enhancement
  */

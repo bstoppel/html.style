@@ -42,8 +42,11 @@ test('LCP is under 2.5s', async ({ page }) => {
   test('INP is under 200ms', async ({ page }) => {
     await page.goto('/');
 
-  // Click a visible button to measure interaction (nav links may be hidden on mobile)
-  const button = page.locator('button').first();
+  // Click a visible button to measure interaction. Plain `button` alone is not
+  // enough: the nav's own toggle is a real <button>, first in the DOM, hidden
+  // by `display: none` above the mobile breakpoint - `:visible` is what the
+  // comment here always meant.
+  const button = page.locator('button:visible').first();
   await button.scrollIntoViewIfNeeded();
   await button.click();
 
