@@ -9,7 +9,8 @@
       </div>
 
       <nav class="site-nav" aria-label="Main navigation">
-        <ul>
+        <button type="button" class="nav-toggle" popovertarget="site-nav-links">Menu</button>
+        <ul id="site-nav-links" popover>
           <li><a href="#features"><slot name="nav1">Features</slot></a></li>
           <li><a href="#components"><slot name="nav2">Components</slot></a></li>
           <li><a href="#docs"><slot name="nav3">Docs</slot></a></li>

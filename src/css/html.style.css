@@ -1365,16 +1365,25 @@
     padding-block: var(--space-component);
   }
 
-  /* Navigation */
-  .site-nav ul {
+  /* Navigation. The list carries `popover`; at this width it is
+     neutralized back into normal flow regardless of open/closed state.
+     See docs/adr/0006-nav-collapse-mechanism.md. */
+  .site-nav ul[popover] {
     display: flex;
     gap: var(--space-inline);
     list-style: none;
     padding: 0;
+    margin: 0;
+    position: static;
+    inset: auto;
+    border: none;
+    background: none;
+    color: inherit;
+    overflow: visible;
   }
 
   @container (inline-size < 600px) {
-    .site-nav ul {
+    .site-nav ul[popover] {
       flex-direction: column;
       gap: var(--p-space-sm);
     }
@@ -1446,7 +1455,9 @@
     }
   }
 
-  /* Navigation - Mobile Menu */
+  /* Navigation - Mobile Menu. Below this width the popover governs
+     visibility: closed by default, shown only via :popover-open, which
+     the toggle button's `popovertarget` drives with no script. */
   .nav-toggle {
     display: none;
   }
@@ -1456,11 +1467,19 @@
       display: block;
     }
 
-    .site-nav ul {
+    .site-nav ul[popover] {
       display: none;
+      position: fixed;
+      inset: var(--p-space-lg) var(--p-space-md) auto auto;
+      margin: 0;
+      border: var(--border-width) solid var(--color-border-default);
+      border-radius: var(--p-radius-md);
+      background: var(--color-surface-elevated);
+      box-shadow: var(--p-shadow-md);
+      padding: var(--p-space-sm);
     }
 
-    .site-nav[data-expanded="true"] ul {
+    .site-nav ul[popover]:popover-open {
       display: flex;
     }
   }
