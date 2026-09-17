@@ -521,3 +521,204 @@ declare global {
     'hs-tooltip': HsTooltipElement;
   }
 }
+
+// Augments react's OWN "JSX" namespace rather than the bare global one -
+// react-jsx (the modern transform, and the default in most current
+// setups) resolves IntrinsicElements through here, re-exported from
+// "react/jsx-runtime", not through "declare global". Inert wherever
+// "react" is not installed at all: an augmentation of an unresolvable
+// module specifier is not an error unless something imports it.
+declare module 'react' {
+  namespace JSX {
+    interface IntrinsicElements {
+    'hs-accordion': {
+      /** Only one panel open at a time, via the native `name` grouping. */
+      exclusive?: boolean;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-alert': {
+      /** Render a dismiss button. */
+      dismissible?: boolean;
+      /** Accessible name for the dismiss button. Defaults to "Dismiss". */
+      'dismiss-label'?: string;
+      /** Feedback tone. Styled by the global stylesheet, so it applies before this module loads. */
+      variant?: 'success'|'warning'|'error'|'info';
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-badge': {
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-card': {
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-combobox': {
+      /** Field name used when the form is submitted. */
+      name?: string;
+      /** Value of the chosen option. Reflected. */
+      value?: string;
+      /** Visible label. Rendered as a real `<label for>` inside the shadow root, where the association works. */
+      label?: string;
+      /** Placeholder text for the input. */
+      placeholder?: string;
+      /** Inactive and removed from the tab order. */
+      disabled?: boolean;
+      /** Whether the listbox is showing. Reflected. */
+      open?: boolean;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-copy': {
+      /** Id of the element whose text is copied. Without it, the copied text is this element's own `value` attribute. */
+      for?: string;
+      /** Literal text to copy, used when `for` is absent. */
+      value?: string;
+      /** Confirmation text. Defaults to "Copied". */
+      'copied-label'?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-dialog': {
+      /** Present means the dialog is open, as a modal. */
+      open?: boolean;
+      /** Do not close on backdrop click. Escape still works; the platform owns that and it is not overridden. */
+      persistent?: boolean;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-field': {
+      /** Label text. Skipped if you supply your own <label>. */
+      label?: string;
+      /** Help text shown under the control and referenced by aria-describedby. */
+      hint?: string;
+      /** Do not display validation messages. The control still validates; only this element's reporting is suppressed. */
+      novalidate?: boolean;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-menu': {
+      /** Text on the trigger button. Also what the pre-upgrade rule in the global stylesheet draws, so the box is reserved at the right width. */
+      label?: string;
+      /** Inactive and removed from the tab order. */
+      disabled?: boolean;
+      /** Whether the menu is showing. Reflected. Setting it opens or closes the menu. */
+      open?: boolean;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-menu-item': {
+      /** Value reported when this item is chosen. Defaults to the element's text content. */
+      value?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-option': {
+      /** Value submitted when this option is chosen. Defaults to the element's text content. */
+      value?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-sortable': {
+      /** On a `<th>`, not on this element: marks the column sortable. `data-sort="number"` compares as numbers instead of collating. */
+      'data-sort'?: string;
+      /** On a `<td>`, not on this element: an explicit sort key for that cell, used instead of its text. */
+      'data-sort-value'?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-tab-panel': {
+      /** Text shown on this panel's tab. */
+      label?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-tabs': {
+      /** Index of the active tab. Reflected. */
+      selected?: number;
+      /** `auto` (default) selects on arrow-key focus; `manual` requires Enter or Space. */
+      activation?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-theme-toggle': {
+      /** Accessible name for the button. Defaults to "Toggle colour scheme". */
+      label?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-toast': {
+      /** Feedback tone, styled by the global stylesheet. `error` also makes this toast announce assertively. */
+      variant?: 'success'|'warning'|'error'|'info';
+      /** Milliseconds before it dismisses itself. Defaults to 5000. Zero means it stays until something dismisses it. */
+      duration?: number;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-toast-region': {
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-toggle': {
+      /** Whether the switch is on. */
+      checked?: boolean;
+      /** Inactive and removed from the tab order. */
+      disabled?: boolean;
+      /** Field name used when the form is submitted. */
+      name?: string;
+      /** Value submitted when checked. Defaults to "on". */
+      value?: string;
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    'hs-tooltip': {
+      /** Id of the element this describes. Required: without a trigger there is nothing to attach to and the tooltip stays hidden. */
+      for?: string;
+      /** Preferred side. Defaults to `block-end`, and flips when there is no room. */
+      placement?: 'block-end'|'block-start';
+      children?: unknown;
+      ref?: unknown;
+      key?: unknown;
+      [prop: string]: unknown;
+    };
+    }
+  }
+}

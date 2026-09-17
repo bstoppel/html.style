@@ -1,6 +1,6 @@
 {
   "name": "html.style",
-  "version": "2026.1.0",
+  "version": "2026.1789615030.0",
   "description": "Modern web standards CSS framework with OKLCH colors, container queries, and semantic HTML",
   "main": "dist/css/html.style.css",
   "style": "dist/css/html.style.css",
@@ -40,7 +40,7 @@
     "build": "node build.js",
     "build:check": "node build.js --check",
     "docs:check": "node check-docs.js",
-    "types:check": "tsc -p tests/types/tsconfig.json",
+    "types:check": "tsc -p tests/types/tsconfig.json && tsc -p tests/types/tsconfig.react.json",
     "serve": "http-server dist -p 8080",
     "start": "npm run serve"
   },
@@ -85,6 +85,7 @@
     "@axe-core/playwright": "^4.9.0",
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@playwright/test": "^1.58.0",
+    "@types/react": "^19.3.0",
     "esbuild": "^0.28.2",
     "http-server": "^14.1.1",
     "typescript": "^7.0.2"
