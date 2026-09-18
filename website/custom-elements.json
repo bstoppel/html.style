@@ -1,0 +1,3181 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-accordion.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsAccordion",
+          "cssProperties": [
+            {
+              "description": "Space between panels.",
+              "name": "--hs-accordion-gap"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<details>` elements. Anything else is left alone.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#groupName",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#observer",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "panels",
+              "description": "The `<details>` children, in document order.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "openAll"
+            },
+            {
+              "kind": "method",
+              "name": "closeAll"
+            },
+            {
+              "kind": "method",
+              "name": "#sync",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when a panel opens or closes. `detail` carries `{ index, open }`.",
+              "name": "hs-accordion-toggle"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "exclusive",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Only one panel open at a time, via the native `name` grouping."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-accordion",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsAccordion",
+          "declaration": {
+            "name": "HsAccordion",
+            "module": "dist/components/hs-accordion.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-accordion",
+          "declaration": {
+            "name": "HsAccordion",
+            "module": "dist/components/hs-accordion.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-alert.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsAlert",
+          "cssProperties": [
+            {
+              "description": "Overrides the variant's background.",
+              "name": "--hs-alert-background"
+            },
+            {
+              "description": "Overrides the variant's text colour.",
+              "name": "--hs-alert-color"
+            },
+            {
+              "description": "Overrides the variant's leading rule.",
+              "name": "--hs-alert-accent-color"
+            },
+            {
+              "description": "Thickness of the leading rule.",
+              "name": "--hs-alert-accent-width"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-alert-padding"
+            },
+            {
+              "description": "Space between content and dismiss button.",
+              "name": "--hs-alert-gap"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-alert-radius"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The alert's content.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "#syncDismissButton",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "dismiss",
+              "description": "Remove the alert. Fires a cancelable `hs-dismiss` first so a consumer can\nanimate the exit, or call preventDefault() to keep it in place."
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-dismiss",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Cancelable, fired before the alert removes itself. Call preventDefault() to keep it in place."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "dismissible",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Render a dismiss button."
+            },
+            {
+              "name": "dismiss-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name for the dismiss button. Defaults to \"Dismiss\"."
+            },
+            {
+              "type": {
+                "text": "'success'|'warning'|'error'|'info'"
+              },
+              "description": "Feedback tone. Styled by the global stylesheet, so it applies before this module loads.",
+              "name": "variant"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-alert",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsAlert",
+          "declaration": {
+            "name": "HsAlert",
+            "module": "dist/components/hs-alert.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-alert",
+          "declaration": {
+            "name": "HsAlert",
+            "module": "dist/components/hs-alert.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-badge.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "<hs-badge> — CSS-only element.\n\nNo behaviour, no shadow root. The global stylesheet styles `hs-badge`\ndirectly, so it renders with JavaScript disabled and without this module.\n\nThe class exists only so the element reaches custom-elements.json for editor\ncompletion; rendering never depends on registration. See hs-card.js for the\nreasoning behind this tier.",
+          "name": "HsBadge",
+          "cssProperties": [
+            {
+              "description": "Badge background.",
+              "name": "--hs-badge-background"
+            },
+            {
+              "description": "Badge text colour.",
+              "name": "--hs-badge-color"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-badge-radius"
+            },
+            {
+              "description": "Vertical padding.",
+              "name": "--hs-badge-padding-block"
+            },
+            {
+              "description": "Horizontal padding.",
+              "name": "--hs-badge-padding-inline"
+            },
+            {
+              "description": "Label size.",
+              "name": "--hs-badge-font-size"
+            },
+            {
+              "description": "Badge background.",
+              "name": "--color-action-surface"
+            },
+            {
+              "description": "Badge text.",
+              "name": "--color-action-on-surface"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The badge's label.",
+              "name": ""
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-badge",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsBadge",
+          "declaration": {
+            "name": "HsBadge",
+            "module": "dist/components/hs-badge.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-badge",
+          "declaration": {
+            "name": "HsBadge",
+            "module": "dist/components/hs-badge.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-card.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "<hs-card> — CSS-only element.\n\nThere is no behaviour here and no shadow root. The global stylesheet styles\n`hs-card` directly, so the element renders correctly with JavaScript disabled,\nbefore any script loads, and if this module is never imported at all.\n\nThe class below exists ONLY so the element appears in custom-elements.json and\neditors offer completion for it. Nothing about rendering depends on it being\nregistered — delete the import and the card still looks exactly the same.\n\nWhy an element rather than `class=\"card\"`: the tag name carries the meaning,\nwhich is what a machine reads first, and it keeps one authoring vocabulary —\neverything is `<hs-*>` whether or not it has behaviour. The `.card` class\nstays supported.",
+          "name": "HsCard",
+          "cssProperties": [
+            {
+              "description": "Card background.",
+              "name": "--hs-card-background"
+            },
+            {
+              "description": "Card border colour.",
+              "name": "--hs-card-border-color"
+            },
+            {
+              "description": "Card border width.",
+              "name": "--hs-card-border-width"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-card-radius"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-card-padding"
+            },
+            {
+              "description": "Space between child elements.",
+              "name": "--hs-card-gap"
+            },
+            {
+              "description": "Shadow applied on hover.",
+              "name": "--hs-card-shadow-hover"
+            },
+            {
+              "description": "Card width at which children switch from stacked to side by side. Approximate: it is compared against the card's content box, so padding and gap shift the real switch point outward.",
+              "name": "--hs-card-threshold"
+            },
+            {
+              "description": "Card background.",
+              "name": "--color-surface-elevated"
+            },
+            {
+              "description": "Card border.",
+              "name": "--color-border-default"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--space-inline"
+            },
+            {
+              "description": "Gap between children.",
+              "name": "--space-component"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The card's content.",
+              "name": ""
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-card",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsCard",
+          "declaration": {
+            "name": "HsCard",
+            "module": "dist/components/hs-card.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-card",
+          "declaration": {
+            "name": "HsCard",
+            "module": "dist/components/hs-card.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-combobox.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "One choice in an `<hs-combobox>`. Deliberately inert: it carries a value and\nits text, and the combobox does the rest. It never renders — the global\nstylesheet hides it, and once the combobox upgrades it is not slotted at all.",
+          "name": "HsOption",
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value submitted when this option is chosen. Defaults to the element's text content.",
+              "name": "value"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-option",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsCombobox",
+          "cssProperties": [
+            {
+              "description": "Width of the whole control.",
+              "name": "--hs-combobox-inline-size"
+            },
+            {
+              "description": "Space between label and input.",
+              "name": "--hs-combobox-gap"
+            },
+            {
+              "description": "Vertical padding inside the input.",
+              "name": "--hs-combobox-padding-block"
+            },
+            {
+              "description": "Horizontal padding inside the input.",
+              "name": "--hs-combobox-padding-inline"
+            },
+            {
+              "description": "Corner radius of input and listbox.",
+              "name": "--hs-combobox-radius"
+            },
+            {
+              "description": "Input and listbox border colour.",
+              "name": "--hs-combobox-border-color"
+            },
+            {
+              "description": "Input and listbox background.",
+              "name": "--hs-combobox-background"
+            },
+            {
+              "description": "Text colour.",
+              "name": "--hs-combobox-color"
+            },
+            {
+              "description": "Height before the list scrolls. Default 16rem.",
+              "name": "--hs-combobox-listbox-max-block-size"
+            },
+            {
+              "description": "Background of the active option.",
+              "name": "--hs-combobox-option-background-active"
+            },
+            {
+              "description": "Colour of the \"no matches\" text.",
+              "name": "--hs-combobox-empty-color"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The field label.",
+              "name": "label"
+            },
+            {
+              "description": "The text input.",
+              "name": "input"
+            },
+            {
+              "description": "The options container.",
+              "name": "listbox"
+            },
+            {
+              "description": "Every option.",
+              "name": "option"
+            },
+            {
+              "description": "The option under the cursor keys, in addition to `option`.",
+              "name": "option-active"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<hs-option>` elements. Anything else is ignored.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "#internals",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#defaultValue",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#valueOnFocus",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "description": "The committed value when the input took focus, so Escape can return to it."
+            },
+            {
+              "kind": "method",
+              "name": "#readOptions",
+              "privacy": "private",
+              "description": "Read the consumer's `<hs-option>` children. They are data: the options the\nuser sees are rendered in the shadow root, because an IDREF cannot cross\nthe boundary and `aria-activedescendant` is an IDREF."
+            },
+            {
+              "kind": "field",
+              "name": "#matches",
+              "privacy": "private",
+              "description": "Options matching what has been typed. Everything, when nothing is typed.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "#displayText",
+              "privacy": "private",
+              "description": "The text shown in the input: what is being typed, else the chosen label.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#show",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#hide",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onFocus",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#settle",
+              "privacy": "private",
+              "description": "Close, keeping whatever is committed, and drop any half-typed query."
+            },
+            {
+              "kind": "method",
+              "name": "#revert",
+              "privacy": "private",
+              "description": "Close and return to the last committed value."
+            },
+            {
+              "kind": "method",
+              "name": "#commit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback"
+            },
+            {
+              "kind": "method",
+              "name": "formStateRestoreCallback",
+              "parameters": [
+                {
+                  "name": "state"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "description": "Re-read the `<hs-option>` children. Call after changing them."
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_query",
+              "privacy": "public",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_active",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "_options",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "name"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-open",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after the listbox opens."
+            },
+            {
+              "name": "hs-close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after it closes."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired when the chosen value changes, like a native control."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Field name used when the form is submitted.",
+              "name": "name",
+              "fieldName": "name"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value of the chosen option. Reflected.",
+              "name": "value",
+              "default": "''",
+              "fieldName": "value"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label. Rendered as a real `<label for>` inside the shadow root, where the association works.",
+              "name": "label",
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text for the input.",
+              "name": "placeholder",
+              "default": "''",
+              "fieldName": "placeholder"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Inactive and removed from the tab order.",
+              "name": "disabled",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the listbox is showing. Reflected.",
+              "name": "open",
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-combobox",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsOption",
+          "declaration": {
+            "name": "HsOption",
+            "module": "dist/components/hs-combobox.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-option",
+          "declaration": {
+            "name": "HsOption",
+            "module": "dist/components/hs-combobox.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsCombobox",
+          "declaration": {
+            "name": "HsCombobox",
+            "module": "dist/components/hs-combobox.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-combobox",
+          "declaration": {
+            "name": "HsCombobox",
+            "module": "dist/components/hs-combobox.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-copy.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsCopy",
+          "cssProperties": [
+            {
+              "description": "Button background while confirming.",
+              "name": "--hs-copy-copied-background"
+            },
+            {
+              "description": "Button text while confirming.",
+              "name": "--hs-copy-copied-color"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The button's label.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#button",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#status",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#label",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#timer",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "text",
+              "description": "The text this element would copy.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "copy"
+            },
+            {
+              "kind": "method",
+              "name": "#confirm",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-copy-error",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when the copy fails, which the Clipboard API does whenever the document is not focused or permission is refused."
+            },
+            {
+              "name": "hs-copy",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after a successful copy. `detail` carries `{ text }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Id of the element whose text is copied. Without it, the copied text is this element's own `value` attribute.",
+              "name": "for"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Literal text to copy, used when `for` is absent.",
+              "name": "value"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Confirmation text. Defaults to \"Copied\".",
+              "name": "copied-label"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-copy",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsCopy",
+          "declaration": {
+            "name": "HsCopy",
+            "module": "dist/components/hs-copy.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-copy",
+          "declaration": {
+            "name": "HsCopy",
+            "module": "dist/components/hs-copy.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-dialog.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "<hs-dialog> — light DOM, wrapping a real <dialog>.\n\nThe platform already does the hard parts: the top layer, the backdrop, the\nfocus trap, inert-ing the page behind, Escape to close, returning focus to\nwhatever opened it, and `<form method=\"dialog\">`. None of that is\nreimplemented here — a native <dialog> does it, and this element wraps one.\n\nWhat it adds is the part the platform leaves to script:\n\n  - `<dialog open>` shows NON-modally. Getting a modal requires calling\n    showModal() from JavaScript, so there is no declarative way to open one.\n    The `open` attribute here means modal.\n  - Backdrop dismissal. Where the browser supports `closedBy` this sets it and\n    the PLATFORM does the dismissing; the JavaScript fallback below only runs\n    on browsers at this project's floor, which predate it.\n\nChildren are moved into the <dialog> once, on connect, so consumers write\ntheir content directly and `<form method=\"dialog\">` still finds its ancestor:\n\n  <hs-dialog id=\"confirm\">\n    <h2>Delete this?</h2>\n    <form method=\"dialog\">\n      <button value=\"cancel\">Cancel</button>\n      <button value=\"delete\">Delete</button>\n    </form>\n  </hs-dialog>",
+          "name": "HsDialog",
+          "cssProperties": [
+            {
+              "description": "Maximum dialog width.",
+              "name": "--hs-dialog-max-inline-size"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-dialog-padding"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-dialog-radius"
+            },
+            {
+              "description": "Dialog surface.",
+              "name": "--hs-dialog-background"
+            },
+            {
+              "description": "Backdrop colour.",
+              "name": "--hs-dialog-backdrop"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The dialog's content.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#supportsClosedBy",
+              "privacy": "private",
+              "static": true,
+              "description": "Whether the browser can do backdrop dismissal itself."
+            },
+            {
+              "kind": "field",
+              "name": "#dialog",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "method",
+              "name": "#syncClosedBy",
+              "privacy": "private",
+              "description": "Hand dismissal to the platform. `any` is light dismiss plus Escape;\n`closerequest` is Escape only, which is what `persistent` means. Escape is\nnever taken away — a modal the keyboard cannot close is a trap."
+            },
+            {
+              "kind": "field",
+              "name": "dialog",
+              "description": "The wrapped native element, for anything this API does not cover.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "open"
+            },
+            {
+              "kind": "method",
+              "name": "show",
+              "description": "Open as a modal. Idempotent."
+            },
+            {
+              "kind": "method",
+              "name": "close",
+              "parameters": [
+                {
+                  "name": "returnValue"
+                }
+              ],
+              "description": "Close, optionally setting the native returnValue."
+            },
+            {
+              "kind": "field",
+              "name": "#onNativeClose",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onBackdropClick",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-open",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after the dialog opens."
+            },
+            {
+              "description": "Fired after it closes. `detail` carries `{ returnValue }`.",
+              "name": "hs-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Present means the dialog is open, as a modal."
+            },
+            {
+              "name": "persistent",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Do not close on backdrop click. Escape still works; the platform owns that and it is not overridden."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-dialog",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsDialog",
+          "declaration": {
+            "name": "HsDialog",
+            "module": "dist/components/hs-dialog.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-dialog",
+          "declaration": {
+            "name": "HsDialog",
+            "module": "dist/components/hs-dialog.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-field.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsField",
+          "cssProperties": [
+            {
+              "description": "Space between label, control, hint and error.",
+              "name": "--hs-field-gap"
+            },
+            {
+              "description": "Space below the whole field.",
+              "name": "--hs-field-spacing"
+            },
+            {
+              "description": "Hint text colour.",
+              "name": "--hs-field-hint-color"
+            },
+            {
+              "description": "Hint text size.",
+              "name": "--hs-field-hint-font-size"
+            },
+            {
+              "description": "Error text colour.",
+              "name": "--hs-field-error-color"
+            },
+            {
+              "description": "Error text size.",
+              "name": "--hs-field-error-font-size"
+            },
+            {
+              "description": "Control border when invalid.",
+              "name": "--hs-field-invalid-border-color"
+            }
+          ],
+          "slots": [
+            {
+              "description": "One `<input>`, `<select>` or `<textarea>`, plus anything else you want inside the field.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#control",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#label",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#hint",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#error",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#id",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "control",
+              "description": "The wrapped native control.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#ensureLabel",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#ensureHint",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#ensureError",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#describe",
+              "privacy": "private",
+              "description": "Keep aria-describedby pointing at whichever of hint and error exist."
+            },
+            {
+              "kind": "method",
+              "name": "#show",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "message"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#clear",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onInvalid",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onBlur",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onInput",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired when the control fails validation. `detail` carries `{ message }`, the browser's own text.",
+              "name": "hs-invalid"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label text. Skipped if you supply your own <label>."
+            },
+            {
+              "name": "hint",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text shown under the control and referenced by aria-describedby."
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Do not display validation messages. The control still validates; only this element's reporting is suppressed.",
+              "name": "novalidate"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-field",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsField",
+          "declaration": {
+            "name": "HsField",
+            "module": "dist/components/hs-field.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-field",
+          "declaration": {
+            "name": "HsField",
+            "module": "dist/components/hs-field.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-menu.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "One command in an `<hs-menu>`. Deliberately inert: it carries a value and its\ntext, and the menu does the rest. It never renders — the global stylesheet\nhides it, and once the menu upgrades it is not slotted at all.",
+          "name": "HsMenuItem",
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value reported when this item is chosen. Defaults to the element's text content.",
+              "name": "value"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-menu-item",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsMenu",
+          "cssProperties": [
+            {
+              "description": "Trigger background.",
+              "name": "--hs-menu-trigger-background"
+            },
+            {
+              "description": "Trigger background on hover.",
+              "name": "--hs-menu-trigger-background-hover"
+            },
+            {
+              "description": "Trigger text colour.",
+              "name": "--hs-menu-trigger-color"
+            },
+            {
+              "description": "Vertical padding on the trigger.",
+              "name": "--hs-menu-trigger-padding-block"
+            },
+            {
+              "description": "Horizontal padding on it.",
+              "name": "--hs-menu-trigger-padding-inline"
+            },
+            {
+              "description": "Corner radius of trigger and menu box.",
+              "name": "--hs-menu-radius"
+            },
+            {
+              "description": "Narrowest the menu box may be.",
+              "name": "--hs-menu-min-inline-size"
+            },
+            {
+              "description": "Padding inside the menu box.",
+              "name": "--hs-menu-padding"
+            },
+            {
+              "description": "Menu box border.",
+              "name": "--hs-menu-border-color"
+            },
+            {
+              "description": "Menu box surface.",
+              "name": "--hs-menu-background"
+            },
+            {
+              "description": "Menu text colour.",
+              "name": "--hs-menu-color"
+            },
+            {
+              "description": "Menu box shadow.",
+              "name": "--hs-menu-shadow"
+            },
+            {
+              "description": "Vertical padding in an item.",
+              "name": "--hs-menu-item-padding-block"
+            },
+            {
+              "description": "Horizontal padding in an item.",
+              "name": "--hs-menu-item-padding-inline"
+            },
+            {
+              "description": "Corner radius of an item.",
+              "name": "--hs-menu-item-radius"
+            },
+            {
+              "description": "Background of the item under the pointer or the keyboard.",
+              "name": "--hs-menu-item-background-active"
+            },
+            {
+              "description": "Distance from the trigger. Read by position.js.",
+              "name": "--hs-anchor-gap"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The trigger button.",
+              "name": "trigger"
+            },
+            {
+              "description": "The menu box.",
+              "name": "menu"
+            },
+            {
+              "description": "Every menu item.",
+              "name": "item"
+            }
+          ],
+          "slots": [
+            {
+              "description": "Replaces the trigger's text, for a trigger that needs an icon or markup. Falls back to `label`.",
+              "name": "trigger"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#detach",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null",
+              "description": "Undoes the positioning. Null whenever the menu is closed."
+            },
+            {
+              "kind": "field",
+              "name": "#focusOnOpen",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "Which item to focus when the menu next opens. ArrowUp asks for the last."
+            },
+            {
+              "kind": "field",
+              "name": "#popoverState",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "What the popover last reported. See `updated` for why this is tracked."
+            },
+            {
+              "kind": "field",
+              "name": "#typeaheadBuffer",
+              "privacy": "private",
+              "type": {
+                "text": "string"
+              },
+              "default": "''"
+            },
+            {
+              "kind": "field",
+              "name": "#typeaheadTimer",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#menu",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "#trigger",
+              "privacy": "private",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#readItems",
+              "privacy": "private",
+              "description": "Read the consumer's `<hs-menu-item>` children. They are data: the buttons\nthe user sees are rendered in the shadow root."
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "description": "Re-read the `<hs-menu-item>` children. Call after changing them."
+            },
+            {
+              "kind": "field",
+              "name": "#onBeforeToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onToggle",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#opened",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#closed",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#focusItem",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ],
+              "description": "Move the roving tabindex, wrapping at both ends, and follow with focus."
+            },
+            {
+              "kind": "field",
+              "name": "#onTriggerKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onMenuKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#typeahead",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "key"
+                }
+              ],
+              "description": "Jump to the first item whose label starts with what has been typed.\n\nA single letter searches from the item AFTER the active one, so pressing it\nrepeatedly walks through the items that share it. Anything longer searches\nfrom the active item, so extending the run refines it rather than skipping\nthe match already found."
+            },
+            {
+              "kind": "method",
+              "name": "#select",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "''",
+              "attribute": "label"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_items",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "_active",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-open",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after the menu opens."
+            },
+            {
+              "name": "hs-close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired after it closes."
+            },
+            {
+              "name": "hs-menu-select",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired when an item is chosen. `detail` carries `{ value, label, index }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Text on the trigger button. Also what the pre-upgrade rule in the global stylesheet draws, so the box is reserved at the right width.",
+              "name": "label",
+              "default": "''",
+              "fieldName": "label"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Inactive and removed from the tab order.",
+              "name": "disabled",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the menu is showing. Reflected. Setting it opens or closes the menu.",
+              "name": "open",
+              "default": "false",
+              "fieldName": "open"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-menu",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsMenuItem",
+          "declaration": {
+            "name": "HsMenuItem",
+            "module": "dist/components/hs-menu.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-menu-item",
+          "declaration": {
+            "name": "HsMenuItem",
+            "module": "dist/components/hs-menu.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsMenu",
+          "declaration": {
+            "name": "HsMenu",
+            "module": "dist/components/hs-menu.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-menu",
+          "declaration": {
+            "name": "HsMenu",
+            "module": "dist/components/hs-menu.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-sortable.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsSortable",
+          "cssProperties": [
+            {
+              "description": "Space between a header's label and its direction indicator.",
+              "name": "--hs-sortable-gap"
+            },
+            {
+              "description": "Header background on hover.",
+              "name": "--hs-sortable-background-hover"
+            },
+            {
+              "description": "Size of the direction triangle.",
+              "name": "--hs-sortable-indicator-size"
+            },
+            {
+              "description": "Opacity of the sorted column's indicator.",
+              "name": "--hs-sortable-indicator-opacity"
+            },
+            {
+              "description": "Opacity of the indicator on a sortable column that is not the sorted one.",
+              "name": "--hs-sortable-indicator-idle-opacity"
+            }
+          ],
+          "slots": [
+            {
+              "description": "One `<table>`. Anything else is left alone.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "table",
+              "description": "The wrapped table, for anything this API does not cover.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "sortedBy",
+              "description": "The header of the sorted column, or null while nothing is sorted.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "refresh",
+              "description": "Re-read the headers. Call after replacing the table or its `<thead>`."
+            },
+            {
+              "kind": "method",
+              "name": "#sync",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#makeSortable",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "th"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "sort",
+              "parameters": [
+                {
+                  "name": "header",
+                  "description": "The `<th>`, or its column index.",
+                  "type": {
+                    "text": "HTMLTableCellElement|number"
+                  }
+                },
+                {
+                  "name": "direction",
+                  "description": "Defaults to ascending, or to\nthe reverse of the current direction when already sorted by this column.",
+                  "optional": true,
+                  "type": {
+                    "text": "'ascending'|'descending'"
+                  }
+                }
+              ],
+              "description": "Sort by a column."
+            },
+            {
+              "kind": "method",
+              "name": "#columnOf",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "th"
+                }
+              ],
+              "description": "Which column a header starts at, counting any colspans before it."
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-sort",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after a sort. `detail` carries `{ column, direction, header }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "On a `<th>`, not on this element: marks the column sortable. `data-sort=\"number\"` compares as numbers instead of collating.",
+              "name": "data-sort"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "On a `<td>`, not on this element: an explicit sort key for that cell, used instead of its text.",
+              "name": "data-sort-value"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-sortable",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsSortable",
+          "declaration": {
+            "name": "HsSortable",
+            "module": "dist/components/hs-sortable.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-sortable",
+          "declaration": {
+            "name": "HsSortable",
+            "module": "dist/components/hs-sortable.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-tabs.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "A panel's content holder. Deliberately inert: it carries a label and its\nchildren, and `hs-tabs` does the rest.",
+          "name": "HsTabPanel",
+          "attributes": [
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Text shown on this panel's tab.",
+              "name": "label"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-tab-panel",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsTabs",
+          "cssProperties": [
+            {
+              "description": "Space between tabs.",
+              "name": "--hs-tabs-gap"
+            },
+            {
+              "description": "Vertical padding inside a tab.",
+              "name": "--hs-tabs-tab-padding-block"
+            },
+            {
+              "description": "Horizontal padding inside a tab.",
+              "name": "--hs-tabs-tab-padding-inline"
+            },
+            {
+              "description": "Thickness of the active-tab underline.",
+              "name": "--hs-tabs-indicator-size"
+            },
+            {
+              "description": "Colour of that underline.",
+              "name": "--hs-tabs-indicator-color"
+            },
+            {
+              "description": "Inactive tab text.",
+              "name": "--hs-tabs-tab-color"
+            },
+            {
+              "description": "Active tab text.",
+              "name": "--hs-tabs-tab-color-active"
+            },
+            {
+              "description": "Rule under the tablist.",
+              "name": "--hs-tabs-border-color"
+            },
+            {
+              "description": "Gap between the tablist and the panel.",
+              "name": "--hs-tabs-panel-spacing"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The row of tabs.",
+              "name": "tablist"
+            },
+            {
+              "description": "Every tab button.",
+              "name": "tab"
+            },
+            {
+              "description": "The active tab button, in addition to `tab`.",
+              "name": "tab-active"
+            },
+            {
+              "description": "The active panel wrapper.",
+              "name": "panel"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<hs-tab-panel>` elements. Anything else is ignored.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#panels",
+              "privacy": "private",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "panels",
+              "description": "The `<hs-tab-panel>` children, in document order.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "#onSlotChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#select",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                },
+                {
+                  "name": "{ focus = false }",
+                  "default": "{}"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "#focusTab",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "index"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "selected",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "attribute": "selected",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "activation",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'auto'",
+              "attribute": "activation",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "_labels",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "default": "[]"
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-tab-change",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Fired after the active tab changes. `detail` carries `{ index, label }`."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Index of the active tab. Reflected.",
+              "name": "selected",
+              "default": "0",
+              "fieldName": "selected"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "`auto` (default) selects on arrow-key focus; `manual` requires Enter or Space.",
+              "name": "activation",
+              "default": "'auto'",
+              "fieldName": "activation"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-tabs",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsTabPanel",
+          "declaration": {
+            "name": "HsTabPanel",
+            "module": "dist/components/hs-tabs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-tab-panel",
+          "declaration": {
+            "name": "HsTabPanel",
+            "module": "dist/components/hs-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsTabs",
+          "declaration": {
+            "name": "HsTabs",
+            "module": "dist/components/hs-tabs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-tabs",
+          "declaration": {
+            "name": "HsTabs",
+            "module": "dist/components/hs-tabs.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-theme-toggle.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsThemeToggle",
+          "cssProperties": [
+            {
+              "description": "Button background.",
+              "name": "--hs-theme-toggle-background"
+            },
+            {
+              "description": "Button background on hover.",
+              "name": "--hs-theme-toggle-background-hover"
+            },
+            {
+              "description": "Button border colour.",
+              "name": "--hs-theme-toggle-border-color"
+            },
+            {
+              "description": "Icon colour.",
+              "name": "--hs-theme-toggle-color"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-theme-toggle-radius"
+            },
+            {
+              "description": "Vertical padding.",
+              "name": "--hs-theme-toggle-padding-block"
+            },
+            {
+              "description": "Horizontal padding.",
+              "name": "--hs-theme-toggle-padding-inline"
+            },
+            {
+              "description": "Icon size.",
+              "name": "--hs-theme-toggle-font-size"
+            }
+          ],
+          "slots": [
+            {
+              "description": "Not used; the component renders its own button.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#button",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "scheme",
+              "description": "The scheme in effect: an explicit choice, else the system preference."
+            },
+            {
+              "kind": "method",
+              "name": "toggle"
+            },
+            {
+              "kind": "method",
+              "name": "#render",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired after the scheme changes. `detail` carries `{ scheme }`, one of `light` or `dark`.",
+              "name": "hs-theme-change"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name for the button. Defaults to \"Toggle colour scheme\"."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-theme-toggle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsThemeToggle",
+          "declaration": {
+            "name": "HsThemeToggle",
+            "module": "dist/components/hs-theme-toggle.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-theme-toggle",
+          "declaration": {
+            "name": "HsThemeToggle",
+            "module": "dist/components/hs-theme-toggle.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-toast.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsToast",
+          "cssProperties": [
+            {
+              "description": "Overrides the variant's background.",
+              "name": "--hs-toast-background"
+            },
+            {
+              "description": "Overrides the variant's text colour.",
+              "name": "--hs-toast-color"
+            },
+            {
+              "description": "Overrides the variant's leading rule.",
+              "name": "--hs-toast-accent-color"
+            },
+            {
+              "description": "Thickness of that rule.",
+              "name": "--hs-toast-accent-width"
+            },
+            {
+              "description": "Internal padding.",
+              "name": "--hs-toast-padding"
+            },
+            {
+              "description": "Space between content and anything beside it.",
+              "name": "--hs-toast-gap"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-toast-radius"
+            },
+            {
+              "description": "Drop shadow.",
+              "name": "--hs-toast-shadow"
+            },
+            {
+              "description": "How far it slides in from.",
+              "name": "--hs-toast-travel"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The message. Keep it to text: a toast that needs a tab stop should be a dialog, since the timeout would take the control away mid-interaction.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#timer",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#remaining",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#startedAt",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "#hovered",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "#focused",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "duration",
+              "description": "Milliseconds before self-dismissal. Zero means it stays."
+            },
+            {
+              "kind": "field",
+              "name": "remaining",
+              "description": "Milliseconds left on the clock. Stops falling while paused.",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "paused",
+              "description": "Whether the timeout is currently held by a pointer or by focus.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#start",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#stop",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#hold",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#release",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "dismiss",
+              "description": "Remove it. Fires a cancelable `hs-dismiss` first, matching `<hs-alert>`, so\na consumer can keep it in place."
+            }
+          ],
+          "events": [
+            {
+              "name": "hs-dismiss",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Cancelable, fired before the toast removes itself. Call preventDefault() to keep it in place."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "'success'|'warning'|'error'|'info'"
+              },
+              "description": "Feedback tone, styled by the global stylesheet. `error` also makes this toast announce assertively.",
+              "name": "variant"
+            },
+            {
+              "type": {
+                "text": "number"
+              },
+              "description": "Milliseconds before it dismisses itself. Defaults to 5000. Zero means it stays until something dismisses it.",
+              "name": "duration"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-toast",
+          "customElement": true
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsToastRegion",
+          "cssProperties": [
+            {
+              "description": "Distance from the viewport corner.",
+              "name": "--hs-toast-region-offset"
+            },
+            {
+              "description": "Space between stacked toasts.",
+              "name": "--hs-toast-region-gap"
+            },
+            {
+              "description": "Width of the stack.",
+              "name": "--hs-toast-region-inline-size"
+            }
+          ],
+          "slots": [
+            {
+              "description": "`<hs-toast>` elements, newest last.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "toasts",
+              "description": "The toasts currently showing, oldest first.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "show",
+              "parameters": [
+                {
+                  "name": "message",
+                  "description": "The text to announce.",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "{ variant, duration }",
+                  "default": "{}"
+                },
+                {
+                  "name": "options",
+                  "optional": true,
+                  "type": {
+                    "text": "@param {'success'|'warning'|'error'|'info'} [options.variant]\n   * @param {number} [options.duration] - Milliseconds; 0 to leave it up.\n   * "
+                  }
+                }
+              ],
+              "description": "Show a toast and return it, so the caller can dismiss it early or listen to\nit. Appending keeps DOM order the same as the order they were shown.",
+              "return": {
+                "type": {
+                  "text": "HsToast"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "clear",
+              "description": "Dismiss everything showing. Respects a cancelled `hs-dismiss`."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-toast-region",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsToast",
+          "declaration": {
+            "name": "HsToast",
+            "module": "dist/components/hs-toast.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-toast",
+          "declaration": {
+            "name": "HsToast",
+            "module": "dist/components/hs-toast.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToastRegion",
+          "declaration": {
+            "name": "HsToastRegion",
+            "module": "dist/components/hs-toast.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-toast-region",
+          "declaration": {
+            "name": "HsToastRegion",
+            "module": "dist/components/hs-toast.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-toggle.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsToggle",
+          "cssProperties": [
+            {
+              "description": "Track width. Default 2.5rem.",
+              "name": "--hs-toggle-track-inline-size"
+            },
+            {
+              "description": "Track height. Default 1.5rem.",
+              "name": "--hs-toggle-track-block-size"
+            },
+            {
+              "description": "Inset around the thumb. Default 0.1875rem.",
+              "name": "--hs-toggle-track-padding"
+            },
+            {
+              "description": "Thumb diameter. Default 1.125rem.",
+              "name": "--hs-toggle-thumb-size"
+            },
+            {
+              "description": "Corner radius of track and thumb.",
+              "name": "--hs-toggle-radius"
+            },
+            {
+              "description": "Space between the switch and its label.",
+              "name": "--hs-toggle-gap"
+            },
+            {
+              "description": "Track colour when off.",
+              "name": "--hs-toggle-track-color"
+            },
+            {
+              "description": "Track colour when on.",
+              "name": "--hs-toggle-track-color-checked"
+            },
+            {
+              "description": "Thumb colour.",
+              "name": "--hs-toggle-thumb-color"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "The switch's background rail.",
+              "name": "track"
+            },
+            {
+              "description": "The moving knob.",
+              "name": "thumb"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The switch's label.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "formAssociated",
+              "type": {
+                "text": "boolean"
+              },
+              "static": true,
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "#internals",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#defaultChecked",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "#onClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "toggle",
+              "description": "Flip the switch, unless disabled. Fires `change` like a native control."
+            },
+            {
+              "kind": "method",
+              "name": "formResetCallback"
+            },
+            {
+              "kind": "method",
+              "name": "formStateRestoreCallback",
+              "parameters": [
+                {
+                  "name": "state"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "default": "'on'",
+              "attribute": "value"
+            },
+            {
+              "kind": "field",
+              "name": "role",
+              "type": {
+                "text": "string"
+              },
+              "default": "'switch'"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "attribute": "name"
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Fired when the state changes, like a native control."
+            }
+          ],
+          "attributes": [
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether the switch is on.",
+              "name": "checked",
+              "default": "false",
+              "fieldName": "checked"
+            },
+            {
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Inactive and removed from the tab order.",
+              "name": "disabled",
+              "default": "false",
+              "fieldName": "disabled"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Field name used when the form is submitted.",
+              "name": "name",
+              "fieldName": "name"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "Value submitted when checked. Defaults to \"on\".",
+              "name": "value",
+              "default": "'on'",
+              "fieldName": "value"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "hs-toggle",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsToggle",
+          "declaration": {
+            "name": "HsToggle",
+            "module": "dist/components/hs-toggle.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-toggle",
+          "declaration": {
+            "name": "HsToggle",
+            "module": "dist/components/hs-toggle.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/hs-tooltip.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "HsTooltip",
+          "cssProperties": [
+            {
+              "description": "Bubble background.",
+              "name": "--hs-tooltip-background"
+            },
+            {
+              "description": "Bubble text colour.",
+              "name": "--hs-tooltip-color"
+            },
+            {
+              "description": "Widest the bubble may be.",
+              "name": "--hs-tooltip-max-inline-size"
+            },
+            {
+              "description": "Vertical padding in the bubble.",
+              "name": "--hs-tooltip-padding-block"
+            },
+            {
+              "description": "Horizontal padding in it.",
+              "name": "--hs-tooltip-padding-inline"
+            },
+            {
+              "description": "Corner radius.",
+              "name": "--hs-tooltip-radius"
+            },
+            {
+              "description": "Bubble text size.",
+              "name": "--hs-tooltip-font-size"
+            },
+            {
+              "description": "Distance from the trigger. Read by position.js.",
+              "name": "--hs-anchor-gap"
+            }
+          ],
+          "slots": [
+            {
+              "description": "The description. Text, never interactive content — the bubble does not take the pointer and has no tab stop.",
+              "name": ""
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "#trigger",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "#detach",
+              "privacy": "private",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "trigger",
+              "description": "The element this describes, or null while `for` names nothing.",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "#attach",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#release",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "#describe",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "trigger"
+                }
+              ],
+              "description": "Add to `aria-describedby` rather than replacing it: a control can have more\nthan one description, and `<hs-field>` already writes one."
+            },
+            {
+              "kind": "method",
+              "name": "#undescribe",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "trigger"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "show",
+              "description": "Show it. An arrow field, so it doubles as the listener. Safe to call when\nit is already showing."
+            },
+            {
+              "kind": "field",
+              "name": "hide",
+              "description": "Hide it. Safe to call when it is already hidden."
+            },
+            {
+              "kind": "field",
+              "name": "#onKeydown",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "#onToggle",
+              "privacy": "private"
+            }
+          ],
+          "events": [
+            {
+              "description": "Fired after the tooltip appears.",
+              "name": "hs-open"
+            },
+            {
+              "description": "Fired after it hides.",
+              "name": "hs-close"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "for",
+              "type": {
+                "text": "string"
+              },
+              "description": "Id of the element this describes. Required: without a trigger there is nothing to attach to and the tooltip stays hidden."
+            },
+            {
+              "type": {
+                "text": "'block-end'|'block-start'"
+              },
+              "description": "Preferred side. Defaults to `block-end`, and flips when there is no room.",
+              "name": "placement"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "hs-tooltip",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsTooltip",
+          "declaration": {
+            "name": "HsTooltip",
+            "module": "dist/components/hs-tooltip.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hs-tooltip",
+          "declaration": {
+            "name": "HsTooltip",
+            "module": "dist/components/hs-tooltip.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/index.js",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HsAccordion",
+          "declaration": {
+            "name": "HsAccordion",
+            "module": "./hs-accordion.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsAlert",
+          "declaration": {
+            "name": "HsAlert",
+            "module": "./hs-alert.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsBadge",
+          "declaration": {
+            "name": "HsBadge",
+            "module": "./hs-badge.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsCard",
+          "declaration": {
+            "name": "HsCard",
+            "module": "./hs-card.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsCombobox",
+          "declaration": {
+            "name": "HsCombobox",
+            "module": "./hs-combobox.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsOption",
+          "declaration": {
+            "name": "HsOption",
+            "module": "./hs-combobox.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsCopy",
+          "declaration": {
+            "name": "HsCopy",
+            "module": "./hs-copy.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsDialog",
+          "declaration": {
+            "name": "HsDialog",
+            "module": "./hs-dialog.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsField",
+          "declaration": {
+            "name": "HsField",
+            "module": "./hs-field.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsMenu",
+          "declaration": {
+            "name": "HsMenu",
+            "module": "./hs-menu.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsMenuItem",
+          "declaration": {
+            "name": "HsMenuItem",
+            "module": "./hs-menu.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsSortable",
+          "declaration": {
+            "name": "HsSortable",
+            "module": "./hs-sortable.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsTabs",
+          "declaration": {
+            "name": "HsTabs",
+            "module": "./hs-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsTabPanel",
+          "declaration": {
+            "name": "HsTabPanel",
+            "module": "./hs-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToast",
+          "declaration": {
+            "name": "HsToast",
+            "module": "./hs-toast.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToastRegion",
+          "declaration": {
+            "name": "HsToastRegion",
+            "module": "./hs-toast.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsTooltip",
+          "declaration": {
+            "name": "HsTooltip",
+            "module": "./hs-tooltip.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsThemeToggle",
+          "declaration": {
+            "name": "HsThemeToggle",
+            "module": "./hs-theme-toggle.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "HsToggle",
+          "declaration": {
+            "name": "HsToggle",
+            "module": "./hs-toggle.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/components/position.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "hasAnchorPositioning",
+          "description": "Whether the platform can place the box itself.\n\nThe test is `position-anchor` rather than `anchor-name` because that is the\nproperty this module relies on. Chrome 125-150, Firefox 147-150 and Safari 26\nare recorded as partial: the only gap is the property's INITIAL value, and\nboth paths here always set it explicitly, so those versions place correctly."
+        },
+        {
+          "kind": "variable",
+          "name": "anchorStyles",
+          "default": "new CSSStyleSheet()",
+          "description": "Styles for both paths. A component adds this to its own `static styles`; it\nhas to live in the same shadow root as the floating element, because outside\nCSS cannot reach in.\n\nA native `CSSStyleSheet` rather than Lit's `css` tag, so this module imports\nnothing. That keeps it loadable straight from `dist/components/`, which the\nLit-importing component modules are not."
+        },
+        {
+          "kind": "function",
+          "name": "adoptAnchorStyles",
+          "parameters": [
+            {
+              "name": "root",
+              "description": "Usually `element.getRootNode()`.",
+              "type": {
+                "text": "Document|ShadowRoot"
+              }
+            }
+          ],
+          "description": "Put the anchor stylesheet on a root that needs it.\n\nA shadow component adds `anchorStyles` to its own `static styles`. A light-DOM\none cannot: its floating element sits in the consumer's document, and that is\nthe root the rules have to reach. Additive and idempotent, and every rule in\nthe sheet is scoped to `[data-hs-anchored]`, which nothing but this module\never sets."
+        },
+        {
+          "kind": "function",
+          "name": "tether",
+          "parameters": [
+            {
+              "name": "floating",
+              "description": "The box being placed. Usually a popover.",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "anchor",
+              "description": "What it is placed against.",
+              "type": {
+                "text": "HTMLElement"
+              }
+            },
+            {
+              "name": "options",
+              "default": "{}",
+              "optional": true,
+              "type": {
+                "text": "@param {'block-end'|'block-start'} [options.placement] - Preferred side.\n *   Flips to the other one when the box would not fit.\n * @param {'start'|'end'|'center'} [options.align] - Preferred inline alignment.\n *   `start` and `end` flip the same way; `center` shifts back into view\n *   instead, having no opposite to flip to.\n * @param {'auto'|'declarative'|'script'} [options.strategy] - Which path to\n *   take. `auto` uses the declarative one wherever the browser has it. Naming\n *   a path is how the fallback stays testable on a browser that would\n *   otherwise skip it.\n * "
+              }
+            }
+          ],
+          "description": "Place `floating` against `anchor`, and keep it placed.",
+          "return": {
+            "type": {
+              "text": "() => void"
+            }
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "hasAnchorPositioning",
+          "declaration": {
+            "name": "hasAnchorPositioning",
+            "module": "dist/components/position.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "anchorStyles",
+          "declaration": {
+            "name": "anchorStyles",
+            "module": "dist/components/position.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "adoptAnchorStyles",
+          "declaration": {
+            "name": "adoptAnchorStyles",
+            "module": "dist/components/position.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "tether",
+          "declaration": {
+            "name": "tether",
+            "module": "dist/components/position.js"
+          }
+        }
+      ]
+    }
+  ]
+}

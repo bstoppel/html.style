@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#b45309">
+  <meta name="description" content="Three token tiers, six cascade layers, OKLCH throughout.">
+  <title>Style · html.style</title>
+  <link rel="canonical" href="https://html.style/style.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://html.style/style.html">
+  <meta property="og:title" content="Style · html.style">
+  <meta property="og:description" content="Three token tiers, six cascade layers, OKLCH throughout.">
+  <meta property="og:image" content="https://html.style/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="css/html.style.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script>
+    (() => {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.style.colorScheme = t;
+    })();
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="page-layout">
+    <header class="site-header">
+      <div class="center center--wide">
+        <div class="cluster header-bar">
+          <a href="index.html" class="brand"><svg width="32" height="32" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+  <rect fill="var(--color-action-primary)" width="100" height="100" rx="18"/>
+  <text x="12" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">h</text>
+  <circle cx="48" cy="62" r="6" fill="var(--color-text-inverse)"/>
+  <text x="58" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">s</text>
+</svg> html.style</a>
+          <button type="button" class="nav-toggle" popovertarget="nav-links">Menu</button>
+          <nav class="site-nav" aria-label="Primary">
+            <ul id="nav-links" popover>
+              <li><a href="getting-started.html">Get started</a></li><li><a href="style.html" aria-current="page">Style</a></li><li><a href="elements.html">Elements</a></li><li><a href="compare.html">Compare</a></li><li><a href="agents.html">Agents</a></li>
+              <li><a href="https://github.com/bstoppel/html.style" rel="noreferrer">GitHub</a></li>
+            </ul>
+          </nav>
+          <hs-theme-toggle></hs-theme-toggle>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+<article class="band"><div class="center center--page prose-block">
+    <p class="kicker">Design tokens</p>
+    <h1>Style</h1>
+    <p class="lede">Three token tiers, six cascade layers, OKLCH throughout. Theme by overriding custom properties — never by editing source.</p>
+    <h2>Cascade layers</h2>
+    <p>User CSS belongs in a layer after these, or unlayered. Either way it wins without <code>!important</code>.</p>
+    <div class="layer-map">
+      <div><span>reset</span><span class="muted">box model, margins</span></div>
+      <div><span>tokens</span><span class="muted">primitives → semantic → state</span></div>
+      <div><span>atoms</span><span class="muted">tags themselves</span></div>
+      <div><span>molecules</span><span class="muted">.stack, .card, hs-card</span></div>
+      <div><span>organisms</span><span class="muted">header, hero, grids</span></div>
+      <div><span>templates</span><span class="muted">.page-layout, .sidebar-layout</span></div>
+    </div>
+    <h2>OKLCH and one hue</h2>
+    <div class="snippet"><pre><code id="style-hue">:root {
+  --p-brand-hue: 260; /* OKLCH angle, not HSL */
+}</code></pre><hs-copy for="style-hue">Copy</hs-copy></div>
+    <p>Lightness and chroma stay fixed per ramp step. Hue 58 is the burnt orange this ships with; 260 is royal blue; violet sits near 290.</p>
+    <div class="stack">
+  <div class="cluster">
+    <label for="hue">Brand hue <output for="hue">58</output></label>
+    <input id="hue" type="range" min="0" max="360" value="58" class="hue-range">
+  </div>
+  <div class="cluster">
+    <button type="button" class="button--outline" data-hue="58">Default</button>
+    <button type="button" class="button--outline" data-hue="145">Green</button>
+    <button type="button" class="button--outline" data-hue="210">Blue</button>
+    <button type="button" class="button--outline" data-hue="260">Royal</button>
+    <button type="button" class="button--outline" data-hue="290">Violet</button>
+  </div>
+  <p class="muted">One custom property. Surfaces, borders, and text pick up a trace of the same hue. Nothing to rebuild.</p>
+</div>
+    <h2>Token tiers</h2>
+    <div class="snippet"><pre><code id="style-tiers">/* Primitives (--p- prefix) */
+--p-brand-hue: 58;
+--p-brand-600: oklch(0.55 0.18 var(--p-brand-hue));
+
+/* Semantic */
+--color-action-primary: light-dark(var(--p-brand-600), oklch(0.7 0.2 var(--p-brand-hue)));
+
+/* State, derived */
+--color-action-hover: oklch(from var(--color-action-primary) calc(l + 0.1) c h);</code></pre><hs-copy for="style-tiers">Copy</hs-copy></div>
+    <h2>Layout atoms</h2>
+    <p>Intrinsically responsive: they care about their container, not the viewport.</p>
+    <div class="switcher">
+      <div><p><code>.stack</code></p><div class="stack" style="outline:1px dashed var(--color-border-default);padding:var(--p-space-sm)"><button type="button">One</button><button type="button">Two</button></div></div>
+      <div><p><code>.cluster</code></p><div class="cluster" style="outline:1px dashed var(--color-border-default);padding:var(--p-space-sm)"><button type="button">One</button><button type="button">Two</button><button type="button">Three</button></div></div>
+    </div>
+    <p>Also <code>.center</code>, <code>.grid</code>, <code>.switcher</code> (two-up until the container is too narrow), <code>.card-grid</code>.</p>
+    <h2>Dark mode</h2>
+    <p><code>color-scheme: light dark</code> and <code>light-dark()</code>. No JavaScript required. <code>&lt;hs-theme-toggle&gt;</code> writes a preference; without it, the system preference is enough.</p>
+    <p><a href="elements.html">See the elements that drink these tokens →</a></p>
+  </div></article>
+    </main>
+    <footer class="site-footer">
+      <div class="center center--wide">
+        <div class="footer-grid">
+          <div>
+            <p><strong>html.style</strong></p>
+            <p class="muted">Semantic HTML is the API. Tokens theme it. Fifteen elements extend it. Version 2026.1.</p>
+          </div>
+          <nav aria-label="Footer">
+            <ul role="list" class="stack">
+              <li><a href="getting-started.html">Get started</a></li><li><a href="extend.html">Extend</a></li><li><a href="cookbook.html">Cookbook</a></li><li><a href="support.html">Support floor</a></li><li><a href="agents.html">For agents</a></li>
+            </ul>
+          </nav>
+          <div>
+            <p class="muted">MIT License. No tracking. No polyfills.</p>
+            <p><a href="https://github.com/bstoppel/html.style">github.com/bstoppel/html.style</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="js/html.style.js"></script>
+  <script type="module" src="js/html.style.components.js"></script>
+  <script type="module" src="js/site.js"></script>
+</body>
+</html>

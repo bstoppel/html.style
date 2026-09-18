@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#b45309">
+  <meta name="description" content="Restyle tokens, compose atoms, or wrap an hs-* element. Never fork the source.">
+  <title>Extend · html.style</title>
+  <link rel="canonical" href="https://html.style/extend.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://html.style/extend.html">
+  <meta property="og:title" content="Extend · html.style">
+  <meta property="og:description" content="Restyle tokens, compose atoms, or wrap an hs-* element. Never fork the source.">
+  <meta property="og:image" content="https://html.style/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="css/html.style.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script>
+    (() => {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.style.colorScheme = t;
+    })();
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="page-layout">
+    <header class="site-header">
+      <div class="center center--wide">
+        <div class="cluster header-bar">
+          <a href="index.html" class="brand"><svg width="32" height="32" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+  <rect fill="var(--color-action-primary)" width="100" height="100" rx="18"/>
+  <text x="12" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">h</text>
+  <circle cx="48" cy="62" r="6" fill="var(--color-text-inverse)"/>
+  <text x="58" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">s</text>
+</svg> html.style</a>
+          <button type="button" class="nav-toggle" popovertarget="nav-links">Menu</button>
+          <nav class="site-nav" aria-label="Primary">
+            <ul id="nav-links" popover>
+              <li><a href="getting-started.html">Get started</a></li><li><a href="style.html">Style</a></li><li><a href="elements.html">Elements</a></li><li><a href="compare.html">Compare</a></li><li><a href="agents.html">Agents</a></li>
+              <li><a href="https://github.com/bstoppel/html.style" rel="noreferrer">GitHub</a></li>
+            </ul>
+          </nav>
+          <hs-theme-toggle></hs-theme-toggle>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+<article class="band"><div class="center center--page prose-block">
+    <p class="kicker">Same tokens, your markup</p>
+    <h1>Extend</h1>
+    <p class="lede">You never rebuild html.style to invent a page. Restyle tokens, compose atoms, or wrap an <code>hs-*</code>. A new custom element is for behaviour, not for looking on-brand.</p>
+    <div class="rung"><span class="rung-index">1</span><div>
+      <h2>Tokens on any element</h2>
+      <p>Use <code>--p-*</code> and <code>--color-*</code> on native HTML and on classes you own. Scope globally on <code>:root</code> or locally on a subtree.</p>
+      <div class="snippet"><pre><code id="ex-1">.pricing-tile {
+  padding: var(--p-space-lg);
+  border-radius: var(--p-radius-lg);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+}</code></pre><hs-copy for="ex-1">Copy</hs-copy></div>
+    </div></div>
+    <div class="rung"><span class="rung-index">2</span><div>
+      <h2>Atoms on foreign markup</h2>
+      <p><code>.stack</code>, <code>.cluster</code>, <code>.switcher</code>, <code>.card-grid</code> are the way to invent pages this library did not design.</p>
+      <div class="card-grid">
+        <article class="card"><h3>Personal</h3><p>Tokens only.</p><button type="button" class="button--outline">Choose</button></article>
+        <article class="card"><h3>Team</h3><p>Same atoms, different copy.</p><button type="button">Choose</button></article>
+      </div>
+    </div></div>
+    <div class="rung"><span class="rung-index">3</span><div>
+      <h2>Restyle shipped elements</h2>
+      <p>Theme tokens for the whole product. Group tokens for all fields. <code>::part()</code> and local custom properties for one widget.</p>
+      <div class="snippet"><pre><code id="ex-3">[data-tenant=&quot;acme&quot;] {
+  --p-brand-hue: 210;
+  --color-action-primary: oklch(0.55 0.18 var(--p-brand-hue));
+}</code></pre><hs-copy for="ex-3">Copy</hs-copy></div>
+      <div data-tenant="acme" style="--p-brand-hue:210;--color-action-primary:oklch(0.55 0.18 var(--p-brand-hue))">
+        <article class="card">
+          <h3>Acme tenant</h3>
+          <p class="muted">This subtree sets <code>--p-brand-hue: 210</code>. The button follows. Nothing was rebuilt.</p>
+          <button type="button">Themed action</button>
+        </article>
+      </div>
+    </div></div>
+    <div class="rung"><span class="rung-index">4</span><div>
+      <h2>Your own component, still on the system</h2>
+      <p>Light DOM in <code>@layer product</code>, or an <code>app-*</code> element that inherits <code>--p-*</code> through <code>:host</code>.</p>
+      <div class="snippet"><pre><code id="ex-4">@layer reset, tokens, atoms, molecules, organisms, templates, product;
+
+@layer product {
+  .invoice-row {
+    display: grid;
+    gap: var(--hs-space-3, var(--p-space-md));
+    container-type: inline-size;
+  }
+}</code></pre><hs-copy for="ex-4">Copy</hs-copy></div>
+    </div></div>
+    <div class="rung"><span class="rung-index">5</span><div>
+      <h2>Framework adapters last</h2>
+      <p>Import the CSS. Register elements. Only wrap if the host framework needs it. See <code>docs/frameworks.md</code> in the repo.</p>
+    </div></div>
+    <p><a href="cookbook.html">Three pages built only with html.style →</a></p>
+  </div></article>
+    </main>
+    <footer class="site-footer">
+      <div class="center center--wide">
+        <div class="footer-grid">
+          <div>
+            <p><strong>html.style</strong></p>
+            <p class="muted">Semantic HTML is the API. Tokens theme it. Fifteen elements extend it. Version 2026.1.</p>
+          </div>
+          <nav aria-label="Footer">
+            <ul role="list" class="stack">
+              <li><a href="getting-started.html">Get started</a></li><li><a href="extend.html">Extend</a></li><li><a href="cookbook.html">Cookbook</a></li><li><a href="support.html">Support floor</a></li><li><a href="agents.html">For agents</a></li>
+            </ul>
+          </nav>
+          <div>
+            <p class="muted">MIT License. No tracking. No polyfills.</p>
+            <p><a href="https://github.com/bstoppel/html.style">github.com/bstoppel/html.style</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="js/html.style.js"></script>
+  <script type="module" src="js/html.style.components.js"></script>
+  <script type="module" src="js/site.js"></script>
+</body>
+</html>

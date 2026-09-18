@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#b45309">
+  <meta name="description" content="html.style versus Pico, Open Props, Web Awesome, Tailwind, and daisyUI.">
+  <title>Compare · html.style</title>
+  <link rel="canonical" href="https://html.style/compare.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://html.style/compare.html">
+  <meta property="og:title" content="Compare · html.style">
+  <meta property="og:description" content="html.style versus Pico, Open Props, Web Awesome, Tailwind, and daisyUI.">
+  <meta property="og:image" content="https://html.style/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="css/html.style.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script>
+    (() => {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.style.colorScheme = t;
+    })();
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="page-layout">
+    <header class="site-header">
+      <div class="center center--wide">
+        <div class="cluster header-bar">
+          <a href="index.html" class="brand"><svg width="32" height="32" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+  <rect fill="var(--color-action-primary)" width="100" height="100" rx="18"/>
+  <text x="12" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">h</text>
+  <circle cx="48" cy="62" r="6" fill="var(--color-text-inverse)"/>
+  <text x="58" y="70" font-size="56" font-weight="700" fill="var(--color-text-inverse)">s</text>
+</svg> html.style</a>
+          <button type="button" class="nav-toggle" popovertarget="nav-links">Menu</button>
+          <nav class="site-nav" aria-label="Primary">
+            <ul id="nav-links" popover>
+              <li><a href="getting-started.html">Get started</a></li><li><a href="style.html">Style</a></li><li><a href="elements.html">Elements</a></li><li><a href="compare.html" aria-current="page">Compare</a></li><li><a href="agents.html">Agents</a></li>
+              <li><a href="https://github.com/bstoppel/html.style" rel="noreferrer">GitHub</a></li>
+            </ul>
+          </nav>
+          <hs-theme-toggle></hs-theme-toggle>
+        </div>
+      </div>
+    </header>
+    <main id="main-content">
+<article class="band"><div class="center center--page prose-block">
+    <p class="kicker">Positioning</p>
+    <h1>Compare</h1>
+    <p class="lede">Pico styles tags. Web Awesome ships a design system of custom elements. Tailwind is utilities plus a compiler. html.style is CSS 2026 plus additive <code>hs-*</code>, two tags, yearly snapshot.</p>
+    <div class="table-scroll">
+      <table class="dense">
+        <thead><tr><th></th><th>html.style</th><th>Pico</th><th>Open Props</th><th>Web Awesome</th><th>Tailwind</th><th>daisyUI</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Primary install</th><td>Link CSS + optional module</td><td>Link CSS</td><td>@import / CDN</td><td>Theme CSS + autoloader</td><td>Compiler</td><td>Tailwind plugin</td></tr>
+          <tr><th scope="row">Styles tags</th><td>Yes</td><td>Yes</td><td>Tokens only</td><td>Optional native.css</td><td>No</td><td>Semantic classes</td></tr>
+          <tr><th scope="row">Web components</th><td>Additive hs-*</td><td>No</td><td>No</td><td>Full catalog</td><td>No</td><td>No</td></tr>
+          <tr><th scope="row">Theme without rebuild</th><td>Custom properties</td><td>--pico-*</td><td>Override props</td><td>--wa-* + themes</td><td>@theme + build</td><td>data-theme</td></tr>
+          <tr><th scope="row">Polyfills</th><td>None</td><td>Broad support</td><td>Broad support</td><td>Modern browsers</td><td>Build output</td><td>Build output</td></tr>
+          <tr><th scope="row">Versioning</th><td>Calendar snapshot</td><td>Semver</td><td>Semver</td><td>Semver</td><td>Semver</td><td>Semver</td></tr>
+          <tr><th scope="row">Agent docs</th><td>CEM + llms.txt</td><td>—</td><td>—</td><td>Skills + llms.txt</td><td>—</td><td>Skills</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>What we are not</h2>
+    <ul>
+      <li>Not classless-only — atoms exist when a class earns its keep.</li>
+      <li>Not a 50-component design system. Fifteen elements, each a step up from HTML.</li>
+      <li>Not Tailwind. If you want utilities as the language, use Tailwind.</li>
+      <li>Not a look you cannot leave. Tokens and layers are the public API.</li>
+    </ul>
+    <p><a href="getting-started.html">Install html.style →</a> · <a href="agents.html">How agents consume it →</a></p>
+  </div></article>
+    </main>
+    <footer class="site-footer">
+      <div class="center center--wide">
+        <div class="footer-grid">
+          <div>
+            <p><strong>html.style</strong></p>
+            <p class="muted">Semantic HTML is the API. Tokens theme it. Fifteen elements extend it. Version 2026.1.</p>
+          </div>
+          <nav aria-label="Footer">
+            <ul role="list" class="stack">
+              <li><a href="getting-started.html">Get started</a></li><li><a href="extend.html">Extend</a></li><li><a href="cookbook.html">Cookbook</a></li><li><a href="support.html">Support floor</a></li><li><a href="agents.html">For agents</a></li>
+            </ul>
+          </nav>
+          <div>
+            <p class="muted">MIT License. No tracking. No polyfills.</p>
+            <p><a href="https://github.com/bstoppel/html.style">github.com/bstoppel/html.style</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="js/html.style.js"></script>
+  <script type="module" src="js/html.style.components.js"></script>
+  <script type="module" src="js/site.js"></script>
+</body>
+</html>

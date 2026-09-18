@@ -1,0 +1,26 @@
+# html.style
+
+> CSS framework that styles semantic HTML, plus additive hs-* web components. Version 2026.1.0. No polyfills. No build step for plain pages.
+
+## Load first
+- https://github.com/bstoppel/html.style/blob/main/README.md
+- npm package export: html.style/custom-elements.json
+- This site: custom-elements.json and llms.txt in the same folder as index.html
+
+## Rules for generated markup
+- Prefer semantic HTML with no classes. Tags are already styled.
+- Layout atoms when needed: .stack .cluster .switcher .center .grid .card-grid
+- hs-* only to add behaviour the platform lacks.
+- Theme with --p-brand-hue and --color-* custom properties.
+- Browsers: Chrome/Edge 131+, Firefox 133+, Safari 18+. No polyfills.
+
+## Site
+- index.html
+- getting-started.html
+- style.html
+- elements.html
+- extend.html
+- cookbook.html
+- compare.html
+- agents.html
+- support.html

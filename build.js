@@ -2,8 +2,9 @@
  * html.style build
  *
  * Single source of truth: everything in dist/ is generated from src/, and the
- * framework assets under website/ are mirrored from src/ too. Nothing in dist/
- * or website/css|js is hand-edited.
+ * framework assets under website/ are mirrored too - most from src/ directly,
+ * the component bundles from dist/ since bundling is what produces them.
+ * Nothing under dist/ or website/css|js is hand-edited.
  *
  *   node build.js           write dist/ and mirror website assets
  *   node build.js --check   verify both are in sync; exit 1 if not
@@ -427,6 +428,12 @@ changed += generateTypes();
 if (fs.existsSync(WEBSITE)) {
   for (const dir of WEBSITE_ASSET_DIRS) changed += copyDir(path.join(SRC, dir), path.join(WEBSITE, dir));
   changed += copyFiles(WEBSITE_STATIC_FILES, SRC, WEBSITE);
+  // The component bundles are DIST output, not a raw src/ copy, so they are
+  // mirrored from there instead - same reason as the two lines above: the
+  // website is a second consumer of what this build produces, and it cannot
+  // be left to a one-time manual copy without drifting the moment a
+  // component changes.
+  changed += copyFiles([COMPONENT_BUNDLE, COMPONENT_BUNDLE_CLASSIC], DIST, WEBSITE);
 }
 
 if (CHECK) {
