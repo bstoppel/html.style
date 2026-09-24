@@ -30,15 +30,19 @@ test.describe('Token layer', () => {
 
   test('changing one primitive moves everything derived from it', async ({ page }) => {
     await page.goto('/');
-    const result = await page.evaluate(() => {
-      const cs = () => getComputedStyle(document.querySelector('button'));
-      const before = cs().backgroundColor;
-      // The whole point of the primitive tier: one hue drives the brand.
-      document.documentElement.style.setProperty('--p-brand-hue', '140');
-      const after = cs().backgroundColor;
-      return { before, after };
-    });
-    expect(result.after).not.toBe(result.before);
+    const backgroundColor = () =>
+      page.evaluate(() => getComputedStyle(document.querySelector('button')).backgroundColor);
+
+    const before = await backgroundColor();
+    // The whole point of the primitive tier: one hue drives the brand.
+    await page.evaluate(() => document.documentElement.style.setProperty('--p-brand-hue', '140'));
+    // --p-brand-hue is registered via @property and :root transitions it
+    // (ADR-0009), so the new value is not readable synchronously — same
+    // reason the resize and recolour tests below wait.
+    await page.waitForTimeout(350);
+    const after = await backgroundColor();
+
+    expect(after).not.toBe(before);
   });
 });
 

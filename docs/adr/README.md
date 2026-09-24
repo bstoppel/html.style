@@ -14,6 +14,7 @@ for why this exists.
 | [0006](0006-nav-collapse-mechanism.md) | Nav collapse without a width media query | Accepted | [#56](https://github.com/bstoppel/html.style/issues/56) |
 | [0007](0007-convenience-component-test.md) | When a convenience component earns its own element | Accepted | [#57](https://github.com/bstoppel/html.style/issues/57) |
 | [0008](0008-view-transitions.md) | View Transitions | Accepted | [#71](https://github.com/bstoppel/html.style/issues/71) |
+| [0009](0009-register-property-brand-hue.md) | Register @property for --p-brand-hue | Accepted | [#73](https://github.com/bstoppel/html.style/issues/73) |
 
 ADR-0005 predates this directory and has real cross-references — README,
 several component source files, a test file — so it stays at
