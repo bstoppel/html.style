@@ -752,6 +752,23 @@
     transform: translateY(0);
   }
 
+  /* Cross-document View Transitions. See ADR-0008.
+     Same-origin page-to-page navigations get a transition by default. An
+     unsupported engine (Firefox, at time of writing) just ignores the
+     at-rule and navigates normally - no feature query, no fallback code.
+     Duration and easing are pulled from the existing motion tokens rather
+     than left at the browser default, so this follows the one
+     reduced-motion policy the framework already has instead of running a
+     second one next to it. */
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: var(--motion-duration);
+    animation-timing-function: var(--motion-ease);
+  }
+
   /* Reduced Motion.
      Collapsing the duration TOKEN is what makes this reach shadow roots: a
      media query in this stylesheet cannot, but custom properties inherit
