@@ -87,6 +87,48 @@ test.describe('hs-field', () => {
     expect(state.liveRegion).toBe('alert');
   });
 
+  test(':user-invalid flags the border on real interaction', async ({ page }) => {
+    await page.goto('/examples.html');
+    const input = page.locator(firstField).locator('input');
+
+    const before = await input.evaluate((el) => getComputedStyle(el).borderColor);
+    await input.fill('not-an-email');
+    await input.blur();
+    // The border transitions (ADR-0009's --motion-duration pattern applies
+    // here too), so it is not readable synchronously - same reason the
+    // design-system token test waits.
+    await page.waitForTimeout(350);
+    const after = await input.evaluate((el) => ({
+      matchesUserInvalid: el.matches(':user-invalid'),
+      borderColor: getComputedStyle(el).borderColor,
+    }));
+
+    expect(after.matchesUserInvalid).toBe(true);
+    expect(after.borderColor).not.toBe(before);
+  });
+
+  test('novalidate also suppresses the native :user-invalid border', async ({ page }) => {
+    await page.goto('/examples.html');
+    const field = page.locator(firstField);
+    const input = field.locator('input');
+
+    await field.evaluate((el) => el.setAttribute('novalidate', ''));
+    const before = await input.evaluate((el) => getComputedStyle(el).borderColor);
+    await input.fill('not-an-email');
+    await input.blur();
+    await page.waitForTimeout(350);
+    const after = await input.evaluate((el) => ({
+      // The browser's own state is unaffected by the attribute - only this
+      // component's styling and reporting respect it.
+      matchesUserInvalid: el.matches(':user-invalid'),
+      borderColor: getComputedStyle(el).borderColor,
+    }));
+    await field.evaluate((el) => el.removeAttribute('novalidate'));
+
+    expect(after.matchesUserInvalid).toBe(true);
+    expect(after.borderColor).toBe(before);
+  });
+
   test('clears the error once the value becomes valid', async ({ page }) => {
     await page.goto('/examples.html');
     const cleared = await page.evaluate(async () => {

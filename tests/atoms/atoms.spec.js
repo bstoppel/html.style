@@ -217,3 +217,61 @@ test.describe('surface tint', () => {
     }
   });
 });
+
+test.describe(':user-valid / :user-invalid (#74)', () => {
+  // #text-input and #email-input are bare atoms - no <hs-field>, no JS of
+  // any kind - which is the point: this used to need a hand-rolled
+  // blur/focus listener pair to get this feedback (removed from
+  // html.style.js's FormEnhancements). Native pseudo-classes now cover any
+  // input/select/textarea on the page for free.
+  test('an untouched required field is not flagged on load', async ({ page }) => {
+    await page.goto('/examples.html');
+    const state = await page.locator('#text-input').evaluate((el) => ({
+      invalid: el.matches(':user-invalid'),
+      valid: el.matches(':user-valid'),
+    }));
+    expect(state.invalid).toBe(false);
+    expect(state.valid).toBe(false);
+  });
+
+  test('blurring an invalid bare input borders it red, no hs-field involved', async ({ page }) => {
+    await page.goto('/examples.html');
+    const input = page.locator('#email-input');
+
+    const before = await input.evaluate((el) => getComputedStyle(el).borderColor);
+    await input.fill('not-an-email');
+    await input.blur();
+    await page.waitForTimeout(350);
+    const after = await input.evaluate((el) => ({
+      matchesUserInvalid: el.matches(':user-invalid'),
+      borderColor: getComputedStyle(el).borderColor,
+    }));
+
+    expect(after.matchesUserInvalid).toBe(true);
+    expect(after.borderColor).not.toBe(before);
+  });
+
+  test('fixing it live, while still focused, clears the red border', async ({ page }) => {
+    await page.goto('/examples.html');
+    const input = page.locator('#email-input');
+
+    await input.fill('not-an-email');
+    await input.blur();
+    await page.waitForTimeout(350);
+    const flagged = await input.evaluate((el) => el.matches(':user-invalid'));
+
+    // Refocus and correct it without blurring again - :user-invalid
+    // revalidates on every keystroke once it has matched once.
+    await input.fill('someone@example.com');
+    await page.waitForTimeout(350);
+    const fixed = await input.evaluate((el) => ({
+      invalid: el.matches(':user-invalid'),
+      valid: el.matches(':user-valid'),
+      borderColor: getComputedStyle(el).borderColor,
+    }));
+
+    expect(flagged).toBe(true);
+    expect(fixed.invalid).toBe(false);
+    expect(fixed.valid).toBe(true);
+  });
+});
