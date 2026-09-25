@@ -31,7 +31,7 @@
   }
 
   body {
-    min-height: 100vh;
+    min-height: 100dvh;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -43,7 +43,7 @@
   canvas,
   svg {
     display: block;
-    max-width: 100%;
+    max-inline-size: 100%;
   }
 
   input,
@@ -1577,7 +1577,7 @@
   /* Page Layout */
   .page-layout {
     display: grid;
-    min-block-size: 100vh;
+    min-block-size: 100dvh;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
       "header"
