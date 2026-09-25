@@ -21,6 +21,16 @@
  *
  * An author-supplied <label> is left alone; the component only fills gaps.
  *
+ * The invalid-border styling in the stylesheet has two independent paths:
+ * `[aria-invalid="true"]`, which this file sets, and the atoms layer's
+ * `:user-invalid` rule (every input/select/textarea on the page, not just
+ * this component's), which needs none of this JS and reacts to real
+ * typing/blur the moment it happens. They compose rather than one replacing
+ * the other — aria-invalid still carries the accessible state and error
+ * text, which a CSS pseudo-class cannot expose to assistive tech.
+ * `novalidate` opts a field's controls out of both: the atoms rule excludes
+ * `hs-field[novalidate]` explicitly, and this file never sets aria-invalid
+ * while the attribute is present.
  */
 
 let fieldCount = 0;
