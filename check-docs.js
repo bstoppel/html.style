@@ -30,6 +30,9 @@ const DOCS = [
   'docs/adr/0004-yearly-standards-snapshot.md',
   'docs/adr/0006-nav-collapse-mechanism.md',
   'docs/adr/0007-convenience-component-test.md',
+  'docs/adr/0008-view-transitions.md',
+  'docs/adr/0009-register-property-brand-hue.md',
+  'docs/adr/0010-container-style-queries.md',
   'src/FAVICON_GENERATION.md',
 ];
 
