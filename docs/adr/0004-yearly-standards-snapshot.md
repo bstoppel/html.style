@@ -42,6 +42,14 @@ sets the floor there — the method that picked full Relative Color Syntax
 support for 2026. Favor Newly Available over waiting for the two-year Widely
 Available mark: the point is to move with the platform, not trail it.
 
+**Baseline here means three independent engines, not three browsers.**
+Chrome and Edge both run Blink and V8; they are one data point, not two.
+The actual count is Blink/V8, WebKit/JavaScriptCore, and Gecko/SpiderMonkey
+— rendering and script engine together, since a JS-syntax feature depends
+on the latter as much as a CSS feature depends on the former. A feature
+shipped in every Chromium browser plus Safari is still only two engines;
+it does not qualify until Firefox ships it too.
+
 **If no feature qualifies in a given year**, the floor holds. The year still
 cuts a tag on schedule, for timeline consistency, but its stated baseline
 carries over unchanged from the year before.
