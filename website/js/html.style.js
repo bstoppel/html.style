@@ -131,7 +131,15 @@ const FormEnhancements = {
   },
 
   /**
-   * Add visual feedback for form validation
+   * On a failed submit, focus the first invalid field.
+   *
+   * The border feedback this used to hand-roll here (blur sets a
+   * success/error border, focus clears it) is gone - that was exactly the
+   * "touched" tracking :user-valid/:user-invalid now do natively, below
+   * this project's floor in every engine (see #74). The
+   * :user-valid/:user-invalid rule in the atoms layer of html.style.css
+   * replaces it with zero JS, for every form on the page, not just this
+   * one's.
    */
   setupFormValidation() {
     const forms = document.querySelectorAll('form');
@@ -148,24 +156,6 @@ const FormEnhancements = {
             firstInvalid.focus();
           }
         }
-      });
-
-      // Real-time validation feedback
-      const inputs = form.querySelectorAll('input, textarea, select');
-      inputs.forEach(input => {
-        input.addEventListener('blur', () => {
-          // Only show validation state after user has interacted
-          if (input.validity.valid) {
-            input.style.borderColor = 'var(--color-feedback-success)';
-          } else if (input.value) {
-            input.style.borderColor = 'var(--color-feedback-error)';
-          }
-        });
-
-        // Clear validation state on focus
-        input.addEventListener('focus', () => {
-          input.style.borderColor = '';
-        });
       });
     });
   }

@@ -74,6 +74,18 @@
    ======================================== */
 
 @layer tokens {
+  /* Registered so --p-brand-hue is animatable instead of just substituted
+     text - see ADR-0009. syntax is <number>, not <angle>: every override in
+     this codebase and on the live site writes a bare number
+     (--p-brand-hue: 210, no "deg"), and <angle> would invalidate all of
+     them. inherits must be true - website/extend.html's scoped-subtree demo
+     depends on a descendant override cascading down. */
+  @property --p-brand-hue {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 58;
+  }
+
   :root {
     /* Required for light-dark() function */
     color-scheme: light dark;
@@ -84,6 +96,12 @@
 
     /* Color Primitives: Brand */
     --p-brand-hue: 58;
+    /* Transitioning the token itself, once registered, is enough to carry
+       every oklch() below along with it - each recomputes every frame as
+       --p-brand-hue interpolates, so the derived ramp needs no transition
+       of its own. Same reduced-motion policy as everything else: this
+       collapses for free when --motion-duration does. */
+    transition: --p-brand-hue var(--motion-duration) var(--motion-ease);
     --p-brand-50: oklch(0.95 0.02 var(--p-brand-hue));
     --p-brand-100: oklch(0.9 0.04 var(--p-brand-hue));
     --p-brand-200: oklch(0.8 0.08 var(--p-brand-hue));
@@ -558,6 +576,28 @@
     outline: var(--focus-ring-width) solid var(--focus-ring-color);
     outline-offset: 0;
     border-color: var(--color-action-primary);
+  }
+
+  /* :user-valid/:user-invalid (Chrome 119, Firefox 88, Safari 16.5 - all
+     below the floor) match once a control has actually been touched -
+     changed then blurred, or fixed live while still focused - unlike
+     :valid/:invalid, which match from first paint before anyone has done
+     anything. Replaces a hand-rolled blur/focus listener pair that did the
+     same thing in JS (see #74) with zero JS, for any input/select/textarea
+     on the page. Placed after :focus, not before: a still-invalid field
+     keeps its colour while focused rather than losing the signal the
+     moment it's clicked back into, and clears live the instant a fix makes
+     it valid - the old JS blanked the colour on every focus regardless.
+     hs-field's own novalidate attribute opts its own controls out, since
+     that attribute already means "suppress this element's own reporting"
+     for aria-invalid; it would be inconsistent to leave the browser-driven
+     border in effect while an author explicitly asked for a quiet field. */
+  :is(input, select, textarea):user-valid:not(hs-field[novalidate] *) {
+    border-color: var(--color-feedback-success);
+  }
+
+  :is(input, select, textarea):user-invalid:not(hs-field[novalidate] *) {
+    border-color: var(--color-feedback-error);
   }
 
   input::placeholder,
@@ -1326,6 +1366,11 @@
     color: var(--hs-field-error-color, var(--color-feedback-error-text));
   }
 
+  /* The atoms layer's :user-valid/:user-invalid rule (see #74) already
+     borders every touched, native-invalid control on the page, hs-field's
+     included - this rule is the part CSS cannot do: aria-invalid carries
+     the accessible state and error text, which only this component's own
+     JS, reacting to the native invalid event, can set. */
   hs-field :is(input, select, textarea)[aria-invalid="true"] {
     border-color: var(--hs-field-invalid-border-color, var(--color-feedback-error));
   }
