@@ -669,6 +669,21 @@ console.log(greet('World'));</code></pre>
               <p style="margin: 0;">This content is centered with a maximum width of 70ch for optimal readability.</p>
             </div>
           </div>
+
+          <div>
+            <h3>Sidebar (Fixed sidebar + flexible main)</h3>
+            <div class="sidebar" style="--sidebar-width: 12rem; background: var(--color-surface-elevated); padding: var(--space-component); border-radius: var(--p-radius-md);">
+              <div class="card">Sidebar</div>
+              <div class="card">Main content wraps below the sidebar once this region gets too narrow to sit beside it.</div>
+            </div>
+          </div>
+
+          <div>
+            <h3>Frame (Fixed aspect ratio)</h3>
+            <div class="frame" style="--frame-ratio: 16 / 9; background: var(--color-surface-sunken); border-radius: var(--p-radius-md);">
+              <span style="color: var(--color-text-tertiary);">Image/Media</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -816,7 +831,7 @@ console.log(greet('World'));</code></pre>
                   <button class="button--outline">Learn More</button>
                 </div>
               </div>
-              <div style="background: var(--color-surface-sunken); aspect-ratio: 16/9; border-radius: var(--p-radius-md); display: grid; place-items: center;">
+              <div class="frame" style="background: var(--color-surface-sunken); border-radius: var(--p-radius-md);">
                 <span style="color: var(--color-text-tertiary);">Image/Media</span>
               </div>
             </div>
