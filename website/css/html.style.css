@@ -875,6 +875,55 @@
     flex-basis: calc((var(--switcher-threshold, 30rem) - 100%) * 999);
   }
 
+  /* Sidebar — a fixed-width sidebar plus a main region that takes the
+     rest, wrapping to stacked once the main region drops below its
+     threshold. flex-direction is declared, not assumed: applied to
+     <body>, this competes with `body { flex-direction: column }` in the
+     atoms layer, and a later cascade layer only wins for the properties
+     it actually declares - omitting it left the sidebar stacked at every
+     width, with flex-basis acting as a HEIGHT and flex-grow stretching
+     the sidebar vertically. */
+  .sidebar {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-gutter);
+  }
+
+  .sidebar > :first-child {
+    flex-basis: var(--sidebar-width, 20rem);
+    flex-grow: 1;
+  }
+
+  /* Not `> :last-child`: on a page, that's often a trailing <script>, not
+     the main region. A display:none element isn't a flex item either
+     way, so matching it here is harmless, just pointless. */
+  .sidebar > :not(:first-child) {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: var(--sidebar-threshold, 50%);
+  }
+
+  /* Frame — fixes an element's aspect ratio and centers its content, for
+     media (or a placeholder) that needs a stable box before it loads.
+     object-fit crops actual media to fill the box; anything else (a
+     placeholder label, an icon) just centers within it via flex. */
+  .frame {
+    aspect-ratio: var(--frame-ratio, 16 / 9);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .frame > img,
+  .frame > video {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
   /* Card Component
      hs-card is a CSS-only element: no JavaScript, no shadow root. It is styled
      here so it renders with scripts disabled and without importing anything.
@@ -1595,34 +1644,5 @@
 
   .page-layout > footer {
     grid-area: footer;
-  }
-
-  /* Sidebar Layout
-     flex-direction is declared, not assumed. Applied to <body> this competes
-     with `body { flex-direction: column }` in the atoms layer, and a later
-     cascade layer only wins for the properties it actually declares - so
-     omitting it left the sidebar stacked at every width, with flex-basis
-     acting as a HEIGHT and flex-grow stretching the sidebar vertically. */
-  .sidebar-layout {
-    container-type: inline-size;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: var(--space-gutter);
-  }
-
-  .sidebar-layout > :first-child {
-    flex-basis: var(--sidebar-width, 20rem);
-    flex-grow: 1;
-  }
-
-  /* Not `> :last-child`: every template ends with a <script>, so the last
-     child is the script rather than the main region, and <main> got none of
-     these. A display:none element is not a flex item, so matching it here is
-     inert. */
-  .sidebar-layout > :not(:first-child) {
-    flex-basis: 0;
-    flex-grow: 999;
-    min-inline-size: var(--sidebar-threshold, 50%);
   }
 }

@@ -117,7 +117,7 @@ See [docs/design-system.md](docs/design-system.md).
 Three kinds of thing. Deciding which one you are building is the first decision:
 
 - **Atoms** = Semantic HTML elements - style `<button>`, not `.btn`. Zero JavaScript. Form participation, label association, and default accessibility come free from the platform.
-- **Layout primitives** = CSS classes (`.stack`, `.cluster`, `.grid`, `.center`, `.switcher`). Pure arrangement, zero JavaScript.
+- **Layout primitives** = CSS classes (`.stack`, `.cluster`, `.grid`, `.center`, `.switcher`, `.sidebar`, `.frame`). Pure arrangement, zero JavaScript.
 - **CSS-only elements** = `<hs-*>` with no JavaScript and no shadow root (`<hs-card>`, `<hs-badge>`). The global stylesheet styles the tag directly, so they render with scripts disabled and without importing anything. Register a no-op class ONLY so the element reaches `custom-elements.json` for editor completion - rendering must never depend on it.
 - **Molecules / Organisms** = Web components (`<hs-*>`) with behavior or composed internal structure.
 
