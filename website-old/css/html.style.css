@@ -1,0 +1,1545 @@
+/*!
+ * html.style v2026.1.0
+ * A modern web standards-based CSS framework
+ * License: MIT
+ * https://html.style
+ */
+
+/* ========================================
+   CASCADE LAYERS
+   ======================================== */
+
+@layer reset, tokens, atoms, molecules, organisms, templates;
+
+/* ========================================
+   RESET LAYER
+   ======================================== */
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  ul[role="list"],
+  ol[role="list"] {
+    list-style: none;
+  }
+}
+
+/* ========================================
+   TOKENS LAYER
+   ======================================== */
+
+@layer tokens {
+  :root {
+    /* Required for light-dark() function */
+    color-scheme: light dark;
+
+    /* ================================
+       TIER 1: PRIMITIVES (--p- prefix)
+       ================================ */
+
+    /* Color Primitives: Brand */
+    --p-brand-hue: 58;
+    --p-brand-50: oklch(0.95 0.02 var(--p-brand-hue));
+    --p-brand-100: oklch(0.9 0.04 var(--p-brand-hue));
+    --p-brand-200: oklch(0.8 0.08 var(--p-brand-hue));
+    --p-brand-300: oklch(0.7 0.12 var(--p-brand-hue));
+    --p-brand-400: oklch(0.65 0.15 var(--p-brand-hue));
+    --p-brand-500: oklch(0.6 0.18 var(--p-brand-hue));
+    --p-brand-600: oklch(0.55 0.18 var(--p-brand-hue));
+    --p-brand-700: oklch(0.45 0.16 var(--p-brand-hue));
+    --p-brand-800: oklch(0.35 0.14 var(--p-brand-hue));
+    --p-brand-900: oklch(0.2 0.1 var(--p-brand-hue));
+
+    /* Color Primitives: Neutral
+       Carries a trace of the brand hue, which is what stops a surface reading
+       as a slab of grey next to a coloured button. Set --p-neutral-chroma to 0
+       for a strictly achromatic ramp. This default is a deliberate cast rather
+       than a trace: at hue 58 the base surface lands on a cream, and anything
+       much beyond it reads as a colour that happens to be pale. Contrast barely
+       moves either way — text on surface shifts by about 0.4:1 from 0 to here,
+       which is why the test guarding this asserts the ratio and not the value. */
+    --p-neutral-chroma: 0.03;
+    --p-neutral-0: oklch(0.99 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-50: oklch(0.98 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-100: oklch(0.95 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-200: oklch(0.9 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-300: oklch(0.85 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-400: oklch(0.7 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-500: oklch(0.5 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-600: oklch(0.4 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-700: oklch(0.3 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-800: oklch(0.2 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-900: oklch(0.15 var(--p-neutral-chroma) var(--p-brand-hue));
+    --p-neutral-950: oklch(0.1 var(--p-neutral-chroma) var(--p-brand-hue));
+
+    /* Spacing Primitives */
+    --p-space-xs: 0.25rem;   /* 4px */
+    --p-space-sm: 0.5rem;    /* 8px */
+    --p-space-md: 1rem;      /* 16px */
+    --p-space-lg: 1.5rem;    /* 24px */
+    --p-space-xl: 2rem;      /* 32px */
+    --p-space-2xl: 3rem;     /* 48px */
+    --p-space-3xl: 4rem;     /* 64px */
+
+    /* Typography Primitives */
+    --p-font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --p-font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+    --p-font-mono: ui-monospace, "SF Mono", Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Consolas, monospace;
+
+    --p-text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --p-text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+    --p-text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    --p-text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.5rem);
+    --p-text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.875rem);
+    --p-text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
+    --p-text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 3rem);
+
+    /* Border Radius Primitives */
+    --p-radius-sm: 0.25rem;
+    --p-radius-md: 0.5rem;
+    --p-radius-lg: 1rem;
+    --p-radius-xl: 1.5rem;
+    --p-radius-full: 9999px;
+
+    /* Motion Primitives */
+    --p-duration-fast: 100ms;
+    --p-duration-base: 200ms;
+    --p-duration-slow: 400ms;
+    --p-ease-standard: cubic-bezier(0.2, 0, 0.38, 0.9);
+    --p-ease-entrance: cubic-bezier(0, 0, 0.38, 0.9);
+    --p-ease-exit: cubic-bezier(0.2, 0, 1, 0.9);
+
+    /* Border Width Primitives */
+    --p-border-thin: 1px;
+    --p-border-thick: 2px;
+    --p-border-heavy: 4px;
+
+    /* Layering Primitives - the stacking order this framework assumes */
+    --p-layer-base: 0;
+    --p-layer-raised: 10;
+    --p-layer-sticky: 100;
+    --p-layer-overlay: 1000;
+
+    /* Shadow Primitives */
+    --p-shadow-sm: 0 1px 2px oklch(0 0 0 / 0.05);
+    --p-shadow-md: 0 4px 6px oklch(0 0 0 / 0.1);
+    --p-shadow-lg: 0 10px 15px oklch(0 0 0 / 0.15);
+    --p-shadow-xl: 0 20px 25px oklch(0 0 0 / 0.2);
+
+    /* ================================
+       TIER 2: SEMANTIC TOKENS
+       ================================ */
+
+    /* Surface Colors - Theme-aware via light-dark()
+       Every one of these runs through the neutral ramp now. Half of them used
+       to be literal oklch() values, which meant a tint applied to the ramp
+       would have moved some surfaces and left the others grey beside them. */
+    --color-surface-base: light-dark(var(--p-neutral-50), var(--p-neutral-900));
+    --color-surface-elevated: light-dark(var(--p-neutral-0), var(--p-neutral-800));
+    --color-surface-sunken: light-dark(var(--p-neutral-100), var(--p-neutral-950));
+    --color-surface-overlay: light-dark(
+      oklch(from var(--p-neutral-0) l c h / 0.95),
+      oklch(from var(--p-neutral-900) l c h / 0.95)
+    );
+
+    /* Text Colors */
+    --color-text-primary: light-dark(var(--p-neutral-900), var(--p-neutral-50));
+    --color-text-secondary: light-dark(var(--p-neutral-600), var(--p-neutral-400));
+    --color-text-tertiary: light-dark(var(--p-neutral-500), var(--p-neutral-400));
+    --color-text-inverse: light-dark(var(--p-neutral-50), var(--p-neutral-900));
+    --color-text-link: light-dark(var(--p-brand-600), var(--p-brand-400));
+
+    /* Action Colors */
+    --color-action-primary: light-dark(var(--p-brand-600), oklch(0.7 0.2 var(--p-brand-hue)));
+    --color-action-secondary: light-dark(var(--p-neutral-700), var(--p-neutral-300));
+
+    /* Border Colors */
+    --color-border-default: light-dark(var(--p-neutral-300), var(--p-neutral-700));
+    --color-border-emphasis: light-dark(var(--p-neutral-500), var(--p-neutral-500));
+    --color-border-subtle: light-dark(var(--p-neutral-200), var(--p-neutral-800));
+
+    /* Feedback Colors */
+    --color-feedback-success: light-dark(oklch(0.5 0.15 145), oklch(0.7 0.15 145));
+    --color-feedback-warning: light-dark(oklch(0.65 0.18 85), oklch(0.75 0.18 85));
+    --color-feedback-error: light-dark(oklch(0.55 0.22 25), oklch(0.7 0.22 25));
+    --color-feedback-info: light-dark(oklch(0.6 0.15 250), oklch(0.7 0.15 250));
+
+    /* Semantic Spacing */
+    --space-inline: var(--p-space-md);
+    --space-block: var(--p-space-lg);
+    --space-gutter: var(--p-space-xl);
+    --space-component: var(--p-space-sm);
+
+    /* Semantic Motion */
+    --motion-duration: var(--p-duration-base);
+    --motion-ease: var(--p-ease-standard);
+
+    /* Semantic Borders and Focus */
+    --border-width: var(--p-border-thin);
+    --border-width-emphasis: var(--p-border-thick);
+    --focus-ring-width: var(--p-border-thick);
+    --focus-ring-offset: 2px;
+    --focus-ring-color: var(--color-action-primary);
+
+    /* Semantic Typography */
+    --font-heading: var(--p-font-sans);
+    --font-body: var(--p-font-sans);
+    --font-code: var(--p-font-mono);
+
+    --text-heading-3xl: var(--p-text-3xl);
+    --text-heading-2xl: var(--p-text-2xl);
+    --text-heading-xl: var(--p-text-xl);
+    --text-heading-lg: var(--p-text-lg);
+    --text-body: var(--p-text-base);
+    --text-small: var(--p-text-sm);
+    --text-caption: var(--p-text-xs);
+
+    /* ================================
+       TIER 3: STATE TOKENS (Derived)
+       ================================ */
+
+    /* Action States - Derived via Relative Color Syntax */
+    --color-action-hover: light-dark(
+      oklch(from var(--color-action-primary) calc(l - 0.08) c h),
+      oklch(from var(--color-action-primary) calc(l + 0.08) c h)
+    );
+    --color-action-active: light-dark(
+      oklch(from var(--color-action-primary) calc(l - 0.16) c h),
+      oklch(from var(--color-action-primary) calc(l + 0.16) c h)
+    );
+    /* Action colour as TEXT on a subtle surface (badge, pill) rather than as a
+       background. Needs more contrast than the background variant. */
+    --color-action-on-surface: light-dark(
+      oklch(from var(--color-action-primary) calc(l - 0.1) c h),
+      oklch(from var(--color-action-primary) calc(l + 0.1) c h)
+    );
+    --color-action-disabled: oklch(from var(--color-action-primary) l calc(c * 0.3) h / 0.5);
+    --color-action-surface: oklch(from var(--color-action-primary) l c h / 0.1);
+    --color-action-border: oklch(from var(--color-action-primary) calc(l - 0.2) c h);
+
+    /* Link States */
+    --color-text-link-hover: oklch(from var(--color-text-link) calc(l + 0.1) c h);
+    --color-text-link-visited: oklch(from var(--color-text-link) l c calc(h + 30));
+
+    /* Feedback Surface Variants */
+    --color-feedback-success-surface: oklch(from var(--color-feedback-success) l c h / 0.1);
+    --color-feedback-warning-surface: oklch(from var(--color-feedback-warning) l c h / 0.1);
+    --color-feedback-error-surface: oklch(from var(--color-feedback-error) l c h / 0.1);
+    --color-feedback-info-surface: oklch(from var(--color-feedback-info) l c h / 0.1);
+
+    /* Feedback colours as TEXT on their own surface. The border/fill values are
+       too light in light mode and too dark in dark mode to meet 4.5:1. */
+    --color-feedback-success-text: light-dark(oklch(0.44 0.15 145), oklch(0.84 0.15 145));
+    --color-feedback-warning-text: light-dark(oklch(0.44 0.13 85), oklch(0.86 0.16 85));
+    --color-feedback-error-text: light-dark(oklch(0.46 0.2 25), oklch(0.8 0.18 25));
+    --color-feedback-info-text: light-dark(oklch(0.46 0.16 250), oklch(0.82 0.14 250));
+  }
+
+  /* Brand Theme Variants */
+  :root[data-brand="blue"] {
+    --p-brand-hue: 220;
+  }
+
+  :root[data-brand="green"] {
+    --p-brand-hue: 145;
+  }
+
+  :root[data-brand="red"] {
+    --p-brand-hue: 25;
+  }
+
+  :root[data-brand="orange"] {
+    --p-brand-hue: 50;
+  }
+
+  /* High Contrast Mode Support */
+  @media (forced-colors: active) {
+    :root {
+      --color-surface-base: Canvas;
+      --color-text-primary: CanvasText;
+      --color-action-primary: LinkText;
+      --color-border-default: CanvasText;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --color-text-primary: light-dark(oklch(0 0 0), oklch(1 0 0));
+      --color-text-secondary: light-dark(oklch(0.2 0 0), oklch(0.9 0 0));
+      --color-border-default: light-dark(oklch(0.6 0 0), oklch(0.5 0 0));
+    }
+  }
+
+  /* Print Theme (Always Light) */
+  @media print {
+    :root {
+      color-scheme: light;
+      --color-surface-base: white;
+      --color-text-primary: black;
+      --color-border-default: oklch(0.7 0 0);
+    }
+  }
+}
+
+/* ========================================
+   ATOMS LAYER (Semantic HTML Only)
+   ======================================== */
+
+@layer atoms {
+  html {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    color: var(--color-text-primary);
+    background: var(--color-surface-base);
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Typography */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-variation-settings: "wght" 700;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+    margin-block-end: var(--space-block);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-heading-3xl);
+  }
+
+  h2 {
+    font-size: var(--text-heading-2xl);
+  }
+
+  h3 {
+    font-size: var(--text-heading-xl);
+  }
+
+  h4 {
+    font-size: var(--text-heading-lg);
+  }
+
+  h5,
+  h6 {
+    font-size: var(--text-body);
+  }
+
+  p {
+    margin-block-end: var(--space-block);
+    max-inline-size: 70ch;
+    text-wrap: pretty;
+  }
+
+  a {
+    color: var(--color-text-link);
+    text-decoration-thickness: 0.1em;
+    text-underline-offset: 0.2em;
+    transition: color var(--motion-duration) var(--motion-ease);
+  }
+
+  a:hover {
+    color: var(--color-text-link-hover);
+  }
+
+  a:visited {
+    color: var(--color-text-link-visited);
+  }
+
+  a:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--p-radius-sm);
+  }
+
+  strong,
+  b {
+    font-variation-settings: "wght" 600;
+  }
+
+  em,
+  i {
+    font-style: italic;
+  }
+
+  small {
+    font-size: var(--text-small);
+  }
+
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: var(--font-code);
+    font-size: 0.9em;
+  }
+
+  code {
+    background: var(--color-surface-sunken);
+    padding: 0.125em 0.375em;
+    border-radius: var(--p-radius-sm);
+  }
+
+  pre {
+    background: var(--color-surface-sunken);
+    padding: var(--space-component);
+    border-radius: var(--p-radius-md);
+    overflow-x: auto;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+  }
+
+  /* The reset zeroes every margin, which leaves a quotation rendering exactly
+     like body text. What the UA had is replaced rather than restored: an indent
+     on its own reads as an accident, a rule beside it reads as a quote. */
+  blockquote {
+    margin-block-end: var(--space-block);
+    padding-inline-start: var(--space-inline);
+    border-inline-start: var(--p-border-heavy) solid var(--color-border-default);
+    color: var(--color-text-secondary);
+  }
+
+  blockquote > :last-child {
+    margin-block-end: 0;
+  }
+
+  mark {
+    /* Inherits the text colour rather than taking the UA's black on yellow,
+       which is unreadable once the surface under it goes dark. */
+    background: var(--color-feedback-warning-surface);
+    color: inherit;
+    padding-inline: var(--p-space-xs);
+    border-radius: var(--p-radius-sm);
+  }
+
+  abbr[title] {
+    text-decoration: underline dotted;
+    /* The title is the whole point of the element, and nothing else hints that
+       there is one to reveal. */
+    cursor: help;
+  }
+
+  /* Lists */
+  ul,
+  ol {
+    margin-block-end: var(--space-block);
+    padding-inline-start: var(--space-gutter);
+  }
+
+  li {
+    margin-block-end: var(--p-space-xs);
+  }
+
+  dl {
+    margin-block-end: var(--space-block);
+  }
+
+  dt {
+    font-variation-settings: "wght" 600;
+  }
+
+  dd {
+    padding-inline-start: var(--space-gutter);
+  }
+
+  /* Space between pairs rather than inside them, so a term stays attached to
+     its description. */
+  dd + dt {
+    margin-block-start: var(--space-component);
+  }
+
+  /* Interactive Elements */
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--p-space-xs);
+    background: var(--color-action-primary);
+    color: var(--color-text-inverse);
+    border: none;
+    border-radius: var(--p-radius-md);
+    padding: var(--space-component) var(--space-inline);
+    font: inherit;
+    font-variation-settings: "wght" 500;
+    cursor: pointer;
+    transition: background var(--motion-duration) var(--motion-ease);
+  }
+
+  button:hover {
+    background: var(--color-action-hover);
+  }
+
+  button:active {
+    background: var(--color-action-active);
+  }
+
+  button:disabled {
+    background: var(--color-action-disabled);
+    cursor: not-allowed;
+  }
+
+  button:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /* Form Controls */
+  input,
+  textarea,
+  select {
+    background: var(--color-surface-base);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--p-radius-md);
+    padding: var(--space-component);
+    transition: border-color var(--motion-duration) var(--motion-ease);
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 0;
+    border-color: var(--color-action-primary);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-text-tertiary);
+  }
+
+  /* accent-color is the platform's own theming hook for widgets a browser draws
+     itself. One declaration reaches checkbox, radio, range and progress without
+     rebuilding any of them and without a vendor pseudo-element. */
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  progress {
+    accent-color: var(--color-action-primary);
+  }
+
+  /* A range is a widget, not a text box. The shared rule above would frame it
+     in the border and padding meant for something you type into. */
+  input[type="range"] {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  progress,
+  meter {
+    inline-size: 100%;
+    block-size: var(--p-space-sm);
+  }
+
+  label {
+    display: block;
+    margin-block-end: var(--p-space-xs);
+    font-variation-settings: "wght" 500;
+    color: var(--color-text-primary);
+  }
+
+  fieldset {
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--p-radius-md);
+    padding: var(--space-component);
+    margin-block-end: var(--space-block);
+  }
+
+  legend {
+    font-variation-settings: "wght" 600;
+    padding-inline: var(--p-space-xs);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block-end: var(--space-block);
+  }
+
+  th,
+  td {
+    text-align: start;
+    padding: var(--space-component);
+    border-bottom: 1px solid var(--color-border-default);
+  }
+
+  th {
+    font-variation-settings: "wght" 600;
+    background: var(--color-surface-sunken);
+  }
+
+  /* Start-aligned to match every other cell; the UA centres it, which reads as
+     a title floating above an unrelated table. */
+  caption {
+    padding-block-end: var(--space-component);
+    color: var(--color-text-secondary);
+    text-align: start;
+  }
+
+  /* Media */
+  img,
+  picture,
+  video {
+    border-radius: var(--p-radius-md);
+  }
+
+  figure {
+    margin-block-end: var(--space-block);
+  }
+
+  figcaption {
+    margin-block-start: var(--p-space-xs);
+    font-size: var(--text-small);
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  /* Semantic Sections */
+  header,
+  footer,
+  main,
+  section,
+  article,
+  aside,
+  nav {
+    display: block;
+  }
+
+  hr {
+    border: none;
+    border-block-start: 1px solid var(--color-border-default);
+    margin-block: var(--space-gutter);
+  }
+
+  /* Details/Summary */
+  details {
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--p-radius-md);
+    padding: var(--space-component);
+    padding-block-end: 0;
+    margin-block-end: var(--space-block);
+  }
+
+  summary {
+    cursor: pointer;
+    font-variation-settings: "wght" 600;
+    padding: var(--p-space-xs);
+    margin: calc(-1 * var(--space-component));
+    margin-block-end: 0;
+    border-radius: var(--p-radius-md);
+    transition: background var(--motion-duration) var(--motion-ease);
+  }
+
+  summary:hover {
+    background: var(--color-surface-sunken);
+  }
+
+  details[open] summary {
+    margin-block-end: var(--space-component);
+  }
+
+  /* Dialog */
+  dialog {
+    /* The reset's `* { margin: 0 }` overrides the UA stylesheet's `margin: auto`,
+       which is what centres a modal dialog in the top layer. Without this every
+       modal renders in the top-left corner. */
+    margin: auto;
+    background: var(--color-surface-overlay);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--p-radius-lg);
+    padding: var(--space-gutter);
+    max-inline-size: min(90vw, 600px);
+    box-shadow: var(--p-shadow-xl);
+  }
+
+  dialog::backdrop {
+    background: oklch(0 0 0 / 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Accessibility */
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+    inline-size: 1px;
+    block-size: 1px;
+  }
+
+  /* Skip Link */
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--p-space-sm);
+    inset-inline-start: var(--p-space-sm);
+    background: var(--color-action-primary);
+    color: var(--color-text-inverse);
+    padding: var(--space-component) var(--space-inline);
+    border-radius: var(--p-radius-md);
+    text-decoration: none;
+    transform: translateY(-200%);
+    transition: transform var(--motion-duration) var(--motion-ease);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  /* Reduced Motion.
+     Collapsing the duration TOKEN is what makes this reach shadow roots: a
+     media query in this stylesheet cannot, but custom properties inherit
+     through the boundary. Components that build their transitions from
+     --motion-duration are covered without restating anything. The blanket
+     rule stays for anything using a literal duration. */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --motion-duration: 0.01ms;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ========================================
+   MOLECULES LAYER (Components)
+   ======================================== */
+
+@layer molecules {
+  /* Layout Primitives */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block, var(--p-space-lg));
+  }
+
+  .cluster {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-inline, var(--p-space-md));
+    align-items: center;
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-gutter, var(--p-space-xl));
+    grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
+  }
+
+  .center {
+    max-inline-size: var(--measure, 70ch);
+    margin-inline: auto;
+    padding-inline: var(--space-gutter, var(--p-space-xl));
+  }
+
+  .switcher {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-gutter, var(--p-space-lg));
+  }
+
+  .switcher > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--switcher-threshold, 30rem) - 100%) * 999);
+  }
+
+  /* Card Component
+     hs-card is a CSS-only element: no JavaScript, no shadow root. It is styled
+     here so it renders with scripts disabled and without importing anything.
+     The .card class stays supported. */
+  .card,
+  hs-card {
+    /* For the card's DESCENDANTS to query. A card can never query itself:
+       an element is not its own container. */
+    container-type: inline-size;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--hs-card-gap, var(--space-component));
+    background: var(--hs-card-background, var(--color-surface-elevated));
+    border: var(--hs-card-border-width, var(--border-width)) solid
+      var(--hs-card-border-color, var(--color-border-default));
+    border-radius: var(--hs-card-radius, var(--p-radius-lg));
+    padding: var(--hs-card-padding, var(--space-inline));
+    transition: box-shadow var(--motion-duration) var(--motion-ease);
+  }
+
+  /* Children sit side by side once the CARD is wide enough and stack when it
+     is not - the same intrinsic switch as .switcher, and deliberately not a
+     container query. `@container (inline-size > 400px) { .card { ... } }`
+     reads as "when the card is wide", but resolves against the card's nearest
+     ANCESTOR container, so every card responded to the page width instead of
+     its own: cards 200px wide still laid out horizontally. */
+  .card > *,
+  hs-card > * {
+    flex-grow: 1;
+    flex-basis: calc((var(--hs-card-threshold, 400px) - 100%) * 999);
+  }
+
+  .card:hover,
+  hs-card:hover {
+    box-shadow: var(--hs-card-shadow-hover, var(--p-shadow-md));
+  }
+
+  /* Button Variants */
+  .button--secondary {
+    background: var(--color-action-secondary);
+  }
+
+  .button--secondary:hover {
+    background: oklch(from var(--color-action-secondary) calc(l + 0.1) c h);
+  }
+
+  .button--outline {
+    background: transparent;
+    border: 2px solid var(--color-action-primary);
+    color: var(--color-action-primary);
+  }
+
+  .button--outline:hover {
+    background: var(--color-action-surface);
+  }
+
+  /* Icon Component */
+  .icon {
+    inline-size: var(--icon-size, 1.5rem);
+    block-size: var(--icon-size, 1.5rem);
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* Badge */
+  .badge,
+  hs-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--p-space-xs);
+    background: var(--hs-badge-background, var(--color-action-surface));
+    color: var(--hs-badge-color, var(--color-action-on-surface));
+    border-radius: var(--hs-badge-radius, var(--p-radius-full));
+    padding: var(--hs-badge-padding-block, var(--p-space-xs))
+      var(--hs-badge-padding-inline, var(--space-component));
+    font-size: var(--hs-badge-font-size, var(--text-small));
+    font-variation-settings: "wght" 500;
+  }
+
+  /* Alert Messages
+     hs-alert is a light-DOM component: it is styled by this stylesheet exactly
+     as .alert is, and works as a plain styled element before its JS loads.
+     The class form stays supported. */
+  .alert,
+  hs-alert {
+    container-type: inline-size;
+    display: flex;
+    gap: var(--hs-alert-gap, var(--space-component));
+    padding: var(--hs-alert-padding, var(--space-component));
+    border-radius: var(--hs-alert-radius, var(--p-radius-md));
+    /* Variants below set the --_alert-* internals. Reading the public property
+       FIRST means an author override beats the variant rather than losing to
+       its higher specificity. */
+    border-inline-start: var(--hs-alert-accent-width, var(--p-border-heavy)) solid
+      var(--hs-alert-accent-color, var(--_alert-accent, currentColor));
+    background: var(--hs-alert-background, var(--_alert-bg, transparent));
+    color: var(--hs-alert-color, var(--_alert-fg, inherit));
+  }
+
+  .alert--success,
+  hs-alert[variant="success"] {
+    --_alert-bg: var(--color-feedback-success-surface);
+    --_alert-accent: var(--color-feedback-success);
+    --_alert-fg: var(--color-feedback-success-text);
+  }
+
+  .alert--warning,
+  hs-alert[variant="warning"] {
+    --_alert-bg: var(--color-feedback-warning-surface);
+    --_alert-accent: var(--color-feedback-warning);
+    --_alert-fg: var(--color-feedback-warning-text);
+  }
+
+  .alert--error,
+  hs-alert[variant="error"] {
+    --_alert-bg: var(--color-feedback-error-surface);
+    --_alert-accent: var(--color-feedback-error);
+    --_alert-fg: var(--color-feedback-error-text);
+  }
+
+  .alert--info,
+  hs-alert[variant="info"] {
+    --_alert-bg: var(--color-feedback-info-surface);
+    --_alert-accent: var(--color-feedback-info);
+    --_alert-fg: var(--color-feedback-info-text);
+  }
+
+  /* Light-DOM component: the element IS the bubble, and it becomes a popover on
+     upgrade. Position, inset and the gap come from the stylesheet position.js
+     adopts onto the document — everything here is what the bubble looks like.
+
+     The colours are the text pair inverted: dark bubble on a light page and the
+     reverse in dark mode, which is the tooltip convention and reuses a pair
+     already designed to contrast. */
+  hs-tooltip {
+    max-inline-size: var(--hs-tooltip-max-inline-size, 20rem);
+    padding: var(--hs-tooltip-padding-block, var(--p-space-xs))
+      var(--hs-tooltip-padding-inline, var(--space-component));
+    border: none;
+    border-radius: var(--hs-tooltip-radius, var(--p-radius-sm));
+    background: var(--hs-tooltip-background, var(--color-text-primary));
+    color: var(--hs-tooltip-color, var(--color-text-inverse));
+    font-size: var(--hs-tooltip-font-size, var(--text-small));
+    opacity: 0;
+
+    /* A tooltip describes; it never receives the pointer. This is also what
+       keeps it from becoming somewhere to put interactive content. */
+    pointer-events: none;
+
+    /* display and overlay are discrete properties, so the fade needs
+       allow-discrete to survive the popover going display: none. No
+       reduced-motion query: --motion-duration collapses on :root. */
+    transition: opacity var(--motion-duration) var(--motion-ease),
+      display var(--motion-duration) allow-discrete,
+      overlay var(--motion-duration) allow-discrete;
+  }
+
+  hs-tooltip:popover-open {
+    opacity: 1;
+  }
+
+  /* Without this the element has no opacity to animate FROM on first paint. */
+  @starting-style {
+    hs-tooltip:popover-open {
+      opacity: 0;
+    }
+  }
+
+  /* Before upgrade it is neither a popover nor positioned, so it would render
+     as a stray line of prose. A description is not page content. */
+  hs-tooltip:not(:defined) {
+    display: none;
+  }
+
+  /* hs-toast-region is light DOM because it IS the live region: it has to sit in
+     the page a screen reader is already watching, and somewhere the consumer can
+     position. Fixed to a corner and never in the way — the region takes no
+     pointer events, only the toasts inside it do.
+
+     Known limit: a modal <dialog> sits in the top layer, which paints above any
+     z-index, so a toast raised while one is open is behind it. */
+  hs-toast-region {
+    position: fixed;
+    z-index: var(--p-layer-overlay);
+    inset-block-end: var(--hs-toast-region-offset, var(--space-block));
+    inset-inline-end: var(--hs-toast-region-offset, var(--space-block));
+    display: flex;
+    flex-direction: column;
+    gap: var(--hs-toast-region-gap, var(--space-component));
+    inline-size: min(
+      var(--hs-toast-region-inline-size, 24rem),
+      calc(100dvw - 2 * var(--hs-toast-region-offset, var(--space-block)))
+    );
+    pointer-events: none;
+  }
+
+  /* Reads as hs-alert's transient sibling — same leading rule, same variant
+     tokens on it. The surface is opaque rather than the alert's 10% tint,
+     because a toast floats over whatever content happens to be under it, and
+     the text stays --color-text-primary so contrast does not depend on what a
+     variant does to it. */
+  hs-toast {
+    display: flex;
+    align-items: center;
+    gap: var(--hs-toast-gap, var(--space-component));
+    padding: var(--hs-toast-padding, var(--space-component));
+    border-radius: var(--hs-toast-radius, var(--p-radius-md));
+    border-inline-start: var(--hs-toast-accent-width, var(--p-border-heavy)) solid
+      var(--hs-toast-accent-color, var(--_toast-accent, transparent));
+    background: var(--hs-toast-background, var(--color-surface-elevated));
+    color: var(--hs-toast-color, var(--color-text-primary));
+    box-shadow: var(--hs-toast-shadow, var(--p-shadow-md));
+    pointer-events: auto;
+    animation: hs-toast-in var(--motion-duration) var(--motion-ease);
+  }
+
+  hs-toast[variant="success"] {
+    --_toast-accent: var(--color-feedback-success);
+  }
+
+  hs-toast[variant="warning"] {
+    --_toast-accent: var(--color-feedback-warning);
+  }
+
+  hs-toast[variant="error"] {
+    --_toast-accent: var(--color-feedback-error);
+  }
+
+  hs-toast[variant="info"] {
+    --_toast-accent: var(--color-feedback-info);
+  }
+
+  /* Entrance only: dismissal removes the element outright, because an exit
+     animation would have to wait on animationend, which does not fire on a
+     hidden page — and a toast that never leaves is the bug this avoids.
+
+     No reduced-motion query. --motion-duration collapses on :root, which
+     removes the slide and leaves the timeout alone: the message needs the same
+     time to read either way. */
+  @keyframes hs-toast-in {
+    from {
+      opacity: 0;
+      translate: 0 var(--hs-toast-travel, 0.5rem);
+    }
+  }
+
+  /* hs-sortable coordinates a table the consumer wrote, so the table keeps its
+     atoms-layer styling untouched. The only new visuals are the header control
+     and the direction indicator.
+
+     Every rule here targets the injected button, which exists only once the
+     script has run. With JavaScript disabled the table is a plain readable
+     table and no affordance promises an interaction that cannot happen. */
+  hs-sortable {
+    display: block;
+  }
+
+  /* Negative margin against the cell's own padding, so the whole header is the
+     hit area rather than just the words in it. */
+  hs-sortable th > button[data-hs-sort] {
+    display: flex;
+    align-items: center;
+    gap: var(--hs-sortable-gap, var(--p-space-xs));
+    inline-size: 100%;
+    margin: calc(-1 * var(--space-component));
+    padding: var(--space-component);
+    border: none;
+    border-radius: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-variation-settings: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  hs-sortable th > button[data-hs-sort]:hover {
+    background: var(--hs-sortable-background-hover, var(--color-surface-base));
+  }
+
+  hs-sortable th > button[data-hs-sort]:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+
+  /* Drawn with borders rather than a generated glyph: ::after text is read out
+     by some screen readers, and aria-sort already says which way it points.
+     It is always present and only changes opacity, so sorting never shifts the
+     header's layout. */
+  hs-sortable th > button[data-hs-sort]::after {
+    content: "";
+    display: block;
+    inline-size: 0;
+    block-size: 0;
+    margin-inline-start: auto;
+    border-inline: var(--hs-sortable-indicator-size, 0.3em) solid transparent;
+    border-block-end: var(--hs-sortable-indicator-size, 0.3em) solid currentColor;
+  }
+
+  /* Faint on a sortable column, solid on the sorted one. */
+  hs-sortable th[aria-sort="none"] > button[data-hs-sort]::after {
+    opacity: var(--hs-sortable-indicator-idle-opacity, 0.3);
+  }
+
+  hs-sortable th[aria-sort="ascending"] > button[data-hs-sort]::after {
+    opacity: var(--hs-sortable-indicator-opacity, 1);
+  }
+
+  hs-sortable th[aria-sort="descending"] > button[data-hs-sort]::after {
+    opacity: var(--hs-sortable-indicator-opacity, 1);
+    rotate: 180deg;
+  }
+
+  /* A shadow-DOM component renders nothing until its module upgrades it.
+     Declarative Shadow DOM would normally cover that gap, but it requires a
+     server render, and this framework's primary path is static HTML with no
+     build step — there is nothing to emit the shadow root ahead of time.
+     So reserve the box here instead: :defined stops matching the moment the
+     element upgrades, handing off to the component's own styles with no
+     layout shift. Light-DOM components need none of this. */
+  hs-toggle:not(:defined) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-component);
+    min-block-size: 1.5rem;
+  }
+
+  hs-toggle:not(:defined)::before {
+    content: "";
+    flex-shrink: 0;
+    inline-size: 2.5rem;
+    block-size: 1.5rem;
+    border-radius: var(--p-radius-full);
+    background: var(--color-border-emphasis);
+  }
+
+  /* Shadow component: reserve the tablist's height so the panel content does
+     not jump upward when the element upgrades. */
+  hs-tabs:not(:defined) {
+    display: block;
+    min-block-size: 3rem;
+    border-block-end: 1px solid var(--color-border-default);
+  }
+
+  hs-tabs:not(:defined) > hs-tab-panel:not(:first-of-type) {
+    display: none;
+  }
+
+  /* <hs-option> is data the combobox reads, never rendering. Hidden always, so
+     it does not flash as a list of bare words before the element upgrades. */
+  hs-option {
+    display: none;
+  }
+
+  /* Shadow component: reserve the label and the input so a form does not jump
+     when the element upgrades. */
+  hs-combobox:not(:defined) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-component);
+  }
+
+  /* The label sits in an attribute until the element upgrades and renders it
+     into the shadow root, so draw it from the attribute here. Without this the
+     field grows by a whole line the moment the script arrives. */
+  hs-combobox:not(:defined)::before {
+    content: attr(label);
+    font-weight: 500;
+  }
+
+  /* Matches the shadow input exactly: one line of text, its 0.5rem block
+     padding twice over, and both borders. Box-sizing is border-box, so this is
+     the whole box. */
+  hs-combobox:not(:defined)::after {
+    content: "";
+    display: block;
+    block-size: calc(1lh + 1rem + 2 * var(--border-width));
+    border: var(--border-width) solid var(--color-border-default);
+    border-radius: var(--p-radius-md);
+    background: var(--color-surface-elevated);
+  }
+
+  /* <hs-menu-item> is data the menu reads, never rendering. Hidden always, so
+     the commands do not flash as a list of bare words before the upgrade. */
+  hs-menu-item {
+    display: none;
+  }
+
+  /* Shadow component: reserve the trigger button, drawn from the same label
+     attribute the component renders, so the row it sits in does not reflow.
+     Matches the button atom, which is what the trigger becomes. */
+  hs-menu:not(:defined) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--p-space-xs);
+    padding: var(--space-component) var(--space-inline);
+    border-radius: var(--p-radius-md);
+    background: var(--color-action-primary);
+    color: var(--color-text-inverse);
+    font-variation-settings: "wght" 500;
+  }
+
+  hs-menu:not(:defined)::before {
+    content: attr(label);
+  }
+
+  /* Light-DOM component: it renders a real <button>, so it only needs the
+     button to look like an icon affordance rather than a primary action. */
+  hs-theme-toggle > button {
+    background: var(--hs-theme-toggle-background, none);
+    border: var(--border-width) solid
+      var(--hs-theme-toggle-border-color, var(--color-border-default));
+    border-radius: var(--hs-theme-toggle-radius, var(--p-radius-md));
+    color: var(--hs-theme-toggle-color, var(--color-text-primary));
+    padding: var(--hs-theme-toggle-padding-block, var(--p-space-xs))
+      var(--hs-theme-toggle-padding-inline, var(--space-component));
+    font-size: var(--hs-theme-toggle-font-size, var(--text-body));
+    line-height: 1;
+  }
+
+  hs-theme-toggle > button:hover {
+    background: var(--hs-theme-toggle-background-hover, var(--color-surface-sunken));
+  }
+
+  /* hs-dialog wraps a real <dialog>, which the atoms layer already styles.
+     display:contents keeps the wrapper out of layout entirely so it changes
+     nothing about where the dialog sits. */
+  hs-dialog {
+    display: contents;
+  }
+
+  /* Scoped to the wrapper so a bare <dialog> keeps the atoms-layer styling. */
+  hs-dialog > dialog {
+    max-inline-size: var(--hs-dialog-max-inline-size, min(90vw, 600px));
+    padding: var(--hs-dialog-padding, var(--space-gutter));
+    border-radius: var(--hs-dialog-radius, var(--p-radius-lg));
+    background: var(--hs-dialog-background, var(--color-surface-overlay));
+  }
+
+  hs-dialog > dialog::backdrop {
+    background: var(--hs-dialog-backdrop, oklch(0 0 0 / 0.5));
+  }
+
+  /* hs-accordion coordinates real <details>, which the atoms layer already
+     styles. It only needs to stack them. */
+  hs-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hs-accordion-gap, var(--space-component));
+  }
+
+  hs-alert > [data-hs-dismiss] {
+    align-self: start;
+    margin-inline-start: auto;
+    padding: 0 var(--p-space-xs);
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: var(--text-lg, 1.125rem);
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  hs-alert > [data-hs-dismiss]:hover {
+    background: none;
+    opacity: 0.7;
+  }
+
+  /* hs-field renders a native label, control, hint and error in light DOM.
+     It only needs stacking plus the two generated regions styled. */
+  hs-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hs-field-gap, var(--p-space-xs));
+    margin-block-end: var(--hs-field-spacing, var(--space-block));
+  }
+
+  hs-field [data-hs-hint] {
+    margin: 0;
+    font-size: var(--hs-field-hint-font-size, var(--text-small));
+    color: var(--hs-field-hint-color, var(--color-text-secondary));
+  }
+
+  hs-field [data-hs-error] {
+    margin: 0;
+    font-size: var(--hs-field-error-font-size, var(--text-small));
+    color: var(--hs-field-error-color, var(--color-feedback-error-text));
+  }
+
+  hs-field :is(input, select, textarea)[aria-invalid="true"] {
+    border-color: var(--hs-field-invalid-border-color, var(--color-feedback-error));
+  }
+
+  /* hs-copy renders a real <button>; only the copied state needs styling. */
+  hs-copy[data-copied] > button {
+    background: var(--hs-copy-copied-background, var(--color-feedback-success));
+    color: var(--hs-copy-copied-color, var(--color-text-inverse));
+  }
+
+  /* Form Group */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--p-space-xs);
+    margin-block-end: var(--space-block);
+  }
+
+  /* Input Group */
+  .input-group {
+    display: flex;
+    gap: 0;
+  }
+
+  .input-group > * {
+    border-radius: 0;
+  }
+
+  .input-group > *:first-child {
+    border-start-start-radius: var(--p-radius-md);
+    border-end-start-radius: var(--p-radius-md);
+  }
+
+  .input-group > *:last-child {
+    border-start-end-radius: var(--p-radius-md);
+    border-end-end-radius: var(--p-radius-md);
+  }
+
+  .input-group > * + * {
+    border-inline-start: none;
+  }
+}
+
+/* ========================================
+   ORGANISMS LAYER
+   ======================================== */
+
+@layer organisms {
+  /* Site Header */
+  .site-header {
+    container-type: inline-size;
+    background: var(--color-surface-base);
+    border-block-end: 1px solid var(--color-border-default);
+    padding-block: var(--space-component);
+  }
+
+  /* Navigation */
+  .site-nav ul {
+    display: flex;
+    gap: var(--space-inline);
+    list-style: none;
+    padding: 0;
+  }
+
+  @container (inline-size < 600px) {
+    .site-nav ul {
+      flex-direction: column;
+      gap: var(--p-space-sm);
+    }
+  }
+
+  /* Card Grid */
+  .card-grid {
+    container-type: inline-size;
+    display: grid;
+    gap: var(--space-gutter);
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  }
+
+  @container (inline-size > 1200px) {
+    .card-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Hero Section */
+  .hero {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-block: var(--p-space-3xl);
+    padding-inline: var(--space-gutter);
+  }
+
+  @container (inline-size > 768px) {
+    .hero {
+      padding-block: calc(var(--p-space-3xl) * 1.5);
+    }
+  }
+
+  /* Hero Variants */
+  .hero--split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-gutter);
+    text-align: start;
+    align-items: center;
+  }
+
+  @container (inline-size > 768px) {
+    .hero--split {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Footer */
+  .site-footer {
+    container-type: inline-size;
+    background: var(--color-surface-elevated);
+    border-block-start: 1px solid var(--color-border-default);
+    padding-block: var(--space-gutter);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-gutter);
+  }
+
+  @container (inline-size > 768px) {
+    .footer-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  /* Navigation - Mobile Menu */
+  .nav-toggle {
+    display: none;
+  }
+
+  @container (inline-size < 600px) {
+    .nav-toggle {
+      display: block;
+    }
+
+    .site-nav ul {
+      display: none;
+    }
+
+    .site-nav[data-expanded="true"] ul {
+      display: flex;
+    }
+  }
+
+  /* Feature Grid */
+  .feature-grid {
+    container-type: inline-size;
+    display: grid;
+    gap: var(--space-gutter);
+    grid-template-columns: 1fr;
+  }
+
+  @container (inline-size > 600px) {
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @container (inline-size > 1000px) {
+    .feature-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+/* ========================================
+   TEMPLATES LAYER
+   ======================================== */
+
+@layer templates {
+  /* Page Layout */
+  .page-layout {
+    display: grid;
+    min-block-size: 100vh;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header"
+      "main"
+      "footer";
+  }
+
+  .page-layout > header {
+    grid-area: header;
+  }
+
+  .page-layout > main {
+    grid-area: main;
+  }
+
+  .page-layout > footer {
+    grid-area: footer;
+  }
+
+  /* Sidebar Layout
+     flex-direction is declared, not assumed. Applied to <body> this competes
+     with `body { flex-direction: column }` in the atoms layer, and a later
+     cascade layer only wins for the properties it actually declares - so
+     omitting it left the sidebar stacked at every width, with flex-basis
+     acting as a HEIGHT and flex-grow stretching the sidebar vertically. */
+  .sidebar-layout {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--space-gutter);
+  }
+
+  .sidebar-layout > :first-child {
+    flex-basis: var(--sidebar-width, 20rem);
+    flex-grow: 1;
+  }
+
+  /* Not `> :last-child`: every template ends with a <script>, so the last
+     child is the script rather than the main region, and <main> got none of
+     these. A display:none element is not a flex item, so matching it here is
+     inert. */
+  .sidebar-layout > :not(:first-child) {
+    flex-basis: 0;
+    flex-grow: 999;
+    min-inline-size: var(--sidebar-threshold, 50%);
+  }
+}
