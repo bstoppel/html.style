@@ -13,7 +13,9 @@ on:
 
 jobs:
   baselines:
-    runs-on: ubuntu-latest
+    # Must equal the test job's runner in deploy.yml. Baselines captured on a
+    # different image fail against the one that compares them.
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

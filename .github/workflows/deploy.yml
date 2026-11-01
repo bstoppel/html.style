@@ -13,7 +13,11 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Pinned, not ubuntu-latest. The Linux visual baselines were captured on
+    # 24.04, and Playwright 1.58 cannot install Chromium on 26.04. Move this,
+    # the Playwright version, and the baselines together, and keep it equal to
+    # the runner in visual-baselines.yml.
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
