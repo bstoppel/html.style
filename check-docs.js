@@ -33,6 +33,9 @@ const DOCS = [
   'docs/adr/0008-view-transitions.md',
   'docs/adr/0009-register-property-brand-hue.md',
   'docs/adr/0010-container-style-queries.md',
+  'docs/agents/domain.md',
+  'docs/agents/issue-tracker.md',
+  'docs/agents/triage-labels.md',
   'src/FAVICON_GENERATION.md',
 ];
 

@@ -322,3 +322,17 @@ Checklist:
 - [ ] Commit message follows Conventional Commits format
 - [ ] No console errors in browser
 
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `bstoppel/html.style`, through the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`), unchanged. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: a root `GLOSSARY.md` (not created yet) and `docs/adr/`. See `docs/agents/domain.md`.
+
