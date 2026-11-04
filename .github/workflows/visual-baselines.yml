@@ -11,9 +11,12 @@ name: Update visual baselines
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   baselines:
-    # Must equal the test job's runner in deploy.yml. Baselines captured on a
+    # Must equal the test job's runner in test.yml. Baselines captured on a
     # different image fail against the one that compares them.
     runs-on: ubuntu-24.04
     steps:

@@ -1,0 +1,87 @@
+name: Test
+
+# Reusable. The PR pipeline calls it on the commit under review, and deploy.yml
+# calls it before publishing, so a pull request is verified by exactly the
+# steps that gate the deploy.
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Commit to test. Empty means the commit that triggered the caller.
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    # Explicit, so `| tee` keeps the exit code: only an explicit `bash` runs
+    # with pipefail. ci-log.txt is what the PR pipeline's fixer reads.
+    shell: bash
+
+jobs:
+  test:
+    # Pinned, not ubuntu-latest. The Linux visual baselines were captured on
+    # 24.04, and Playwright 1.58 cannot install Chromium on 26.04. Move this,
+    # the Playwright version, and the baselines together, and keep it equal to
+    # the runner in visual-baselines.yml and the fix job in pr-pipeline.yml.
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm install  # Changed from npm ci to npm install to generate package-lock.json if missing
+
+      # Must run after `npm install`: build.js bundles components with esbuild.
+      # Still ahead of the browser download, so a stale dist/ fails fast.
+      - name: Verify build output is in sync
+        run: npm run build:check 2>&1 | tee -a ci-log.txt
+
+      # Needs dist/custom-elements.json, so it runs after the build check.
+      - name: Verify documentation is current
+        run: npm run docs:check 2>&1 | tee -a ci-log.txt
+
+      # Generated declarations are the kind of thing that rots silently: nothing
+      # errors when they are wrong, consumers just get bad autocomplete. This
+      # compiles a consumer-style fixture against them. Needs the build above,
+      # and no browser, so it runs before the download.
+      - name: Verify the generated type declarations compile
+        run: npm run types:check 2>&1 | tee -a ci-log.txt
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+
+      # `list` alongside the configured `html` reporter, so the log names each
+      # failing test instead of only pointing at the HTML report.
+      - name: Run tests
+        run: npm test -- --reporter=list,html 2>&1 | tee -a ci-log.txt
+
+      - name: Upload failure details
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-failure
+          path: |
+            ci-log.txt
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,0 +1,750 @@
+name: PR pipeline
+
+# Every pull request to main runs one ordered pipeline:
+#
+#   context -> review -> codeql + security -> test -> result
+#
+# The first stage that fails hands its findings to `fix`, a Claude run that
+# edits the working tree and hands back a patch. `push-fix` checks the patch
+# against PROTECTED_PATHS and commits it with an `AI-Fix: <stage>` trailer, and
+# `result` dispatches this workflow again, so every fix is reviewed from the
+# top. The trailers are the fix budget: each stage gets MAX_*_FIXES fixes per
+# pull request. When a stage fails with its budget spent, `result` labels the
+# pull request needs-human and the pipeline stops.
+#
+# Claude never holds a token that can push. `review` gets read-only tools. `fix`
+# can edit its working tree, but its token can only read. Posting the review and
+# pushing the fix happen in plain steps.
+#
+# The AI stages run only for open, non-draft pull requests from a branch in this
+# repository, not opened by a bot, without the ai-off label, and only when the
+# ANTHROPIC_API_KEY secret is set. Every other pull request still gets the
+# security scans and tests.
+#
+# `result` (check name "Pipeline result") is the required status check. Merging
+# stays manual: merging to main deploys the site.
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  # Fixes are pushed with GITHUB_TOKEN, and its pushes never trigger
+  # `pull_request`. A dispatch is the one event GITHUB_TOKEN can start.
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number
+        required: true
+        type: number
+
+concurrency:
+  group: pr-pipeline-${{ github.event.pull_request.number || inputs.pr }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # Automatic fixes allowed per stage, per pull request.
+  MAX_REVIEW_FIXES: 2
+  MAX_SECURITY_FIXES: 1
+  MAX_TEST_FIXES: 1
+  # A fix that changes any matching path is discarded whole.
+  PROTECTED_PATHS: '^(\.github/|\.claude/|aidlc/|CLAUDE\.md$|\.mcp\.json$|playwright\.config\.js$)|-snapshots/'
+  CLAUDE_MODEL: claude-opus-5-5
+
+jobs:
+  context:
+    name: Context
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      pr: ${{ steps.pr.outputs.pr }}
+      head_ref: ${{ steps.pr.outputs.head_ref }}
+      head_sha: ${{ steps.pr.outputs.head_sha }}
+      base_sha: ${{ steps.pr.outputs.base_sha }}
+      alert_ref: ${{ steps.pr.outputs.alert_ref }}
+      ai: ${{ steps.pr.outputs.ai }}
+      ai_skip_reason: ${{ steps.pr.outputs.ai_skip_reason }}
+      changes_ci: ${{ steps.history.outputs.changes_ci }}
+      review_round: ${{ steps.history.outputs.review_round }}
+      review_fixes: ${{ steps.history.outputs.review }}
+      security_fixes: ${{ steps.history.outputs.security }}
+      test_fixes: ${{ steps.history.outputs.tests }}
+      review_fix_ok: ${{ steps.history.outputs.review_fix_ok }}
+      security_fix_ok: ${{ steps.history.outputs.security_fix_ok }}
+      test_fix_ok: ${{ steps.history.outputs.test_fix_ok }}
+    steps:
+      - name: Resolve the pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+          HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          gh pr view "$PR" --repo "$GITHUB_REPOSITORY" \
+            --json number,state,isDraft,isCrossRepository,headRefName,headRefOid,baseRefOid,author,labels > pr.json
+          field() { jq -r "$1" pr.json; }
+
+          reason=''
+          if [ "$(field .state)" != OPEN ]; then reason='the pull request is not open'
+          elif [ "$(field .isDraft)" = true ]; then reason='the pull request is a draft'
+          elif [ "$(field .isCrossRepository)" = true ]; then reason='the pull request comes from a fork'
+          elif [ "$(field .author.is_bot)" = true ]; then reason='the pull request was opened by a bot'
+          elif jq -e '.labels[] | select(.name == "ai-off")' pr.json > /dev/null; then reason='the pull request has the ai-off label'
+          elif [ "$HAS_KEY" != true ]; then reason='the ANTHROPIC_API_KEY secret is not set'
+          fi
+
+          head_ref=$(field .headRefName)
+          {
+            echo "pr=$(field .number)"
+            echo "head_ref=$head_ref"
+            echo "head_sha=$(field .headRefOid)"
+            echo "base_sha=$(field .baseRefOid)"
+            # CodeQL uploads a fork's results under the PR's merge ref, and a
+            # branch's under the branch.
+            if [ "$(field .isCrossRepository)" = true ]; then
+              echo "alert_ref=refs/pull/$PR/merge"
+            else
+              echo "alert_ref=refs/heads/$head_ref"
+            fi
+            if [ -z "$reason" ]; then echo ai=true; else echo ai=false; fi
+            echo "ai_skip_reason=$reason"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pr.outputs.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Count earlier fixes
+        id: history
+        env:
+          BASE: ${{ steps.pr.outputs.base_sha }}
+          HEAD: ${{ steps.pr.outputs.head_sha }}
+        run: |
+          trailers=$(git log --format='%(trailers:key=AI-Fix,valueonly)' "$BASE..$HEAD")
+          count() { printf '%s\n' "$trailers" | grep -cx "$1" || true; }
+          review=$(count review)
+          security=$(count security)
+          tests=$(count tests)
+          ok() { if [ "$1" -lt "$2" ]; then echo true; else echo false; fi; }
+
+          if git diff --name-only "$BASE...$HEAD" | grep -q '^\.github/'; then changes_ci=true; else changes_ci=false; fi
+
+          {
+            echo "review=$review"
+            echo "security=$security"
+            echo "tests=$tests"
+            echo "review_round=$((review + 1))"
+            echo "review_fix_ok=$(ok "$review" "$MAX_REVIEW_FIXES")"
+            echo "security_fix_ok=$(ok "$security" "$MAX_SECURITY_FIXES")"
+            echo "test_fix_ok=$(ok "$tests" "$MAX_TEST_FIXES")"
+            echo "changes_ci=$changes_ci"
+          } | tee -a "$GITHUB_OUTPUT"
+
+  review:
+    name: Adversarial review
+    needs: context
+    if: needs.context.outputs.ai == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+    outputs:
+      approved: ${{ steps.post.outputs.approved }}
+      blocking: ${{ steps.post.outputs.blocking }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.context.outputs.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Load the result schema
+        id: schema
+        run: echo "json=$(jq -c . .github/pr-pipeline/review.schema.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Review with Claude
+        id: claude
+        uses: anthropics/claude-code-action@d535f5172dec02b204866b393d6b20b9b2aaf98d # v1.0.266
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          # Runs restarted by `result` have github-actions as their actor. Only
+          # same-repository pull requests and dispatches reach this job, and
+          # both need write access to start.
+          allowed_bots: github-actions
+          prompt: |
+            Read .github/pr-pipeline/review.md and follow it.
+
+            Pull request: #${{ needs.context.outputs.pr }}
+            Base commit: ${{ needs.context.outputs.base_sha }}
+            Head commit: ${{ needs.context.outputs.head_sha }}
+            Review round: ${{ needs.context.outputs.review_round }}
+          # --setting-sources user is what makes --allowedTools the real limit.
+          # The project settings pre-approve bare Bash, Edit, and Write, and run
+          # AIDLC hooks through bun, which CI lacks. Keep this flag on every
+          # Claude step.
+          claude_args: >-
+            --setting-sources user
+            --model ${{ env.CLAUDE_MODEL }}
+            --max-turns 80
+            --allowedTools "Read,Glob,Grep,Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(gh pr view:*),Bash(gh pr diff:*)"
+            --json-schema '${{ steps.schema.outputs.json }}'
+
+      - name: Post the review
+        id: post
+        uses: actions/github-script@v7
+        env:
+          RESULT: ${{ steps.claude.outputs.structured_output }}
+          PR: ${{ needs.context.outputs.pr }}
+          HEAD_SHA: ${{ needs.context.outputs.head_sha }}
+          ROUND: ${{ needs.context.outputs.review_round }}
+        with:
+          script: |
+            const fs = require('fs');
+            if (!process.env.RESULT) {
+              core.setFailed('The review produced no result.');
+              return;
+            }
+            const review = JSON.parse(process.env.RESULT);
+            fs.writeFileSync('review.json', JSON.stringify(review, null, 2));
+
+            const { blocking, suggestions } = review;
+            core.setOutput('approved', String(blocking.length === 0));
+            core.setOutput('blocking', String(blocking.length));
+
+            const where = (f) => `\`${f.path}${f.line ? `:${f.line}` : ''}\``;
+            const detail = (f) => `${f.problem}\n\nWhat breaks: ${f.failure}\n\nFix: ${f.fix}`;
+            const verdict = blocking.length
+              ? `${blocking.length} blocking finding${blocking.length === 1 ? '' : 's'}`
+              : 'approved';
+            const body = [`### Adversarial review, round ${process.env.ROUND}: ${verdict}`, '', review.summary];
+            blocking.forEach((f, i) => body.push('', `**${i + 1}. ${where(f)}** ${detail(f)}`));
+            if (suggestions.length) {
+              body.push('', '**Suggestions (not blocking)**', '', ...suggestions.map((s) => `- ${s}`));
+            }
+
+            const params = {
+              ...context.repo,
+              pull_number: Number(process.env.PR),
+              commit_id: process.env.HEAD_SHA,
+              event: 'COMMENT',
+              body: body.join('\n'),
+            };
+            const comments = blocking
+              .filter((f) => f.line > 0)
+              .map((f) => ({ path: f.path, line: f.line, side: 'RIGHT', body: `**Blocking.** ${detail(f)}` }));
+            try {
+              await github.rest.pulls.createReview({ ...params, comments });
+            } catch (error) {
+              // GitHub rejects the whole review when one line is outside the
+              // diff. Every finding is in the body too, so post that alone.
+              core.warning(`Inline comments rejected: ${error.message}`);
+              await github.rest.pulls.createReview(params);
+            }
+
+      - name: Upload the findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review
+          path: review.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+  codeql:
+    name: CodeQL
+    needs: [context, review]
+    if: >-
+      !cancelled() && needs.context.result == 'success' &&
+      (needs.review.result == 'skipped' || needs.review.outputs.approved == 'true')
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      security-events: write
+    uses: ./.github/workflows/codeql.yml
+    with:
+      ref: ${{ needs.context.outputs.alert_ref }}
+      sha: ${{ needs.context.outputs.head_sha }}
+
+  security:
+    name: Security scans
+    needs: [context, codeql]
+    if: ${{ !cancelled() && needs.codeql.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: read
+    outputs:
+      passed: ${{ steps.gate.outputs.passed }}
+      fixable: ${{ steps.gate.outputs.fixable }}
+    steps:
+      - name: Dependency review
+        id: deps
+        continue-on-error: true
+        uses: actions/dependency-review-action@v4
+        with:
+          base-ref: ${{ needs.context.outputs.base_sha }}
+          head-ref: ${{ needs.context.outputs.head_sha }}
+          # The pipeline's own status comment reports the result.
+          comment-summary-in-pr: never
+
+      # main has open alerts of its own. Only alerts this branch adds fail it.
+      - name: Compare code scanning alerts with main
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ALERT_REF: ${{ needs.context.outputs.alert_ref }}
+          CODEQL: ${{ needs.codeql.result }}
+          DEPS: ${{ steps.deps.outcome }}
+          VULNERABLE: ${{ steps.deps.outputs.vulnerable-changes }}
+        run: |
+          alerts() {
+            gh api --paginate "repos/$GITHUB_REPOSITORY/code-scanning/alerts?ref=$1&state=open&per_page=100" \
+              --jq '.[] | {number, rule: .rule.id, severity: (.rule.security_severity_level // .rule.severity),
+                description: .rule.description, message: .most_recent_instance.message.text,
+                path: .most_recent_instance.location.path, line: .most_recent_instance.location.start_line}'
+          }
+
+          passed=false
+          fixable=false
+          if [ "$CODEQL" = success ]; then
+            alerts refs/heads/main | jq -s 'map(.number)' > main.json
+            alerts "$ALERT_REF" | jq -s --slurpfile main main.json 'map(select(.number | IN($main[0][]) | not))' > new.json
+          else
+            echo "::error::CodeQL did not complete ($CODEQL)."
+            echo '[]' > new.json
+          fi
+          jq -n --slurpfile alerts new.json --arg deps "$DEPS" --argjson vulnerable "${VULNERABLE:-[]}" \
+            '{new_alerts: $alerts[0], dependency_review: $deps, vulnerable_changes: $vulnerable}' > security.json
+          cat security.json
+
+          new=$(jq '.new_alerts | length' security.json)
+          vulnerable=$(jq '.vulnerable_changes | length' security.json)
+          jq -r '.new_alerts[] | "::error file=\(.path),line=\(.line)::\(.rule): \(.message)"' security.json
+
+          if [ "$CODEQL" = success ] && [ "$DEPS" = success ] && [ "$new" -eq 0 ]; then
+            passed=true
+          elif [ "$new" -gt 0 ] || [ "$vulnerable" -gt 0 ]; then
+            fixable=true
+          fi
+          { echo "passed=$passed"; echo "fixable=$fixable"; } >> "$GITHUB_OUTPUT"
+          [ "$passed" = true ]
+
+      - name: Upload the findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security
+          path: security.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+  test:
+    name: Tests
+    needs: [context, security]
+    if: ${{ !cancelled() && needs.security.outputs.passed == 'true' }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/test.yml
+    with:
+      ref: ${{ needs.context.outputs.head_sha }}
+
+  fix:
+    name: AI fix
+    needs: [context, review, security, test]
+    if: >-
+      !cancelled() && needs.context.outputs.ai == 'true' && (
+        (needs.review.outputs.approved == 'false' && needs.context.outputs.review_fix_ok == 'true') ||
+        (needs.security.outputs.fixable == 'true' && needs.context.outputs.security_fix_ok == 'true') ||
+        (needs.test.result == 'failure' && needs.context.outputs.test_fix_ok == 'true'))
+    # Same runner as test.yml: the visual baselines only match on 24.04.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      stage: ${{ steps.stage.outputs.stage }}
+      has_patch: ${{ steps.patch.outputs.has_patch }}
+    steps:
+      # The stages run in order, so at most one of them failed.
+      - name: Pick the stage
+        id: stage
+        env:
+          APPROVED: ${{ needs.review.outputs.approved }}
+          SECURITY_FIXABLE: ${{ needs.security.outputs.fixable }}
+        run: |
+          if [ "$APPROVED" = false ]; then stage=review
+          elif [ "$SECURITY_FIXABLE" = true ]; then stage=security
+          else stage=tests
+          fi
+          echo "stage=$stage" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.context.outputs.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      # ci, not install: a patch must not pick up lockfile churn.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Download the findings
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '{review,security,test-failure}'
+          path: ${{ runner.temp }}/findings
+
+      - name: Load the result schema
+        id: schema
+        run: echo "json=$(jq -c . .github/pr-pipeline/fix.schema.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Fix with Claude
+        id: claude
+        uses: anthropics/claude-code-action@d535f5172dec02b204866b393d6b20b9b2aaf98d # v1.0.266
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          allowed_bots: github-actions
+          prompt: |
+            Read .github/pr-pipeline/fix.md and follow it.
+
+            Pull request: #${{ needs.context.outputs.pr }}
+            Base commit: ${{ needs.context.outputs.base_sha }}
+            Failed stage: ${{ steps.stage.outputs.stage }}
+            Findings directory: ${{ runner.temp }}/findings
+          # See the review step for why --setting-sources user is required.
+          claude_args: >-
+            --setting-sources user
+            --model ${{ env.CLAUDE_MODEL }}
+            --max-turns 150
+            --add-dir ${{ runner.temp }}/findings
+            --allowedTools "Read,Edit,Write,Glob,Grep,Bash(npm run:*),Bash(npm test:*),Bash(npx playwright test:*),Bash(git diff:*),Bash(git status:*),Bash(git log:*),Bash(git show:*),Bash(gh pr view:*)"
+            --json-schema '${{ steps.schema.outputs.json }}'
+
+      - name: Collect the patch
+        id: patch
+        env:
+          RESULT: ${{ steps.claude.outputs.structured_output }}
+        run: |
+          if [ -z "$RESULT" ]; then
+            echo '::error::The fixer produced no result.'
+            exit 1
+          fi
+          printf '%s\n' "$RESULT" > "$RUNNER_TEMP/fix.json"
+          # On pull_request runs the action replaces these paths with main's
+          # copies before Claude starts, so they differ from HEAD whatever
+          # Claude did. Staging them would revert the PR's own changes there.
+          git add --all -- . ':!.claude' ':!.claude-pr' ':!.claude.json' ':!.mcp.json' \
+            ':!.gitmodules' ':!.ripgreprc' ':!CLAUDE.md' ':!CLAUDE.local.md' ':!.husky'
+          git diff --cached --stat
+          git diff --cached --binary > "$RUNNER_TEMP/fix.patch"
+          if [ -s "$RUNNER_TEMP/fix.patch" ]; then has_patch=true; else has_patch=false; fi
+          echo "has_patch=$has_patch" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the patch
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fix
+          path: |
+            ${{ runner.temp }}/fix.json
+            ${{ runner.temp }}/fix.patch
+          if-no-files-found: ignore
+          retention-days: 7
+
+  push-fix:
+    name: Push fix
+    needs: [context, fix]
+    if: ${{ !cancelled() && needs.fix.outputs.has_patch == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      rejected: ${{ steps.guard.outputs.rejected }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.context.outputs.head_sha }}
+
+      - name: Download the patch
+        uses: actions/download-artifact@v4
+        with:
+          name: fix
+          path: ${{ runner.temp }}/fix
+
+      - name: Apply the patch and check protected paths
+        id: guard
+        run: |
+          git apply --index "$RUNNER_TEMP/fix/fix.patch"
+          # --no-renames lists both sides of a rename, so moving a protected
+          # file away is caught too.
+          rejected=$(git diff --cached --no-renames --name-only | grep -E "$PROTECTED_PATHS" | paste -sd ' ' - || true)
+          if [ -n "$rejected" ]; then
+            echo "::error::The fix changes protected paths and was discarded: $rejected"
+            echo "rejected=$rejected" >> "$GITHUB_OUTPUT"
+            exit 1
+          fi
+
+      - name: Commit and push
+        env:
+          STAGE: ${{ needs.fix.outputs.stage }}
+          HEAD_REF: ${{ needs.context.outputs.head_ref }}
+        run: |
+          case "$STAGE" in
+            review) subject='fix: address adversarial review findings' ;;
+            security) subject='fix: resolve new security scan findings' ;;
+            tests) subject='fix: repair failing checks' ;;
+          esac
+          summary=$(jq -r .summary "$RUNNER_TEMP/fix/fix.json")
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --file - <<EOF
+          $subject
+
+          $summary
+
+          AI-Fix: $STAGE
+          EOF
+          # Fails if the branch moved since the pipeline started; a newer
+          # commit already has its own run.
+          git push origin "HEAD:refs/heads/$HEAD_REF"
+
+  result:
+    name: Pipeline result
+    needs: [context, review, codeql, security, test, fix, push-fix]
+    # Not on cancellation: a newer commit cancelled this run and has its own.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Download the findings
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '{review,security,fix}'
+          path: findings
+
+      - name: Report
+        uses: actions/github-script@v7
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        with:
+          script: |
+            const fs = require('fs');
+            const needs = JSON.parse(process.env.NEEDS);
+            const read = (file) => {
+              try {
+                return JSON.parse(fs.readFileSync(file, 'utf8'));
+              } catch {
+                return null;
+              }
+            };
+            const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+            const attempt = async (what, fn) => {
+              try {
+                await fn();
+              } catch (error) {
+                core.warning(`Could not ${what}: ${error.message}`);
+              }
+            };
+
+            if (needs.context.result !== 'success') {
+              core.setFailed('The pipeline could not resolve the pull request.');
+              return;
+            }
+            const ctx = needs.context.outputs;
+            const pr = Number(ctx.pr);
+            const ai = ctx.ai === 'true';
+            const budget = {
+              review: [Number(ctx.review_fixes), Number(process.env.MAX_REVIEW_FIXES)],
+              security: [Number(ctx.security_fixes), Number(process.env.MAX_SECURITY_FIXES)],
+              tests: [Number(ctx.test_fixes), Number(process.env.MAX_TEST_FIXES)],
+            };
+            const security = read('findings/security/security.json');
+            const fix = read('findings/fix/fix.json');
+
+            // failed: a stage a fix could address. error: a stage that did not finish.
+            let failed = null;
+            let error = null;
+            const rows = {};
+
+            if (!ai) {
+              rows.review = `Skipped: ${ctx.ai_skip_reason}.`;
+            } else if (needs.review.result !== 'success') {
+              rows.review = 'Did not finish.';
+              error = 'review';
+            } else if (needs.review.outputs.approved === 'true') {
+              rows.review = 'Approved.';
+            } else {
+              rows.review = `${plural(Number(needs.review.outputs.blocking), 'blocking finding')}, posted as a review.`;
+              failed = 'review';
+            }
+
+            if (needs.codeql.result === 'skipped') {
+              rows.security = 'Not run.';
+            } else if (needs.security.outputs.passed === 'true') {
+              rows.security = 'Passed.';
+            } else if (needs.security.outputs.fixable === 'true') {
+              const found = [];
+              if (security?.new_alerts?.length) found.push(plural(security.new_alerts.length, 'new CodeQL alert'));
+              if (security?.vulnerable_changes?.length) {
+                found.push(plural(security.vulnerable_changes.length, 'vulnerable dependency change'));
+              }
+              rows.security = `${found.join(', ')}.`;
+              failed ??= 'security';
+            } else {
+              rows.security = `Did not finish (CodeQL: ${needs.codeql.result}, scans: ${needs.security.result}).`;
+              error ??= 'security';
+            }
+
+            if (needs.test.result === 'success') {
+              rows.tests = 'Passed.';
+            } else if (needs.test.result === 'failure') {
+              rows.tests = 'Failed. The run log has the details.';
+              failed ??= 'tests';
+            } else {
+              rows.tests = 'Not run.';
+            }
+
+            const pushed = needs['push-fix'].result === 'success';
+            let state;
+            let next;
+            if (pushed) {
+              state = 'fixing';
+              next = `A fix for the ${failed} stage was pushed. The pipeline runs again on the new commit.`;
+            } else if (
+              !failed &&
+              !error &&
+              needs.security.outputs.passed === 'true' &&
+              needs.test.result === 'success'
+            ) {
+              state = 'passed';
+              next = 'Ready for you to review and merge.';
+            } else {
+              state = 'needs-human';
+              const rejected = needs['push-fix'].outputs?.rejected;
+              if (error) {
+                next = `The ${error} stage did not finish. Re-run the failed jobs from the run log.`;
+              } else if (rejected) {
+                next = `The fix changed protected paths (${rejected}) and was discarded. Fix the ${failed} stage by hand.`;
+              } else if (needs['push-fix'].result === 'failure') {
+                next = 'The fix could not be pushed, most likely because the branch moved. Re-run the failed jobs, or push again.';
+              } else if (needs.fix.result === 'success') {
+                next = `The fixer made no changes; its notes are below. Fix the ${failed} stage by hand and push.`;
+              } else if (needs.fix.result === 'failure') {
+                next = `The fixer did not finish. Re-run the failed jobs, or fix the ${failed} stage by hand.`;
+              } else if (!ai) {
+                next = `Automatic fixes are off for this pull request: ${ctx.ai_skip_reason}. Fix the ${failed} stage by hand.`;
+              } else if (failed) {
+                next = `The ${failed} stage has used its ${plural(budget[failed][1], 'automatic fix')}. Fix it by hand and push; the pipeline runs again.`;
+              } else {
+                next = 'See the run log.';
+              }
+            }
+            if (ctx.changes_ci === 'true') {
+              next += ' This pull request changes files under .github/, so the pipeline that checked it is its own copy. Review those changes yourself.';
+            }
+
+            const headline = { passed: 'passed', fixing: 'fixing', 'needs-human': 'needs a human' }[state];
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const marker = '<!-- pr-pipeline -->';
+            const lines = [
+              marker,
+              `## PR pipeline: ${headline}`,
+              '',
+              `Commit ${ctx.head_sha.slice(0, 7)} · [Run log](${runUrl})`,
+              '',
+              '| Stage | Result |',
+              '| --- | --- |',
+              `| Adversarial review | ${rows.review} |`,
+              `| Security scans | ${rows.security} |`,
+              `| Tests | ${rows.tests} |`,
+              '',
+            ];
+            if (ai) {
+              const used = (stage) => `${stage} ${budget[stage][0]} of ${budget[stage][1]}`;
+              lines.push(`Automatic fixes used: ${used('review')}, ${used('security')}, ${used('tests')}.`, '');
+            }
+            lines.push(`**Next:** ${next}`);
+            if (security?.new_alerts?.length) {
+              lines.push('', '**New CodeQL alerts**', '');
+              for (const a of security.new_alerts) lines.push(`- \`${a.path}:${a.line}\` ${a.rule}: ${a.message}`);
+            }
+            if (fix) {
+              lines.push('', '**Fixer notes**', '', fix.summary);
+              if (fix.declined.length) {
+                lines.push('', 'Declined findings:', '');
+                for (const d of fix.declined) lines.push(`- ${d.finding} Reason: ${d.reason}`);
+              }
+            }
+            const body = lines.join('\n');
+            await core.summary.addRaw(body).write();
+
+            const issue = { ...context.repo, issue_number: pr };
+            await attempt('update the status comment', async () => {
+              const comments = await github.paginate(github.rest.issues.listComments, issue);
+              const existing = comments.find((c) => c.user?.type === 'Bot' && c.body?.startsWith(marker));
+              if (existing) {
+                await github.rest.issues.updateComment({ ...context.repo, comment_id: existing.id, body });
+              } else {
+                await github.rest.issues.createComment({ ...issue, body });
+              }
+            });
+
+            const label = 'needs-human';
+            if (state === 'needs-human') {
+              await attempt('add the needs-human label', async () => {
+                await github.rest.issues.getLabel({ ...context.repo, name: label }).catch(() =>
+                  github.rest.issues.createLabel({
+                    ...context.repo,
+                    name: label,
+                    color: 'b60205',
+                    description: 'The PR pipeline stopped and needs a person',
+                  }),
+                );
+                await github.rest.issues.addLabels({ ...issue, labels: [label] });
+              });
+            } else {
+              await github.rest.issues.removeLabel({ ...issue, name: label }).catch(() => {});
+            }
+
+            if (pushed) {
+              // Last, because the new run cancels this one.
+              await github.rest.actions.createWorkflowDispatch({
+                ...context.repo,
+                workflow_id: 'pr-pipeline.yml',
+                ref: ctx.head_ref,
+                inputs: { pr: String(pr) },
+              });
+            }
+            if (state !== 'passed') core.setFailed(`PR pipeline ${headline}. ${next}`);
