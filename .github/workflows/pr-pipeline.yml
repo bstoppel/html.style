@@ -91,6 +91,17 @@ jobs:
             --json number,state,isDraft,isCrossRepository,headRefName,headRefOid,baseRefOid,author,labels > pr.json
           field() { jq -r "$1" pr.json; }
 
+          # A dispatch must run on the pull request's own branch. Started
+          # anywhere else, the jobs below would run its code with that branch's
+          # cache scope, and on main that could poison what deploys restore. A
+          # fork's branch can share a name with one here, so forks are refused.
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            if [ "$(field .isCrossRepository)" = true ] || [ "$GITHUB_REF" != "refs/heads/$(field .headRefName)" ]; then
+              echo "::error::Dispatch this workflow on the pull request's own branch, not $GITHUB_REF."
+              exit 1
+            fi
+          fi
+
           reason=''
           if [ "$(field .state)" != OPEN ]; then reason='the pull request is not open'
           elif [ "$(field .isDraft)" = true ]; then reason='the pull request is a draft'
@@ -359,8 +370,6 @@ jobs:
     permissions:
       contents: read
     uses: ./.github/workflows/test.yml
-    with:
-      ref: ${{ needs.context.outputs.head_sha }}
 
   fix:
     name: AI fix

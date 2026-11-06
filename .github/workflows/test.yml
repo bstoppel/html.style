@@ -1,16 +1,15 @@
 name: Test
 
-# Reusable. The PR pipeline calls it on the commit under review, and deploy.yml
-# calls it before publishing, so a pull request is verified by exactly the
-# steps that gate the deploy.
+# Reusable. The PR pipeline and deploy.yml both call it, so a pull request is
+# verified by exactly the steps that gate the deploy.
+#
+# It takes no ref input on purpose, and tests the commit that started the run:
+# the merge result on a pull request, the branch tip on a restarted pipeline.
+# Code from a caller-chosen ref would run with the cache scope of whichever
+# branch the run started on, and deploys restore from main's cache.
 
 on:
   workflow_call:
-    inputs:
-      ref:
-        description: Commit to test. Empty means the commit that triggered the caller.
-        type: string
-        default: ''
 
 permissions:
   contents: read
@@ -31,8 +30,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
