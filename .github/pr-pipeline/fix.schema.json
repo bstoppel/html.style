@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "declined"],
+  "properties": {
+    "summary": { "type": "string" },
+    "declined": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["finding", "reason"],
+        "properties": {
+          "finding": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}

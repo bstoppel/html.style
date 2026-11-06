@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "blocking", "suggestions"],
+  "properties": {
+    "summary": { "type": "string" },
+    "blocking": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "line", "problem", "failure", "fix"],
+        "properties": {
+          "path": { "type": "string" },
+          "line": { "type": "integer", "minimum": 0 },
+          "problem": { "type": "string" },
+          "failure": { "type": "string" },
+          "fix": { "type": "string" }
+        }
+      }
+    },
+    "suggestions": {
+      "type": "array",
+      "maxItems": 5,
+      "items": { "type": "string" }
+    }
+  }
+}
